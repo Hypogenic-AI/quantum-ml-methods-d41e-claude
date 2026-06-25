@@ -1,0 +1,23 @@
+idea:
+  title: Quantumn Methods on ML
+  domain: machine_learning
+  hypothesis: "There exist tasks where classical machine learning methods struggle,\
+    \ but quantum methods\u2014when run with simulation and using 20 qubits or more\u2014\
+    may excel.\n"
+  background:
+    description: 'Are there some tasks where classic ML methods struggle while quantum
+      methods might excel? Try a few datasets and let us see if it is cool. Run the
+      quantum tools with simulation.
+
+      Make sure that you use real datasets and experiment with 20 qbits or more.
+
+      '
+  metadata:
+    author: Chenhao Tan
+    source: IdeaHub
+    source_url: https://hypogenic.ai/ideahub/idea/qFjEJCOOkKfU4Epxx6iv
+    idea_id: quantumn_methods_on_ml_20260625_170159_bce19c33
+    created_at: '2026-06-25T17:01:59.408907'
+    status: submitted
+    github_repo_name: quantum-ml-methods-d41e-claude
+    github_repo_url: https://github.com/Hypogenic-AI/quantum-ml-methods-d41e-claude
