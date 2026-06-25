@@ -1,0 +1,89 @@
+\section{Introduction}
+\label{sec:intro}
+
+Quantum machine learning (\qml) is often presented as a path to solving learning
+problems that classical methods cannot. But the claim that ``quantum beats
+classical'' is rarely accompanied by the only thing that makes it scientific: a
+concrete task, a strong classical baseline that demonstrably fails, and a scale
+at which the comparison is actually run. The field's central question is sharp
+and still open---\emph{when, if ever, does a quantum model beat the best
+classical model on a learning task?} Answering it honestly matters: it protects
+practitioners from hype and points research at the regimes where quantum methods
+can genuinely help.
+
+The literature gives a two-sided answer. On one hand, there are \emph{provable}
+classical-hard/quantum-easy separations: the discrete-logarithm construction of
+\citet{liu2021rigorous} shows that, under the classical hardness of the discrete
+log, no efficient classical learner can beat random guessing while a quantum
+support vector machine achieves near-perfect accuracy. On the other hand, these
+separations embed Shor's algorithm and live in the fault-tolerant, hundreds-of-
+qubits regime; at any classically simulable scale ($\le 30$ qubits) the
+underlying number-theoretic problem is trivially solvable, so the separation
+\emph{cannot} be exhibited by a 20-qubit simulation. The only separations that
+\emph{are} demonstrable at simulable scale---\citet{huang2021power} and
+\citet{jerbi2023beyond}---are on \emph{engineered} data, relabeled so that the
+labels align with a quantum kernel. Meanwhile, cautionary results show that
+expressivity alone destroys generalization \citep{kubler2021inductive}, every
+quantum model is a kernel method \citep{schuld2021models}, and many flagship
+speedups dequantize \citep{tang2019quantum}.
+
+\para{The gap.} Despite this rich theory, a clean experimental anchor is
+missing. Published demonstrations are either small-scale ($\le 12$ qubits,
+\eg \citealp{kubler2021inductive,jerbi2023beyond}), run on hardware with no
+defeated classical baseline ($\le 17$ qubits \citep{peters2021machine}, $27$
+qubits \citep{glick2021covariant}), or purely theoretical
+\citep{liu2021rigorous,schuld2021models}. A single, reproducible \emph{$\ge
+20$-qubit simulation} that pits a quantum kernel against a \emph{full} classical
+suite, reports the geometric-difference diagnostic \gdiff{} before training,
+quantifies scaling and statistical significance, and states the engineered-task
+caveat explicitly, has not been collected in one place.
+
+\para{Our study.} We provide exactly that. We ask whether there are tasks where
+classical ML struggles while quantum methods---simulated at 20 qubits or
+more---excel, and we answer it in two complementary experiments, both reproduced
+from published constructions and run under exact statevector simulation in
+PennyLane \texttt{lightning.qubit}. Experiment~A reproduces the projected-quantum-
+kernel construction of \citet{huang2021power}: inputs are encoded into a 20-qubit
+state, labels are engineered along the direction of maximal geometric difference
+between the quantum and classical kernels, and we compare the quantum-kernel SVM
+against six tuned classical models over $10$ repeated stratified splits.
+Experiment~B uses the discrete-logarithm task of \citet{liu2021rigorous}: six
+off-the-shelf classical models are trained on bit features while the quantum
+interval-state kernel is computed from the (simulable) log table.
+
+\para{Preview of results.} On the engineered task at 20 qubits, the projected
+quantum kernel (\pqk) reaches $0.865$ test accuracy while the best classical
+model (gradient boosting) reaches $0.629$---a gap of $+0.236$ with a highly
+significant paired test ($p=3.9\times10^{-8}$, $d=5.4$). The advantage is
+\emph{stable} at $\approx0.22$--$0.23$ across $8$, $10$, and $20$ qubits. A
+within-quantum control is decisive: the naive fidelity kernel (\fqk) collapses to
+chance ($0.493$) at 20 qubits---exactly the high-dimensional concentration the
+theory predicts---so the win comes from the \emph{right} kernel, not from
+quantumness. On the discrete-log task, all six classical models sit at chance
+($0.49$--$0.52$) across $12$/$17$/$21$-bit problems while \isk{} separates the
+task near-perfectly ($0.997$--$1.000$).
+
+\para{Contributions.}
+\begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+    \item We deliver the first self-contained, reproducible $\ge 20$-qubit
+    simulation study that pits a quantum kernel against a \emph{full} six-model
+    classical suite, reports the \gdiff{} diagnostic before training, and
+    quantifies scaling and paired significance ($p\approx 4\times10^{-8}$,
+    $d=5.4$ at 20 qubits).
+    \item We establish a within-quantum control showing the fidelity kernel
+    concentrates to chance at 20 qubits while the projected kernel wins,
+    isolating the advantage to a problem-matched quantum inductive bias rather
+    than quantumness per se.
+    \item We demonstrate off-the-shelf classical failure on the discrete-log task
+    across $12$/$17$/$21$ bits, where tree models reach perfect train accuracy yet
+    generalize at chance---the signature of a label that is random in the input
+    representation.
+    \item We document every caveat (engineered labels, asymptotic hardness,
+    noiseless infinite-shot simulation) so that the confirmed claim carries an
+    honest, explicitly bounded scope.
+\end{itemize}
+
+The rest of the paper reviews related work (\secref{sec:related}), describes our
+methodology (\secref{sec:method}), presents results (\secref{sec:results}),
+discusses interpretation and limitations (\secref{sec:discussion}), and concludes
+(\secref{sec:conclusion}).

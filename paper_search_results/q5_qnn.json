@@ -1,0 +1,546 @@
+{
+  "success": true,
+  "total": 60,
+  "papers": [
+    {
+      "title": "A comprehensive review of quantum machine learning: from NISQ to fault tolerance",
+      "year": 2024,
+      "authors": "Yunfei Wang, Junyu Liu",
+      "url": "https://api.semanticscholar.org/CorpusId:267069708",
+      "relevance": 2,
+      "abstract": "Quantum machine learning, which involves running machine learning algorithms on quantum devices, has garnered significant attention in both academic and business circles. In this paper, we offer a comprehensive and unbiased review of the various concepts that have emerged in the field of quantum machine learning. This includes techniques used in Noisy Intermediate-Scale Quantum (NISQ) technologies and approaches for algorithms compatible with fault-tolerant quantum computing hardware. Our review covers fundamental concepts, algorithms, and the statistical learning theory pertinent to quantum machine learning.",
+      "citations": 111
+    },
+    {
+      "title": "Efficient quantum machine learning with inverse-probability algebraic corrections",
+      "year": 2026,
+      "authors": "Jaemin Seo",
+      "url": "https://api.semanticscholar.org/CorpusId:284981807",
+      "relevance": 2,
+      "abstract": "Quantum neural networks (QNNs) provide expressive probabilistic models by leveraging quantum superposition and entanglement, yet their practical training remains challenging due to highly oscillatory loss landscapes and noise inherent to near-term quantum devices. Existing training approaches largely rely on gradient-based procedural optimization, which often suffers from slow convergence, sensitivity to hyperparameters, and instability near sharp minima. In this work, we propose an alternative inverse-probability algebraic learning framework for QNNs. Instead of updating parameters through incremental gradient descent, our method treats learning as a local inverse problem in probability space, directly mapping discrepancies between predicted and target Born-rule probabilities to parameter corrections via a pseudo-inverse of the Jacobian. This algebraic update is covariant, does not require learning-rate tuning, and enables rapid movement toward the vicinity of a loss minimum in a single step. We systematically compare the proposed method with gradient descent and Adam optimization in both regression and classification tasks using a teacher-student QNN benchmark. Our results show that algebraic learning converges significantly faster, escapes loss plateaus, and achieves lower final errors. Under finite-shot sampling, the method exhibits near-optimal error scaling, while remaining robust against intrinsic hardware noise such as dephasing. These findings suggest that inverse-probability algebraic learning offers a principled and practical alternative to procedural optimization for QNN training, particularly in resource-constrained near-term quantum devices.",
+      "citations": 1
+    },
+    {
+      "title": "Adiabatic Encoding of Pre-trained MPS Classifiers into Quantum Circuits",
+      "year": 2025,
+      "authors": "Keisuke Murota",
+      "url": "https://api.semanticscholar.org/CorpusId:277780908",
+      "relevance": 2,
+      "abstract": "Although Quantum Neural Networks (QNNs) offer powerful methods for classification tasks, the training of QNNs faces two major training obstacles: barren plateaus and local minima. A promising solution is to first train a tensor-network (TN) model classically and then embed it into a QNN.\\ However, embedding TN-classifiers into quantum circuits generally requires postselection whose success probability may decay exponentially with the system size. We propose an \\emph{adiabatic encoding} framework that encodes pre-trained MPS-classifiers into quantum MPS (qMPS) circuits with postselection, and gradually removes the postselection while retaining performance. We prove that training qMPS-classifiers from scratch on a certain artificial dataset is exponentially hard due to barren plateaus, but our adiabatic encoding circumvents this issue. Additional numerical experiments on binary MNIST also confirm its robustness.",
+      "citations": 2
+    },
+    {
+      "title": "Quantum Convolutional Neural Network with Nonlinear Effects and Barren Plateau Mitigation",
+      "year": 2025,
+      "authors": "Pei-Kun Yang",
+      "url": "https://api.semanticscholar.org/CorpusId:280421643",
+      "relevance": 2,
+      "abstract": "Quantum neural networks (QNNs) leverage quantum entanglement and superposition to enable large-scale parallel linear computation, offering a potential solution to the scalability limits of classical deep learning. However, their practical deployment is hampered by two key challenges: the lack of intrinsic nonlinear operations and the barren plateau phenomenon. We propose a quantum convolutional neural network (QCNN) architecture that simultaneously addresses both issues. Nonlinear effects are introduced via orthonormal basis expansions of power series, while barren plateaus are mitigated by directly parameterizing unitary matrices rather than stacking multiple parameterized gates. Our design further incorporates quantum analogs of convolutional kernels and strides for scalable circuit construction. Experiments on MNIST and Fashion-MNIST datasets achieve 99.0% and 88.0% test accuracy, respectively. Consistency between PyTorch-based matrix simulation and Qiskit-based quantum circuit simulation validates the physical fidelity of the model. These results demonstrate a flexible and effective quantum architecture that faithfully integrates classical convolutional mechanisms into a quantum framework, paving the way for practical and expressive QNNs.",
+      "citations": 0
+    },
+    {
+      "title": "A Quantum Spatial Graph Convolutional Neural Network Model on Quantum Circuits",
+      "year": 2024,
+      "authors": "Jin Zheng, Qing Gao, Maciej J. Ogorza\u0142ek, Jinhu L\u00fc, Yue Deng",
+      "url": "https://www.semanticscholar.org/paper/2d7a64dba3bce29db8c2b7df3c6186d66585d3ab",
+      "relevance": 2,
+      "abstract": "This article proposes a quantum spatial graph convolutional neural network (QSGCN) model that is implementable on quantum circuits, providing a novel avenue to processing non-Euclidean type data based on the state-of-the-art parameterized quantum circuit (PQC) computing platforms. Four basic blocks are constructed to formulate the whole QSGCN model, including the quantum encoding, the quantum graph convolutional layer, the quantum graph pooling layer, and the network optimization. In particular, the trainability of the QSGCN model is analyzed through discussions on the barren plateau phenomenon. Simulation results from various types of graph data are presented to demonstrate the learning, generalization, and robustness capabilities of the proposed quantum neural network (QNN) model.",
+      "citations": 34
+    },
+    {
+      "title": "Hybrid quantum neural network structures for image multi-classification",
+      "year": 2023,
+      "authors": "Mingrui Shi, Haozhen Situ, Cai Zhang",
+      "url": "https://www.semanticscholar.org/paper/1b1c706983f22f8a6ea0b842e796f3f515e4482a",
+      "relevance": 2,
+      "abstract": "Image classification is a fundamental problem in computer vision, and neural networks provide an effective solution. With the advancement of quantum technology, quantum neural networks have attracted a lot of attention. However, they are only suitable for low-dimensional data and require dimensionality reduction and quantum encoding. Two image classification methods have recently emerged: one employs PCA for dimensionality reduction and angular encoding, and the other integrates QNN into a CNN to improve performance. Despite numerous algorithms, the differences between them remain unclear. This study explores these algorithms\u2019 performance in multi-class image classification and proposes an optimized hybrid quantum neural network suitable for the current environment. As the number of classes increases, research on PCA-based quantum algorithms reveals the barren plateau problem of QNN, which is not suitable for multiple classes in a hybrid setting. Our proposed model combining traditional CNN with QNN addresses QNN\u2019s multi-class training difficulties to some extent and achieves satisfactory classification results. Nevertheless, its accuracy remains below that of the top-performing CNN models. Furthermore, we investigate transfer learning in hybrid quantum neural network models and assess the performance of our models on the quantum hardware from IBM. In conclusion, quantum neural networks show promise but require further research and optimization, facing challenges ahead.",
+      "citations": 26
+    },
+    {
+      "title": "A Unified Theory of Quantum Neural Network Loss Landscapes",
+      "year": 2024,
+      "authors": "E. Anschuetz",
+      "url": "https://www.semanticscholar.org/paper/233338db5f62118f6ae0f7ea4ac22280a9748210",
+      "relevance": 2,
+      "abstract": "Classical neural networks with random initialization famously behave as Gaussian processes in the limit of many neurons, which allows one to completely characterize their training and generalization behavior. No such general understanding exists for quantum neural networks (QNNs), which -- outside of certain special cases -- are known to not behave as Gaussian processes when randomly initialized. We here prove that QNNs and their first two derivatives instead generally form what we call\"Wishart processes,\"where certain algebraic properties of the network determine the hyperparameters of the process. This Wishart process description allows us to, for the first time: give necessary and sufficient conditions for a QNN architecture to have a Gaussian process limit; calculate the full gradient distribution, generalizing previously known barren plateau results; and calculate the local minima distribution of algebraically constrained QNNs. Our unified framework suggests a certain simple operational definition for the\"trainability\"of a given QNN model using a newly introduced, experimentally accessible quantity we call the\"degrees of freedom\"of the network architecture.",
+      "citations": 17
+    },
+    {
+      "title": "Quantum Recurrent Embedding Neural Network",
+      "year": 2025,
+      "authors": "M. Jing, Erdong Huang, Xiao Shi, Shengyu Zhang, Xin Wang",
+      "url": "https://www.semanticscholar.org/paper/a151591a49fa25fce88a58aa2c82fdb63d7e5cf5",
+      "relevance": 2,
+      "abstract": "Quantum neural networks have emerged as promising quantum machine learning models, leveraging the properties of quantum systems and classical optimization to solve complex problems in physics and beyond. However, previous studies have demonstrated inevitable trainability issues that severely limit their capabilities in the large-scale regime. In this work, we propose a quantum recurrent embedding neural network (QRENN) inspired by fast-track information pathways in ResNet and general quantum circuit architectures in quantum information theory. By employing dynamical Lie algebras, we provide a rigorous proof of the trainability of QRENN circuits, demonstrating that this deep quantum neural network can avoid barren plateaus. Notably, the general QRENN architecture resists classical simulation as it encompasses powerful quantum circuits such as QSP, QSVT, and DQC1, which are widely believed to be classically intractable. Building on this theoretical foundation, we apply our QRENN to accurately classify quantum Hamiltonians and detect symmetry-protected topological phases, demonstrating its applicability in quantum supervised learning. Our results highlight the power of recurrent data embedding in quantum neural networks and the potential for scalable quantum supervised learning in predicting physical properties and solving complex problems.",
+      "citations": 5
+    },
+    {
+      "title": "Improving generalization and trainability of quantum eigensolvers via graph neural encoding",
+      "year": 2026,
+      "authors": "Jungyun Lee, Daniel K. Park",
+      "url": "https://www.semanticscholar.org/paper/2a638697448639d8b3748cae611b4f9972810421",
+      "relevance": 2,
+      "abstract": "\n Determining the ground state of a many-body Hamiltonian is a central problem across physics, chemistry, and combinatorial optimization, yet it is often classically intractable due to the exponential growth of Hilbert space with system size. Even on fault-tolerant quantum computers, quantum algorithms with convergence guarantees\u2014such as quantum phase estimation and quantum subspace methods\u2014require an initial state with sufficiently large overlap with the true ground state to be effective. Variational quantum eigensolvers (VQEs) are natural candidates for preparing such states; however, standard VQEs typically exhibit poor generalization, requiring retraining for each Hamiltonian instance, and often suffer from barren plateaus, where gradients can vanish exponentially with circuit depth and system size. To address these limitations, we propose an end-to-end representation learning framework that combines a graph autoencoder with a classical neural network to generate VQE parameters that generalize across Hamiltonian instances. By encoding interaction topology and coupling structure, the proposed model produces high-overlap initial states without instance-specific optimization. Through extensive numerical experiments on families of one- and two-local Hamiltonians, we demonstrate improved generalization and trainability, manifested as reduced test error and a significantly milder decay of gradient variance. We further show that our method substantially accelerates convergence in quantum subspace-based eigensolvers, highlighting its practical impact for downstream quantum algorithms.",
+      "citations": 0
+    },
+    {
+      "title": "Fault-tolerant quantum neural networks suppressing barren plateaus via localised cost functions and shallow parametrised architectures",
+      "year": 2026,
+      "authors": "M. G. Majumdar",
+      "url": "https://www.semanticscholar.org/paper/298968a66d8fee51ec5ef23af95f790df300710f",
+      "relevance": 2,
+      "abstract": "",
+      "citations": 0
+    },
+    {
+      "title": "Advancing Hybrid Quantum Neural Network for Alternative Current Optimal Power Flow",
+      "year": 2024,
+      "authors": "Ze Hu, Ziqing Zhu",
+      "url": "https://www.semanticscholar.org/paper/30d425de0d9b89cf76bbe24d5f6a0b0e592a440d",
+      "relevance": 2,
+      "abstract": "Alternative Current Optimal Power Flow (AC-OPF) is essential for efficient power system planning and real-time operation but remains an NP-hard and non-convex optimization problem with significant computational challenges. This paper proposes a novel hybrid classical-quantum deep learning framework for AC-OPF problem, integrating parameterized quantum circuits (PQCs) for feature extraction with classical deep learning for data encoding and decoding. The proposed framework integrates two types of residual connection structures to mitigate the ``barren plateau\"problem in quantum circuits, enhancing training stability and convergence. Furthermore, a physics-informed neural network (PINN) module is incorporated to guarantee tolerable constraint violation, improving the physical consistency and reliability of AC-OPF solutions. Experimental evaluations on multiple IEEE test systems demonstrate that the proposed approach achieves superior accuracy, generalization, and robustness to quantum noise while requiring minimal quantum resources.",
+      "citations": 1
+    },
+    {
+      "title": "Impact of barren plateaus countermeasures on the quantum neural network capacity to learn",
+      "year": 2023,
+      "authors": "J. Cybulski, ThanhVu Nguyen",
+      "url": "https://www.semanticscholar.org/paper/8dd6dc32f2ad41f9c08d3c564bbd2159a221e418",
+      "relevance": 2,
+      "abstract": "",
+      "citations": 5
+    },
+    {
+      "title": "Absence of Barren Plateaus in Quantum Convolutional Neural Networks",
+      "year": 2020,
+      "authors": "Arthur Pesah, M. Cerezo, Samson Wang, Tyler Volkoff, A. Sornborger, Patrick J. Coles",
+      "url": "https://api.semanticscholar.org/CorpusId:226254554",
+      "relevance": 2,
+      "abstract": "Quantum neural networks (QNNs) have generated excitement around the possibility of efficiently analyzing quantum data. But this excitement has been tempered by the existence of exponentially vanishing gradients, known as barren plateau landscapes, for many QNN architectures. Recently, Quantum Convolutional Neural Networks (QCNNs) have been proposed, involving a sequence of convolutional and pooling layers that reduce the number of qubits while preserving information about relevant data features. In this work we rigorously analyze the gradient scaling for the parameters in the QCNN architecture. We find that the variance of the gradient vanishes no faster than polynomially, implying that QCNNs do not exhibit barren plateaus. This provides an analytical guarantee for the trainability of randomly initialized QCNNs, which singles out QCNNs as being trainable unlike many other QNN architectures. To derive our results we introduce a novel graph-based method to analyze expectation values over Haar-distributed unitaries, which will likely be useful in other contexts. Finally, we perform numerical simulations to verify our analytical results.",
+      "citations": 381
+    },
+    {
+      "title": "Entanglement Induced Barren Plateaus",
+      "year": 2020,
+      "authors": "Carlos Ortiz Marrero, M. Kieferov\u00e1, N. Wiebe",
+      "url": "https://api.semanticscholar.org/CorpusId:226222202",
+      "relevance": 2,
+      "abstract": "We argue that an excess in entanglement between the visible and hidden units in a Quantum Neural Network can hinder learning. In particular, we show that quantum neural networks that satisfy a volume-law in the entanglement entropy will give rise to models not suitable for learning with high probability. Using arguments from quantum thermodynamics, we then show that this volume law is typical and that there exists a barren plateau in the optimization landscape due to entanglement. More precisely, we show that for any bounded objective function on the visible layers, the Lipshitz constants of the expectation value of that objective function will scale inversely with the dimension of the hidden-subsystem with high probability. We show how this can cause both gradient descent and gradient-free methods to fail. We note that similar problems can happen with quantum Boltzmann machines, although stronger assumptions on the coupling between the hidden/visible subspaces are necessary. We highlight how pretraining such generative models may provide a way to navigate these barren plateaus.",
+      "citations": 350
+    },
+    {
+      "title": "Entanglement devised barren plateau mitigation",
+      "year": 2020,
+      "authors": "T. Patti, K. Najafi, Xun Gao, S. Yelin",
+      "url": "https://api.semanticscholar.org/CorpusId:229363885",
+      "relevance": 2,
+      "abstract": "Hybrid quantum-classical variational algorithms are one of the most propitious implementations of quantum computing on near-term devices, offering classical machine learning support to quantum scale solution spaces. However, numerous studies have demonstrated that the rate at which this space grows in qubit number could preclude learning in deep quantum circuits, a phenomenon known as barren plateaus. In this work, we implicate random entanglement as the source of barren plateaus and characterize them in terms of many-body entanglement dynamics, detailing their formation as a function of system size, circuit depth, and circuit connectivity. Using this comprehension of entanglement, we propose and demonstrate a number of barren plateau ameliorating techniques, including: initial partitioning of cost function and non-cost function registers, meta-learning of low-entanglement circuit initializations, selective inter-register interaction, entanglement regularization, the addition of Langevin noise, and rotation into preferred cost function eigenbases. We find that entanglement limiting, both automatic and engineered, is a hallmark of high-accuracy training, and emphasize that as learning is an iterative organization process while barren plateaus are a consequence of randomization, they are not necessarily unavoidable or inescapable. Our work forms both a theoretical characterization and a practical toolbox; first defining barren plateaus in terms of random entanglement and then employing this expertise to strategically combat them.",
+      "citations": 184
+    },
+    {
+      "title": "Trainability of Dissipative Perceptron-Based Quantum Neural Networks",
+      "year": 2020,
+      "authors": "Kunal Sharma, M. Cerezo, L. Cincio, Patrick J. Coles",
+      "url": "https://api.semanticscholar.org/CorpusId:218889878",
+      "relevance": 2,
+      "abstract": "Several architectures have been proposed for quantum neural networks (QNNs), with the goal of efficiently performing machine learning tasks on quantum data. Rigorous scaling results are urgently needed for specific QNN constructions to understand which, if any, will be trainable at a large scale. Here, we analyze the gradient scaling (and hence the trainability) for a recently proposed architecture that we call dissipative QNNs (DQNNs), where the input qubits of each layer are discarded at the layer's output. We find that DQNNs can exhibit barren plateaus, i.e., gradients that vanish exponentially in the number of qubits. Moreover, we provide quantitative bounds on the scaling of the gradient for DQNNs under different conditions, such as different cost functions and circuit depths, and show that trainability is not always guaranteed. Our work represents the first rigorous analysis of the scalability of a perceptron-based QNN.",
+      "citations": 167
+    },
+    {
+      "title": "Higher order derivatives of quantum neural networks with barren plateaus",
+      "year": 2020,
+      "authors": "M. Cerezo, Patrick J. Coles",
+      "url": "https://api.semanticscholar.org/CorpusId:233531711",
+      "relevance": 2,
+      "abstract": "Quantum neural networks (QNNs) offer a powerful paradigm for programming near-term quantum computers and have the potential to speed up applications ranging from data science to chemistry to materials science. However, a possible obstacle to realizing that speed-up is the barren plateau (BP) phenomenon, whereby the gradient vanishes exponentially in the system size n for certain QNN architectures. The question of whether high-order derivative information such as the Hessian could help escape a BP was recently posed in the literature. Here we show that the elements of the Hessian are exponentially suppressed in a BP, so estimating the Hessian in this situation would require a precision that scales exponentially with n. Hence, Hessian-based approaches do not circumvent the exponential scaling associated with BPs. We also show the exponential suppression of higher order derivatives. Hence, BPs will impact optimization strategies that go beyond (first-order) gradient descent. In deriving our results, we prove novel, general formulas that can be used to analytically evaluate any high-order partial derivative on quantum hardware. These formulas will likely have independent interest and use for training QNNs (outside of the context of BPs).",
+      "citations": 141
+    },
+    {
+      "title": "Recent advances for quantum classifiers",
+      "year": 2021,
+      "authors": "Weikang Li, D. Deng",
+      "url": "https://api.semanticscholar.org/CorpusId:237363249",
+      "relevance": 2,
+      "abstract": "Machine learning has achieved dramatic success in a broad spectrum of applications. Its interplay with quantum physics may lead to unprecedented perspectives for both fundamental research and commercial applications, giving rise to an emergent research frontier of quantum machine learning. Along this line, quantum classifiers, which are quantum devices that aim to solve classification problems in machine learning, have attracted tremendous attention recently. In this review, we give a relatively comprehensive overview for the studies of quantum classifiers, with a focus on recent advances. First, we will review a number of quantum classification algorithms, including quantum support vector machines, quantum kernel methods, quantum decision tree classifiers, quantum nearest neighbor algorithms, and quantum annealing based classifiers. Then, we move on to introduce the variational quantum classifiers, which are essentially variational quantum circuits for classifications. We will review different architectures for constructing variational quantum classifiers and introduce the barren plateau problem, where the training of quantum classifiers might be hindered by the exponentially vanishing gradient. In addition, the vulnerability aspect of quantum classifiers in the setting of adversarial learning and the recent experimental progress on different quantum classifiers will also be discussed.",
+      "citations": 105
+    },
+    {
+      "title": "Analyzing the barren plateau phenomenon in training quantum neural network with the ZX-calculus",
+      "year": 2021,
+      "authors": "Chen Zhao, Xiao-Shan Gao",
+      "url": "https://api.semanticscholar.org/CorpusId:231786346",
+      "relevance": 2,
+      "abstract": "In this paper, we propose a general scheme to analyze the gradient vanishing phenomenon, also known as the barren plateau phenomenon, in training quantum neural networks with the ZX-calculus. More precisely, we extend the barren plateaus theorem from unitary 2-design circuits to any parameterized quantum circuits under certain reasonable assumptions. The main technical contribution of this paper is representing certain integrations as ZX-diagrams and computing them with the ZX-calculus. The method is used to analyze four concrete quantum neural networks with different structures. It is shown that, for the hardware efficient ansatz and the MPS-inspired ansatz, there exist barren plateaus, while for the QCNN ansatz and the tree tensor network ansatz, there exists no barren plateau.",
+      "citations": 96
+    },
+    {
+      "title": "Barren plateaus in quantum neural network training landscapes",
+      "year": 2018,
+      "authors": "J. McClean, S. Boixo, V. Smelyanskiy, R. Babbush, H. Neven",
+      "url": "https://api.semanticscholar.org/CorpusId:4465524",
+      "relevance": 2,
+      "abstract": "Many experimental proposals for noisy intermediate scale quantum devices involve training a parameterized quantum circuit with a classical optimization loop. Such hybrid quantum-classical algorithms are popular for applications in quantum simulation, optimization, and machine learning. Due to its simplicity and hardware efficiency, random circuits are often proposed as initial guesses for exploring the space of quantum states. We show that the exponential dimension of Hilbert space and the gradient estimation complexity make this choice unsuitable for hybrid quantum-classical algorithms run on more than a few qubits. Specifically, we show that for a wide class of reasonable parameterized quantum circuits, the probability that the gradient along any reasonable direction is non-zero to some fixed precision is exponentially small as a function of the number of qubits. We argue that this is related to the 2-design characteristic of random circuits, and that solutions to this problem must be studied. Gradient-based hybrid quantum-classical algorithms are often initialised with random, unstructured guesses. Here, the authors show that this approach will fail in the long run, due to the exponentially-small probability of finding a large enough gradient along any direction.",
+      "citations": 2690
+    },
+    {
+      "title": "Quantum Generative Training Using R\\'enyi Divergences",
+      "year": 2021,
+      "authors": "M. Kieferov\u00e1, Carlos Ortiz Marrero, N. Wiebe",
+      "url": "https://api.semanticscholar.org/CorpusId:235458330",
+      "relevance": 2,
+      "abstract": "Quantum neural networks (QNNs) are a framework for creating quantum algorithms that promises to combine the speedups of quantum computation with the widespread successes of machine learning. A major challenge in QNN development is a concentration of measure phenomenon known as a barren plateau that leads to exponentially small gradients for a range of QNNs models. In this work, we examine the assumptions that give rise to barren plateaus and show that an unbounded loss function can circumvent the existing no-go results. We propose a training algorithm that minimizes the maximal R\\'enyi divergence of order two and present techniques for gradient computation. We compute the closed form of the gradients for Unitary QNNs and Quantum Boltzmann Machines and provide sufficient conditions for the absence of barren plateaus in these models. We demonstrate our approach in two use cases: thermal state learning and Hamiltonian learning. In our numerical experiments, we observed rapid convergence of our training loss function and frequently archived a $99\\%$ average fidelity in fewer than $100$ epochs.",
+      "citations": 47
+    },
+    {
+      "title": "Toward Trainability of Quantum Neural Networks.",
+      "year": 2020,
+      "authors": "Kaining Zhang, Min-Hsiu Hsieh, Liu Liu, D. Tao",
+      "url": "https://api.semanticscholar.org/CorpusId:226306783",
+      "relevance": 2,
+      "abstract": "Quantum Neural Networks (QNNs) have been recently proposed as generalizations of classical neural networks to achieve the quantum speed-up. Despite the potential to outperform classical models, serious bottlenecks exist for training QNNs; namely, QNNs with random structures have poor trainability due to the vanishing gradient with rate exponential to the input qubit number. The vanishing gradient could seriously influence the applications of large-size QNNs. In this work, we provide a first viable solution with theoretical guarantees. Specifically, we prove that QNNs with tree tensor architectures have gradients that vanish polynomially with the qubit number. Moreover, our result holds irrespective of which encoding methods are employed. We numerically demonstrate QNNs with tree tensor structures for the application of binary classification. Simulations show faster convergent rates and better accuracy compared to QNNs with random structures.",
+      "citations": 73
+    },
+    {
+      "title": "Cost-Function-Dependent Barren Plateaus in Shallow Quantum Neural Networks",
+      "year": 2020,
+      "authors": "M. Cerezo, A. Sone, Tyler Volkoff, L. Cincio, Patrick J. Coles",
+      "url": "https://api.semanticscholar.org/CorpusId:209531778",
+      "relevance": 2,
+      "abstract": "Variational quantum algorithms (VQAs) optimize the parameters $\\boldsymbol{\\theta}$ of a quantum neural network $V(\\boldsymbol{\\theta})$ to minimize a cost function $C$. While VQAs may enable practical applications of noisy quantum computers, they are nevertheless heuristic methods with unproven scaling. Here, we rigorously prove two results, assuming $V(\\boldsymbol{\\theta})$ is a hardware-efficient ansatz composed of blocks forming local 2-designs. Our first result states that defining $C$ in terms of global observables leads to an exponentially vanishing gradient (i.e., a barren plateau) even when $V(\\boldsymbol{\\theta})$ is shallow. This implies that several VQAs in the literature must revise their proposed cost functions. On the other hand, our second result states that defining $C$ with local observables leads to at worst a polynomially vanishing gradient, so long as the depth of $V(\\boldsymbol{\\theta})$ is $\\mathcal{O}(\\log n)$. Taken together, our results establish a connection between locality and trainability. Finally, we illustrate these ideas with large-scale simulations, up to 100 qubits, of a particular VQA known as quantum autoencoders.",
+      "citations": 135
+    },
+    {
+      "title": "BEINIT: Avoiding Barren Plateaus in Variational Quantum Algorithms",
+      "year": 2022,
+      "authors": "Ankit Kulshrestha, Ilya Safro",
+      "url": "https://www.semanticscholar.org/paper/0b1eafc3916731b9843b511ed26daf334a7e7cbe",
+      "relevance": 2,
+      "abstract": "Barren plateaus are a notorious problem in the optimization of variational quantum algorithms and pose a critical obstacle in the quest for more efficient quantum machine learning algorithms. Many potential reasons for barren plateaus have been identified but few solutions have been proposed to avoid them in practice. Existing solutions are mainly focused on the initialization of unitary gate parameters without taking into account the changes induced by input data. In this paper, we propose an alternative strategy which initializes the parameters of a unitary gate by drawing from a beta distribution. The hyperparameters of the beta distribution are estimated from the data. To further prevent barren plateau during training we add a novel perturbation at every gradient descent step. Taking these ideas together, we empirically show that our proposed framework significantly reduces the possibility of a complex quantum neural network getting stuck in a barren plateau.",
+      "citations": 51
+    },
+    {
+      "title": "Quantum Error Correction with Quantum Autoencoders",
+      "year": 2022,
+      "authors": "David F. Locher, L. Cardarelli, M. Muller",
+      "url": "https://api.semanticscholar.org/CorpusId:246442221",
+      "relevance": 2,
+      "abstract": "Active quantum error correction is a central ingredient to achieve robust quantum processors. In this paper we investigate the potential of quantum machine learning for quantum error correction in a quantum memory. Specifically, we demonstrate how quantum neural networks, in the form of quantum autoencoders, can be trained to learn optimal strategies for active detection and correction of errors, including spatially correlated computational errors as well as qubit losses. We highlight that the denoising capabilities of quantum autoencoders are not limited to the protection of specific states but extend to the entire logical codespace. We also show that quantum neural networks can be used to discover new logical encodings that are optimally adapted to the underlying noise. Moreover, we find that, even in the presence of moderate noise in the quantum autoencoders themselves, they may still be successfully used to perform beneficial quantum error correction and thereby extend the lifetime of a logical qubit.",
+      "citations": 48
+    },
+    {
+      "title": "From Graphs to Qubits: A Critical Review of Quantum Graph Neural Networks",
+      "year": 2024,
+      "authors": "Andrea Ceschini, Francesco Mauro, Francesca De Falco, A. Sebastianelli, A. Verdone, A. Rosato, B. L. Saux, Massimo Panella, Paolo Gamba, S. Ullo",
+      "url": "https://api.semanticscholar.org/CorpusId:271859904",
+      "relevance": 2,
+      "abstract": "Quantum Graph Neural Networks (QGNNs) represent a novel fusion of quantum computing and Graph Neural Networks (GNNs), aimed at overcoming the computational and scalability challenges inherent in classical GNNs that are powerful tools for analyzing data with complex relational structures but suffer from limitations such as high computational complexity and over-smoothing in large-scale applications. Quantum computing, leveraging principles like superposition and entanglement, offers a pathway to enhanced computational capabilities. This paper critically reviews the state-of-the-art in QGNNs, exploring various architectures. We discuss their applications across diverse fields such as high-energy physics, molecular chemistry, finance and earth sciences, highlighting the potential for quantum advantage. Additionally, we address the significant challenges faced by QGNNs, including noise, decoherence, and scalability issues, proposing potential strategies to mitigate these problems. This comprehensive review aims to provide a foundational understanding of QGNNs, fostering further research and development in this promising interdisciplinary field.",
+      "citations": 11
+    },
+    {
+      "title": "EQuaTE: Efficient Quantum Train Engine for Dynamic Analysis via HCI-based Visual Feedback",
+      "year": 2023,
+      "authors": "Soohyun Park, Won Joon Yun, C. Park, Youn Kyu Lee, Soyi Jung, Hao Feng, Joongheon Kim",
+      "url": "https://api.semanticscholar.org/CorpusId:256662714",
+      "relevance": 2,
+      "abstract": "This paper proposes an efficient quantum train engine (EQuaTE), a novel tool for quantum machine learning software which plots gradient variances to check whether our quantum neural network (QNN) falls into local minima (called barren plateaus in QNN). This can be realized via dynamic analysis due to undetermined probabilistic qubit states. Furthermore, our EQuaTE is capable for HCI-based visual feedback because software engineers can recognize barren plateaus via visualization; and also modify QNN based on this information.",
+      "citations": 1
+    },
+    {
+      "title": "Avoiding barren plateaus with entanglement",
+      "year": 2024,
+      "authors": "Yuhan Yao, Yoshihiko Hasegawa",
+      "url": "https://api.semanticscholar.org/CorpusId:270285706",
+      "relevance": 2,
+      "abstract": "In the search for quantum advantage with near-term quantum devices, navigating the optimization landscape is significantly hampered by the barren plateaus phenomenon. This study presents a strategy to overcome this obstacle without changing the quantum circuit architecture. We propose incorporating auxiliary control qubits to shift the circuit from a unitary $2$-design to a unitary $1$-design, mitigating the prevalence of barren plateaus. We then remove these auxiliary qubits to return to the original circuit structure while preserving the unitary $1$-design properties. Our experiment suggests that the proposed structure effectively mitigates the barren plateaus phenomenon. A significant experimental finding is that the gradient of $\\theta_{1,1}$, the first parameter in the quantum circuit, displays a broader distribution as the number of qubits and layers increases. This suggests a higher probability of obtaining effective gradients. This stability is critical for the efficient training of quantum circuits, especially for larger and more complex systems. The results of this study represent a significant advance in the optimization of quantum circuits and offer a promising avenue for the scalable and practical implementation of quantum computing technologies. This approach opens up new opportunities in quantum learning and other applications that require robust quantum computing power.",
+      "citations": 9
+    },
+    {
+      "title": "Quantum neural network with ensemble learning to mitigate barren plateaus and cost function concentration",
+      "year": 2024,
+      "authors": "Lucas Friedrich, Jonas Maziero",
+      "url": "https://api.semanticscholar.org/CorpusId:267617129",
+      "relevance": 2,
+      "abstract": "The rapid development of quantum computers promises transformative impacts across diverse fields of science and technology. Quantum neural networks (QNNs), as a forefront application, hold substantial potential. Despite the multitude of proposed models in the literature, persistent challenges, notably the vanishing gradient (VG) and cost function concentration (CFC) problems, impede their widespread success. In this study, we introduce a novel approach to quantum neural network construction, specifically addressing the issues of VG and CFC. Our methodology employs ensemble learning, advocating for the simultaneous deployment of multiple quantum circuits with a depth equal to \\(1\\), a departure from the conventional use of a single quantum circuit with depth \\(L\\). We assess the efficacy of our proposed model through a comparative analysis with a conventionally constructed QNN. The evaluation unfolds in the context of a classification problem, yielding valuable insights into the potential advantages of our innovative approach.",
+      "citations": 6
+    },
+    {
+      "title": "Quantum Supervised Learning",
+      "year": 2024,
+      "authors": "A. Macaluso",
+      "url": "https://api.semanticscholar.org/CorpusId:271355354",
+      "relevance": 2,
+      "abstract": "Recent advancements in quantum computing have positioned it as a prospective solution for tackling intricate computational challenges, with supervised learning emerging as a particularly promising domain for its application. Despite this potential, the field of quantum machine learning is still in its early stages, and there persists a level of skepticism regarding a possible near-term quantum advantage. This paper aims to provide a classical perspective on current quantum algorithms for supervised learning, effectively bridging traditional machine learning principles with advancements in quantum machine learning. Specifically, this study charts a research trajectory that diverges from the predominant focus of quantum machine learning literature, originating from the prerequisites of classical methodologies and elucidating the potential impact of quantum approaches. Through this exploration, our objective is to deepen the understanding of the convergence between classical and quantum methods, thereby laying the groundwork for future advancements in both domains and fostering the involvement of classical practitioners in the field of quantum machine learning.",
+      "citations": 11
+    },
+    {
+      "title": "Quantum Topological Graph Neural Networks for Detecting Complex Fraud Patterns",
+      "year": 2025,
+      "authors": "Mohammad Doost, Mohammad Manthouri",
+      "url": "https://api.semanticscholar.org/CorpusId:283466381",
+      "relevance": 2,
+      "abstract": "We propose a novel QTGNN framework for detecting fraudulent transactions in large-scale financial networks. By integrating quantum embedding, variational graph convolutions, and topological data analysis, QTGNN captures complex transaction dynamics and structural anomalies indicative of fraud. The methodology includes quantum data embedding with entanglement enhancement, variational quantum graph convolutions with non-linear dynamics, extraction of higher-order topological invariants, hybrid quantum-classical anomaly learning with adaptive optimization, and interpretable decision-making via topological attribution. Rigorous convergence guarantees ensure stable training on noisy intermediate-scale quantum (NISQ) devices, while stability of topological signatures provides robust fraud detection. Optimized for NISQ hardware with circuit simplifications and graph sampling, the framework scales to large transaction networks. Simulations on financial datasets, such as PaySim and Elliptic, benchmark QTGNN against classical and quantum baselines, using metrics like ROC-AUC, precision, and false positive rate. An ablation study evaluates the contributions of quantum embeddings, topological features, non-linear channels, and hybrid learning. QTGNN offers a theoretically sound, interpretable, and practical solution for financial fraud detection, bridging quantum machine learning, graph theory, and topological analysis.",
+      "citations": 1
+    },
+    {
+      "title": "QFFN-BERT: An Empirical Study of Depth, Performance, and Data Efficiency in Hybrid Quantum-Classical Transformers",
+      "year": 2025,
+      "authors": "Pilsung Kang",
+      "url": "https://api.semanticscholar.org/CorpusId:280082196",
+      "relevance": 2,
+      "abstract": "Parameterized quantum circuits (PQCs) have recently emerged as promising components for enhancing the expressibility of neural architectures. In this work, we introduce QFFN-BERT, a hybrid quantum-classical transformer where the feedforward network (FFN) modules of a compact BERT variant are replaced by PQC-based layers. This design is motivated by the dominant parameter contribution of FFNs, which account for approximately two-thirds of the parameters within standard Transformer encoder blocks. While prior studies have primarily integrated PQCs into self-attention modules, our work focuses on the FFN and systematically investigates the trade-offs between PQC depth, expressibility, and trainability. Our final PQC architecture incorporates a residual connection, both $R_Y$ and $R_Z$ rotations, and an alternating entanglement strategy to ensure stable training and high expressibility. Our experiments, conducted on a classical simulator, on the SST-2 and DBpedia benchmarks demonstrate two key findings. First, a carefully configured QFFN-BERT achieves up to 102.0% of the baseline accuracy, surpassing its classical counterpart in a full-data setting while reducing FFN-specific parameters by over 99%. Second, our model exhibits a consistent and competitive edge in few-shot learning scenarios, confirming its potential for superior data efficiency. These results, supported by an ablation study on a non-optimized PQC that failed to learn, confirm that PQCs can serve as powerful and parameter-efficient alternatives to classical FFNs when co-designed with foundational deep learning principles.",
+      "citations": 0
+    },
+    {
+      "title": "Enhancing variational quantum circuit training: an improved neural network approach for barren plateau mitigation",
+      "year": 2024,
+      "authors": "Zhehao Yi, Yanying Liang, Haozhen Situ",
+      "url": "https://www.semanticscholar.org/paper/eca059c21ff02040fc17134ac2773294981670f5",
+      "relevance": 2,
+      "abstract": "Combining classical optimization with parameterized quantum circuit evaluation, variational quantum algorithms (VQAs) are among the most promising algorithms in near-term quantum computing. However, the training of variational quantum circuits (VQCs) is susceptible to a phenomenon known as barren plateaus (BPs). Various approaches have been proposed to mitigate this issue, such as using neural networks to generate VQC parameters. In this paper, we improve the NN-based BP mitigation approach by refining the neural network architecture and extend its applicability to a more generalized scenario that includes random quantum inputs and VQC structures. We evaluate the effectiveness of the approach by comparing the convergence speed before and after it is utilized. Furthermore, we give an explanation for the effectiveness of the NN-based BP mitigation approach by utilizing a loss landscape visualization technique and the expressibility metric of VQC. The smoothness of the loss landscape offers an intuitive insight into the approach\u2019s utility, while the reduction in expressibility accounts for the enhanced trainability. Our research highlights the universal applicability of the NN-based BP mitigation approach, underscoring its potential to drive progress in the development of VQAs across diverse domains.",
+      "citations": 7
+    },
+    {
+      "title": "A Distributed Quantum Neural Network for Network Anomaly Detection",
+      "year": 2026,
+      "authors": "Moe Hdaib, Sutharshan Rajasegarar, S. Loke",
+      "url": "https://www.semanticscholar.org/paper/26e54f79c0b8ac477d5372530fdb5931448ea03c",
+      "relevance": 2,
+      "abstract": "The scalability of quantum neural networks (QNNs) is limited by hardware constraints such as restricted qubit connectivity and circuit depth. This paper presents a distributed quantum neural network (DQNN) architecture that enables multi-processor quantum computation through teleportationbased distributed CNOT gates. The proposed framework allows variational circuits to operate seamlessly across nodes using ancilla-mediated entanglement and pre-shared Bell pairs, without requiring direct physical links. We demonstrate that this distributed design inherently mitigates the barren plateau problem by reducing circuit depth per node, localizing cost functions, and introducing structured inter-node entanglement, thereby improving gradient trainability. Experiments on network traffic anomaly detection show that the DQNN achieves competitive classification accuracy while efficiently managing resource tradeoffs, including a 33 % ancilla overhead, minimal communication cost (2 bits per distributed CNOT), and distribution of up to 50 % of CNOT operations. These results establish a scalable and trainable architecture for near-term quantum machine learning.",
+      "citations": 0
+    },
+    {
+      "title": "Can Classical Initialization Help Variational Quantum Circuits Escape the Barren Plateau?",
+      "year": 2025,
+      "authors": "Yifeng Peng, Xinyi Li, Zhemin Zhang, Samuel Yen-Chi Chen, Zhiding Liang, Ying Wang",
+      "url": "https://www.semanticscholar.org/paper/0c26eb2d4c03694a853e7e003b9e2f25b0d923e9",
+      "relevance": 2,
+      "abstract": "Variational quantum algorithms (VQAs) have emerged as a leading paradigm in near-term quantum computing, yet their performance can be hindered by the so-called barren plateau problem, where gradients vanish exponentially with system size or circuit depth. While most existing VQA research employs simple Gaussian or zero-initialization schemes, classical deep learning has long benefited from sophisticated weight initialization strategies such as Xavier, He, and orthogonal initialization to improve gradient flow and expedite convergence. In this work, we systematically investigate whether these classical methods can mitigate barren plateaus in quantum circuits. We first review each initialization's theoretical grounding and outline how to adapt the notions from neural networks to VQAs. We then conduct extensive numerical experiments on various circuit architectures and optimization tasks. Our findings indicate that while the initial heuristics, inspired by classical initialization, yield moderate improvements in certain experiments, their overall benefits remain marginal. By outlining a preliminary exploration plan in this paper, we aim to offer the research community a broader perspective and accessible demonstrations. Furthermore, we propose future research directions that may be further refined by leveraging the insights gained from this work.",
+      "citations": 1
+    },
+    {
+      "title": "Neural-network Generated Quantum State Can Mitigate the Barren Plateau in Variational Quantum Circuits",
+      "year": 2024,
+      "authors": "Zhehao Yi, R. Bhadani",
+      "url": "https://www.semanticscholar.org/paper/ccc99b073a1284e4cf3dda77a6a591a7665b3678",
+      "relevance": 2,
+      "abstract": "We find that using neural networks to generate quantum states can effectively alleviate the barren plateau phenomenon present in random variational quantum circuits.",
+      "citations": 2
+    },
+    {
+      "title": "Bandwidth Enables Generalization in Quantum Kernel Models",
+      "year": 2022,
+      "authors": "Abdulkadir Canatar, E. Peters, Cengiz Pehlevan, Stefan M. Wild, Ruslan Shaydulin",
+      "url": "https://api.semanticscholar.org/CorpusId:249642463",
+      "relevance": 1,
+      "abstract": "Quantum computers are known to provide speedups over classical state-of-the-art machine learning methods in some specialized settings. For example, quantum kernel methods have been shown to provide an exponential speedup on a learning version of the discrete logarithm problem. Understanding the generalization of quantum models is essential to realizing similar speedups on problems of practical interest. Recent results demonstrate that generalization is hindered by the exponential size of the quantum feature space. Although these results suggest that quantum models cannot generalize when the number of qubits is large, in this paper we show that these results rely on overly restrictive assumptions. We consider a wider class of models by varying a hyperparameter that we call quantum kernel bandwidth. We analyze the large-qubit limit and provide explicit formulas for the generalization of a quantum model that can be solved in closed form. Specifically, we show that changing the value of the bandwidth can take a model from provably not being able to generalize to any target function to good generalization for well-aligned targets. Our analysis shows how the bandwidth controls the spectrum of the kernel integral operator and thereby the inductive bias of the model. We demonstrate empirically that our theory correctly predicts how varying the bandwidth affects generalization of quantum models on challenging datasets, including those far outside our theoretical assumptions. We discuss the implications of our results for quantum advantage in machine learning.",
+      "citations": 57
+    },
+    {
+      "title": "The role of data embedding in equivariant quantum convolutional neural networks",
+      "year": 2023,
+      "authors": "Sreetama Das, Stefano Martina, Filippo Caruso",
+      "url": "https://api.semanticscholar.org/CorpusId:266374629",
+      "relevance": 1,
+      "abstract": "Geometric deep learning refers to the scenario in which the symmetries of a dataset are used to constrain the parameter space of a neural network and thus, improve their trainability and generalization. Recently, this idea has been incorporated into the field of quantum machine learning, which has given rise to equivariant quantum neural networks (EQNNs). In this work, we investigate the role of classical-to-quantum embedding on the performance of equivariant quantum convolutional neural networks (EQCNNs) for the classification of images. We discuss the connection between the data embedding method and the resulting representation of a symmetry group and analyze how changing representation affects the expressibility of an EQCNN. We numerically compare the classification accuracy of EQCNNs with three different basis-permuted amplitude embeddings to the one obtained from a non-equivariant quantum convolutional neural network (QCNN). Our results show a clear dependence of classification accuracy on the underlying embedding, especially for initial training iterations. The improvement in classification accuracy of EQCNN over non-equivariant QCNN may be present or absent depending on the particular embedding and dataset used. The noisy simulation using simple noise models shows that certain EQCNNs are more robust to noise than non-equivariant QCNNs. It is expected that the results of this work can be useful to the community for a better understanding of the importance of data embedding choice in the context of geometric quantum machine learning.",
+      "citations": 16
+    },
+    {
+      "title": "Cost function dependent barren plateaus in shallow parametrized quantum circuits",
+      "year": 2021,
+      "authors": "M. Cerezo, A. Sone, Tyler Volkoff, L. Cincio, Patrick J. Coles",
+      "url": "https://api.semanticscholar.org/CorpusId:232298392",
+      "relevance": 1,
+      "abstract": "Variational quantum algorithms (VQAs) optimize the parameters \u03b8 of a parametrized quantum circuit V(\u03b8) to minimize a cost function C. While VQAs may enable practical applications of noisy quantum computers, they are nevertheless heuristic methods with unproven scaling. Here, we rigorously prove two results, assuming V(\u03b8) is an alternating layered ansatz composed of blocks forming local 2-designs. Our first result states that defining C in terms of global observables leads to exponentially vanishing gradients (i.e., barren plateaus) even when V(\u03b8) is shallow. Hence, several VQAs in the literature must revise their proposed costs. On the other hand, our second result states that defining C with local observables leads to at worst a polynomially vanishing gradient, so long as the depth of V(\u03b8) is O(logn)\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$${\\mathcal{O}}(\\mathrm{log}\\,n)$$\\end{document}. Our results establish a connection between locality and trainability. We illustrate these ideas with large-scale simulations, up to 100 qubits, of a quantum autoencoder implementation. Parametrised quantum circuits are a promising hybrid classical-quantum approach, but rigorous results on their effective capabilities are rare. Here, the authors explore the feasibility of training depending on the type of cost functions, showing that local ones are less prone to the barren plateau problem.",
+      "citations": 1223
+    },
+    {
+      "title": "Connecting ansatz expressibility to gradient magnitudes and barren plateaus",
+      "year": 2021,
+      "authors": "Zoe Holmes, Kunal Sharma, M. Cerezo, Patrick J. Coles",
+      "url": "https://www.semanticscholar.org/paper/fed98c8899e42cf86d914b7953ab373e950449b3",
+      "relevance": 1,
+      "abstract": "Parameterized quantum circuits serve as ans\\\"{a}tze for solving variational problems and provide a flexible paradigm for programming near-term quantum computers. Ideally, such ans\\\"{a}tze should be highly expressive so that a close approximation of the desired solution can be accessed. On the other hand, the ansatz must also have sufficiently large gradients to allow for training. Here, we derive a fundamental relationship between these two essential properties: expressibility and trainability. This is done by extending the well established barren plateau phenomenon, which holds for ans\\\"{a}tze that form exact 2-designs, to arbitrary ans\\\"{a}tze. Specifically, we calculate the variance in the cost gradient in terms of the expressibility of the ansatz, as measured by its distance from being a 2-design. Our resulting bounds indicate that highly expressive ans\\\"{a}tze exhibit flatter cost landscapes and therefore will be harder to train. Furthermore, we provide numerics illustrating the effect of expressiblity on gradient scalings, and we discuss the implications for designing strategies to avoid barren plateaus.",
+      "citations": 622
+    },
+    {
+      "title": "Escaping from the Barren Plateau via Gaussian Initializations in Deep Variational Quantum Circuits",
+      "year": 2022,
+      "authors": "Kaining Zhang, Liu Liu, Min-Hsiu Hsieh, Dacheng Tao",
+      "url": "https://api.semanticscholar.org/CorpusId:254221243",
+      "relevance": 1,
+      "abstract": "Variational quantum circuits have been widely employed in quantum simulation and quantum machine learning in recent years. However, quantum circuits with random structures have poor trainability due to the exponentially vanishing gradient with respect to the circuit depth and the qubit number. This result leads to a general standpoint that deep quantum circuits would not be feasible for practical tasks. In this work, we propose an initialization strategy with theoretical guarantees for the vanishing gradient problem in general deep quantum circuits. Specifically, we prove that under proper Gaussian initialized parameters, the norm of the gradient decays at most polynomially when the qubit number and the circuit depth increase. Our theoretical results hold for both the local and the global observable cases, where the latter was believed to have vanishing gradients even for very shallow circuits. Experimental results verify our theoretical findings in the quantum simulation and quantum chemistry.",
+      "citations": 116
+    },
+    {
+      "title": "Noise-induced barren plateaus in variational quantum algorithms",
+      "year": 2020,
+      "authors": "Samson Wang, Enrico Fontana, M. Cerezo, Kunal Sharma, A. Sone, L. Cincio, Patrick J. Coles",
+      "url": "https://www.semanticscholar.org/paper/a7da6cf3820d94f250349d658a09004a36b14ff0",
+      "relevance": 1,
+      "abstract": "Variational Quantum Algorithms (VQAs) may be a path to quantum advantage on Noisy Intermediate-Scale Quantum (NISQ) computers. A natural question is whether noise on NISQ devices places fundamental limitations on VQA performance. We rigorously prove a serious limitation for noisy VQAs, in that the noise causes the training landscape to have a barren plateau (i.e., vanishing gradient). Specifically, for the local Pauli noise considered, we prove that the gradient vanishes exponentially in the number of qubits n if the depth of the ansatz grows linearly with n. These noise-induced barren plateaus (NIBPs) are conceptually different from noise-free barren plateaus, which are linked to random parameter initialization. Our result is formulated for a generic ansatz that includes as special cases the Quantum Alternating Operator Ansatz and the Unitary Coupled Cluster Ansatz, among others. For the former, our numerical heuristics demonstrate the NIBP phenomenon for a realistic hardware noise model. Variational quantum algorithms (VQAs) are a leading candidate for useful applications of near-term quantum computing, but limitations due to unavoidable noise have not been clearly characterized. Here, the authors prove that local Pauli noise can cause vanishing gradients rendering VQAs untrainable.",
+      "citations": 927
+    },
+    {
+      "title": "Large gradients via correlation in random parameterized quantum circuits",
+      "year": 2020,
+      "authors": "T. Volkoff, Patrick J. Coles",
+      "url": "https://www.semanticscholar.org/paper/5309d1da6182e976fe616319da0a64b4bc690e9e",
+      "relevance": 1,
+      "abstract": "Scaling of variational quantum algorithms to large problem sizes requires efficient optimization of random parameterized quantum circuits. For such circuits with uncorrelated parameters, the presence of exponentially vanishing gradients in cost function landscapes is an obstacle to optimization by gradient descent methods. In this work, we prove that reducing the dimensionality of the parameter space by utilizing circuit modules containing spatially or temporally correlated gate layers can allow one to circumvent the vanishing gradient phenomenon. Examples are drawn from random separable circuits and asymptotically optimal variational versions of Grover\u2019s algorithm based on the quantum alternating operator ansatz. In the latter scenario, our bounds on cost function variation imply a transition between vanishing gradients and efficient trainability as the number of layers is increased toward O(2n/2) , the optimal oracle complexity of quantum unstructured search.",
+      "citations": 161
+    },
+    {
+      "title": "Avoiding Barren Plateaus with Classical Deep Neural Networks",
+      "year": 2022,
+      "authors": "Lucas Friedrich, J. Maziero",
+      "url": "https://www.semanticscholar.org/paper/261658e3345447d2cee2e0e83cc28b78ea52993e",
+      "relevance": 1,
+      "abstract": "Variational quantum algorithms (VQAs) are among the most promising algorithms in the era of Noisy Intermediate Scale Quantum Devices. Such algorithms are constructed using a parameterization U($\\pmb{\\theta}$) with a classical optimizer that updates the parameters $\\pmb{\\theta}$ in order to minimize a cost function $C$. For this task, in general the gradient descent method, or one of its variants, is used. This is a method where the circuit parameters are updated iteratively using the cost function gradient. However, several works in the literature have shown that this method suffers from a phenomenon known as the Barren Plateaus (BP). In this work, we propose a new method to mitigate BPs. In general, the parameters $\\pmb{\\theta}$ used in the parameterization $U$ are randomly generated. In our method they are obtained from a classical neural network (CNN). We show that this method, besides to being able to mitigate BPs during startup, is also able to mitigate the effect of BPs during the VQA training. In addition, we also show how this method behaves for different CNN architectures.",
+      "citations": 56
+    },
+    {
+      "title": "Geometric Optimization on Lie Groups: A Lie-Theoretic Explanation of Barren Plateau Mitigation for Variational Quantum Algorithms",
+      "year": 2025,
+      "authors": "Zhehao Yi, R. Bhadani",
+      "url": "https://api.semanticscholar.org/CorpusId:283458552",
+      "relevance": 1,
+      "abstract": "Barren plateaus, which means the training gradients become extremely small, pose a major challenge in optimizing parameterized quantum circuits, often making the learning process impractically slow or stall. This work shows why using neural networks to generate quantum circuit parameters helps overcome this difficulty. We introduce a geometric viewpoint that describes how the parameters produced by neural networks evolve during training. Our analysis shows that these parameters follow smooth and efficient paths that avoid the flat regions in the training that cause barren plateaus. This provides a computational explanation for the improved trainability observed in recent neural network-assisted quantum learning methods. Overall, our findings bridge ideas from quantum machine learning and computational optimization, offering new insight into the structure of quantum models and guiding future approaches for designing more trainable quantum circuits or parameter initialization.",
+      "citations": 1
+    },
+    {
+      "title": "Quantum Neural Network Software Testing, Analysis, and Code Optimization for Advanced IoT Systems: Design, Implementation, and Visualization",
+      "year": 2024,
+      "authors": "Soohyun Park, Joongheon Kim",
+      "url": "https://api.semanticscholar.org/CorpusId:267069476",
+      "relevance": 1,
+      "abstract": "This paper introduces a novel run-time testing, analysis, and code optimization (TACO) method for quantum neural network (QNN) software in advanced Internet-of-Things (IoT) systems, which visually presents the learning performance that is called a barren plateau. The run-time visual presentation of barren plateau situations is helpful for real-time quantum-based advanced IoT software testing because the software engineers can easily be aware of the training performances of QNN. Moreover, this tool is obviously useful for software engineers because it can intuitively guide them in designing and implementing high-accurate QNN-based advanced IoT software even if they are not familiar with quantum mechanics and quantum computing. Lastly, the proposed TACO is also capable of visual feedback because software engineers visually identify the barren plateau situations using tensorboard. In turn, they are also able to modify QNN structures based on the information.",
+      "citations": 1
+    },
+    {
+      "title": "Qracle: A Graph-Neural-Network-Based Parameter Initializer for Variational Quantum Eigensolvers",
+      "year": 2025,
+      "authors": "Chi Zhang, Lei Jiang, Fangjing Chen",
+      "url": "https://www.semanticscholar.org/paper/6aa9f46343e9bf2fcbd114037ef2ba0fa06cdc99",
+      "relevance": 1,
+      "abstract": "Variational Quantum Eigensolvers (VQEs) are a leading class of noisy intermediate-scale quantum (NISQ) algorithms with broad applications in quantum physics and quantum chemistry. However, as system size increases, VQE optimization is increasingly hindered by the barren plateau phenomenon, where gradients vanish and the loss function becomes trapped in local minima. While machine learning-based parameter initialization methods have been proposed to address this challenge, they often show limited effectiveness in complex VQE problems. This is primarily due to their inadequate ability to model the intricate correlations embedded in the Hamiltonian structure and the associated ansatz circuits. In this paper, we propose Qracle, a graph neural network (GNN)-based parameter initializer for VQEs. Qracle systematically encodes both the Hamiltonian and the associated ansatz circuit into a unified graph representation and leverages a GNN to learn a mapping from VQE problem graphs to optimized ansatz parameters. Compared to state-of-the-art initialization techniques, Qracle achieves a reduction in initial loss of up to 10.86, accelerates convergence by decreasing optimization steps by up to 64.42%, and improves final performance with up to a 26.43% reduction in Symmetric Mean Absolute Percentage Error (SMAPE), with all results averaged over the validation set of each respective application. The source code is publicly available at https://github.com/chizhang24/Qracle.",
+      "citations": 3
+    },
+    {
+      "title": "Quantum Neural Network in Architectures, Learning Mechanisms, and Emerging Applications Across Domains: A Review",
+      "year": 2025,
+      "authors": "Muhamad Akrom",
+      "url": "https://www.semanticscholar.org/paper/c4d12aa6eed6ad5a0f6388b4d9efcf054221219d",
+      "relevance": 1,
+      "abstract": "Quantum Neural Networks (QNNs) represent a novel computational paradigm that merges the principles of quantum computing with the architecture of artificial neural networks. Through the quantum phenomena of superposition, entanglement, and interference, QNNs enable parallel computation in high-dimensional Hilbert spaces, offering the potential to surpass the representational limits of classical models. This review provides a comprehensive overview of the theoretical foundations and architectures of QNNs, including Quantum Perceptrons, Variational Quantum Circuits (VQCs), Quantum Convolutional Neural Networks (QCNNs), and Quantum Recurrent Neural Networks (QRNNs). Furthermore, it discusses hybrid quantum\u2013classical training mechanisms and key challenges such as barren plateaus, decoherence, and sampling complexity. The review also highlights recent applications of QNNs in medical diagnostics, materials science, and financial forecasting, demonstrating their potential to accelerate computation and improve predictive accuracy. Finally, future research directions are discussed in relation to computational efficiency, model interpretability, and integration with next-generation quantum hardware.",
+      "citations": 0
+    },
+    {
+      "title": "QSeer: A Quantum-Inspired Graph Neural Network for Parameter Initialization in Quantum Approximate Optimization Algorithm Circuits",
+      "year": 2025,
+      "authors": "Lei Jiang, Chi Zhang, Fangjing Chen",
+      "url": "https://www.semanticscholar.org/paper/0fa53e4387f05cb51c8173b3218c144bce2b1c07",
+      "relevance": 1,
+      "abstract": "To mitigate the barren plateau problem, effective parameter initialization is crucial for optimizing the Quantum Approximate Optimization Algorithm (QAOA) in the near-term Noisy Intermediate-Scale Quantum (NISQ) era. Prior physicsdriven approaches leveraged the optimal parameter concentration phenomenon, utilizing medium values of previously optimized QAOA parameters stored in databases as initialization for new graphs. However, this medium-value-based strategy lacks generalization capability. Conversely, prior computer-sciencebased approaches employed graph neural networks (GNNs) trained on previously optimized QAOA parameters to predict initialization values for new graphs. However, these approaches neglect key physics-informed QAOA principles, such as parameter concentration, symmetry, and adiabatic evolution, resulting in suboptimal parameter predictions and limited performance improvements. Furthermore, no existing GNN-based methods support parameter initialization for QAOA circuits with variable depths or for solving weighted Max-Cut problems. This paper introduces QSeer, a quantum-inspired GNN designed for accurate QAOA parameter prediction. First, we propose a quantum-inspired input data normalization technique to ensure a consistent input scale and mitigate the influence of varying feature magnitudes. By integrating key physics-informed QAOA principles, such as parameter concentration, symmetry, and adiabatic evolution, this approach enhances QSeer's training stability and convergence. Second, we encode Max-Cut edge weights as edge attributes in QSeer's GNN framework, enabling parameter prediction for QAOA circuits solving both unweighted and weighted Max-Cut problems. Third, we incorporate the circuit depth $p$ as an input, allowing QSeer to generalize parameter predictions across different QAOA depths. Compared to prior physics- and computer-science-driven methods, QSeer improves the initial approximation ratio and convergence speed of QAOA circuits across diverse graphs by $6 \\% \\sim 68 \\%$ and $5 \\times \\sim 10 \\times$, respectively. The source code is publicly available at https://github.com/UnchartedRLab/QSeer.",
+      "citations": 1
+    },
+    {
+      "title": "Avoiding Barren Plateaus Using Classical Shadows",
+      "year": 2022,
+      "authors": "Stefan H. Sack, R. Medina, A. Michailidis, R. Kueng, Maksym Serbyn",
+      "url": "https://www.semanticscholar.org/paper/0fac38e32c158ccdb8aec67e0331333ae0d72a02",
+      "relevance": 1,
+      "abstract": "Variational quantum algorithms are promising algorithms for achieving quantum advantage on near-term devices. The quantum hardware is used to implement a variational wave function and measure observables, whereas the classical computer is used to store and update the variational parameters. The optimization landscape of expressive variational ans\u00e4tze is however dominated by large regions in parameter space, known as barren plateaus, with vanishing gradients, which prevents e\ufb03cient optimization. In this work we propose a general algorithm to avoid barren plateaus in the initialization and throughout the optimization. To this end we de\ufb01ne a notion of weak barren plateaus (WBPs) based on the entropies of local reduced density matrices. The presence of WBPs can be e\ufb03ciently quanti\ufb01ed using recently introduced shadow tomography of the quantum state with a classical computer. We demonstrate that avoidance of WBPs su\ufb03ces to ensure sizable gradients in the initialization. In addition, we demonstrate that decreasing the gradient step size, guided by the entropies allows WBPs to be avoided during the optimization process. This paves the way for e\ufb03cient barren plateau-free optimization on near-term devices. (LW). LW encounters a WBP for both learning rates that we consider (green star). In contrast, SA avoids the WBP for both learning rates. Good performance and further convergence in the local minimum is only achieved through a smaller learning rate of \u03b7 = 0.01. We use a system size of N = 10 and a random circuit from Eq. (1) with circuit depth p = 100. Data is averaged over 100 random instances.",
+      "citations": 143
+    },
+    {
+      "title": "Barren Plateaus Preclude Learning Scramblers.",
+      "year": 2020,
+      "authors": "Zoe Holmes, A. Arrasmith, B. Yan, Patrick J. Coles, A. Albrecht, A. Sornborger",
+      "url": "https://www.semanticscholar.org/paper/43144d59c7ff176f3eb8f6dc77ed9f3e9904d8c3",
+      "relevance": 1,
+      "abstract": "Scrambling processes, which rapidly spread entanglement through many-body quantum systems, are difficult to investigate using standard techniques, but are relevant to quantum chaos and thermalization. In this Letter, we ask if quantum machine learning (QML) could be used to investigate such processes. We prove a no-go theorem for learning an unknown scrambling process with QML, showing that it is highly probable for any variational Ansatz to have a barren plateau landscape, i.e., cost gradients that vanish exponentially in the system size. This implies that the required resources scale exponentially even when strategies to avoid such scaling (e.g., from Ansatz-based barren plateaus or no-free-lunch theorems) are employed. Furthermore, we numerically and analytically extend our results to approximate scramblers. Hence, our work places generic limits on the learnability of unitaries when lacking prior information.",
+      "citations": 129
+    },
+    {
+      "title": "Training deep quantum neural networks",
+      "year": 2019,
+      "authors": "Kerstin Beer, D. Bondarenko, Terry Farrelly, T. Osborne, Robert Salzmann, D. Scheiermann, Ramona Wolf",
+      "url": "https://api.semanticscholar.org/CorpusId:211067165",
+      "relevance": 1,
+      "abstract": "Neural networks enjoy widespread success in both research and industry and, with the advent of quantum technology, it is a crucial challenge to design quantum neural networks for fully quantum learning tasks. Here we propose a truly quantum analogue of classical neurons, which form quantum feedforward neural networks capable of universal quantum computation. We describe the efficient training of these networks using the fidelity as a cost function, providing both classical and efficient quantum implementations. Our method allows for fast optimisation with reduced memory requirements: the number of qudits required scales with only the width, allowing deep-network optimisation. We benchmark our proposal for the quantum task of learning an unknown unitary and find remarkable generalisation behaviour and a striking robustness to noisy training data. It is hard to design quantum neural networks able to work with quantum data. Here, the authors propose a noise-robust architecture for a feedforward quantum neural network, with qudits as neurons and arbitrary unitary operations as perceptrons, whose training procedure is efficient in the number of layers.",
+      "citations": 723
+    },
+    {
+      "title": "Exponentially Many Local Minima in Quantum Neural Networks",
+      "year": 2021,
+      "authors": "Xuchen You, Xiaodi Wu",
+      "url": "https://www.semanticscholar.org/paper/5545719f424bcbabdeb0ee388a7878e4ffc5809d",
+      "relevance": 1,
+      "abstract": "Quantum Neural Networks (QNNs), or the so-called variational quantum circuits, are important quantum applications both because of their similar promises as classical neural networks and because of the feasibility of their implementation on near-term intermediate-size noisy quantum machines (NISQ). However, the training task of QNNs is challenging and much less understood. We conduct a quantitative investigation on the landscape of loss functions of QNNs and identify a class of simple yet extremely hard QNN instances for training. Specifically, we show for typical under-parameterized QNNs, there exists a dataset that induces a loss function with the number of spurious local minima depending exponentially on the number of parameters. Moreover, we show the optimality of our construction by providing an almost matching upper bound on such dependence. While local minima in classical neural networks are due to non-linear activations, in quantum neural networks local minima appear as a result of the quantum interference phenomenon. Finally, we empirically confirm that our constructions can indeed be hard instances in practice with typical gradient-based optimizers, which demonstrates the practical value of our findings.",
+      "citations": 70
+    },
+    {
+      "title": "Design and analysis of quantum machine learning: a survey",
+      "year": 2024,
+      "authors": "Linshu Chen, Tao Li, Yuxiang Chen, Xiaoyan Chen, Marcin Wo\u017aniak, Neal N. Xiong, Wei Liang",
+      "url": "https://api.semanticscholar.org/CorpusId:268835519",
+      "relevance": 1,
+      "abstract": "Machine learning has demonstrated tremendous potential in solving real-world problems. However, with the exponential growth of data amount and the increase of model complexity, the processing efficiency of machine learning declines rapidly. Meanwhile, the emergence of quantum computing has given rise to quantum machine learning, which relies on superposition and entanglement, exhibiting exponential optimisation compared to traditional machine learning. Therefore, in the paper, we survey the basic concepts, algorithms, applications and challenges of quantum machine learning. Concretely, we first review the basic concepts of quantum computing including qubit, quantum gates, quantum entanglement, etc.. Secondly, we in-depth discuss 5 quantum machine learning algorithms of quantum support vector machine, quantum neural network, quantum k-nearest neighbour, quantum principal component analysis and quantum k-Means algorithm. Thirdly, we conduct discussions on the applications of quantum machine learning in image recognition, drug efficacy prediction and cybersecurity. Finally, we summarise the challenges of quantum machine learning consisting of algorithm design, hardware limitations, data encoding, quantum landscapes, noise and decoherence.",
+      "citations": 26
+    },
+    {
+      "title": "Hyperparameter importance and optimization of quantum neural networks across small datasets",
+      "year": 2023,
+      "authors": "Charles Moussa, Yash J. Patel, V. Dunjko, Thomas B\u00e4ck, Jan N. van Rijn",
+      "url": "https://api.semanticscholar.org/CorpusId:261440293",
+      "relevance": 1,
+      "abstract": "As restricted quantum computers become available, research focuses on finding meaningful applications. For example, in quantum machine learning, a special type of quantum circuit called a quantum neural network is one of the most investigated approaches. However, we know little about suitable circuit architectures or important model hyperparameters for a given task. In this work, we apply the functional ANOVA framework to the quantum neural network architectures to analyze which of the quantum machine learning hyperparameters are most influential for their predictive performance. We restrict our study to 7 open-source datasets from the OpenML-CC18 classification benchmark, which are small enough for simulations on quantum hardware with fewer than 20 qubits. Using this framework, three main levels of importance were identified, confirming expected patterns and revealing new insights. For instance, the learning rate is identified as the most important hyperparameter on all datasets, whereas the particular choice of entangling gates used is found to be the least important on all except for one dataset. In addition to identifying the relevant hyperparameters, for each of them, we also learned data-driven priors based on values that perform well on previously seen datasets, which can then be used to steer hyperparameter optimization processes. We utilize these priors in the hyperparameter optimization method hyperband and show that these improve performance against uniform sampling across all datasets by, on average, 0.53%\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$0.53 \\%$$\\end{document}, up to 6.11%\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$6.11 \\%$$\\end{document}, in cross-validation accuracy. We also demonstrate that such improvements hold on average regardless of the configuration hyperband is run with. Our work introduces new methodologies for studying quantum machine learning models toward quantum model selection in practice. All research code is made publicly available.",
+      "citations": 27
+    },
+    {
+      "title": "Perspectives on Utilization of Measurements in Quantum Algorithms",
+      "year": 2025,
+      "authors": "Valter Uotila, Ilmo Salmenper\u00e4, Leo Becker, A. M. D. Griend, A. Shinde, J. K. Nurminen",
+      "url": "https://api.semanticscholar.org/CorpusId:280091064",
+      "relevance": 1,
+      "abstract": "Measurement is a fundamental operation in quantum computing and has many important use cases in quantum algorithms. This article provides a comprehensive overview of the basic measurement operations in quantum computing and represents a selected set of their applications in quantum algorithms. Our goal is to provide one of the first algorithmic overviews of measurement processes in quantum computing. From the quantum information-theoretical perspective, measurements are either a method to access the result of a quantum computation or a technique to modify a quantum state. We also identify measurement-based methods to solve quantum computational challenges, such as error mitigation and circuit cutting. We discuss three main categories of measurements: performing measurements in static quantum circuits, modifying the quantum state in dynamic quantum circuits via measurements, and addressing challenges in quantum computing with measurements. Based on the reviewed topics, the measurement operations are frequently not at the center of the quantum algorithm design. However, the most novel and error-prone quantum algorithms will likely require sophisticated measurement schemes. Thus, the central message of this article is to broaden the view of measurement operations and highlight their importance at every level of quantum algorithm design.",
+      "citations": 7
+    },
+    {
+      "title": "Scalable Quantum Convolutional Neural Networks",
+      "year": 2022,
+      "authors": "Hankyul Baek, Won Joon Yun, Joongheon Kim",
+      "url": "https://api.semanticscholar.org/CorpusId:252531111",
+      "relevance": 1,
+      "abstract": "With the beginning of the noisy intermediate-scale quantum (NISQ) era, quantum neural network (QNN) has recently emerged as a solution for the problems that classical neural networks cannot solve. Moreover, QCNN is attracting attention as the next generation of QNN because it can process high-dimensional vector input. However, due to the nature of quantum computing, it is difficult for the classical QCNN to extract a sufficient number of features. Motivated by this, we propose a new version of QCNN, named scalable quantum convolutional neural network (sQCNN). In addition, using the fidelity of QC, we propose an sQCNN training algorithm named reverse fidelity training (RF-Train) that maximizes the performance of sQCNN.",
+      "citations": 10
+    },
+    {
+      "title": "Optimizing Quantum Convolutional Neural Network Architectures for Arbitrary Data Dimension",
+      "year": 2024,
+      "authors": "Changwon Lee, Israel F. Araujo, Dongha Kim, Junghan Lee, Siheon Park, Junghee Ryu, Daniel K. Park",
+      "url": "https://www.semanticscholar.org/paper/786c2e7b918b87fc5535d1032a4671a819e83312",
+      "relevance": 1,
+      "abstract": "Quantum convolutional neural networks (QCNNs) represent a promising approach in quantum machine learning, paving new directions for both quantum and classical data analysis. This approach is particularly attractive due to the absence of the barren plateau problem, a fundamental challenge in training quantum neural networks (QNNs), and its feasibility. However, a limitation arises when applying QCNNs to classical data. The network architecture is most natural when the number of input qubits is a power of two, as this number is reduced by a factor of two in each pooling layer. The number of input qubits determines the dimensions (i.e., the number of features) of the input data that can be processed, restricting the applicability of QCNN algorithms to real-world data. To address this issue, we propose a QCNN architecture capable of handling arbitrary input data dimensions while optimizing the allocation of quantum resources such as ancillary qubits and quantum gates. This optimization is not only important for minimizing computational resources, but also essential in noisy intermediate-scale quantum (NISQ) computing, as the size of the quantum circuits that can be executed reliably is limited. Through numerical simulations, we benchmarked the classification performance of various QCNN architectures across multiple datasets with arbitrary input data dimensions, including MNIST, Landsat satellite, Fashion-MNIST, and Ionosphere. The results validate that the proposed QCNN architecture achieves excellent classification performance while utilizing a minimal resource overhead, providing an optimal solution when reliable quantum computation is constrained by noise and imperfections.",
+      "citations": 10
+    },
+    {
+      "title": "Variational quantum neural networks based on dynamic layerwise strategy",
+      "year": 2025,
+      "authors": "Han Qi, Long Zhang, Changqing Gong, L. Y. Por, Abdullah Gani",
+      "url": "https://www.semanticscholar.org/paper/a2ff94f47b7ed509c5d47e3f3f62e60976c962be",
+      "relevance": 1,
+      "abstract": "",
+      "citations": 1
+    },
+    {
+      "title": "Quantum convolutional neural networks",
+      "year": 2018,
+      "authors": "Iris Cong, Soonwon Choi, M. Lukin",
+      "url": "https://www.semanticscholar.org/paper/f38b1c390eedc55cbbd5716e03b15b67ff7e942b",
+      "relevance": 1,
+      "abstract": "Neural network-based machine learning has recently proven successful for many complex applications ranging from image recognition to precision medicine. However, its direct application to problems in quantum physics is challenging due to the exponential complexity of many-body systems. Motivated by recent advances in realizing quantum information processors, we introduce and analyse a quantum circuit-based algorithm inspired by convolutional neural networks, a highly effective model in machine learning. Our quantum convolutional neural network (QCNN) uses only O(log(N)) variational parameters for input sizes of N qubits, allowing for its efficient training and implementation on realistic, near-term quantum devices. To explicitly illustrate its capabilities, we show that QCNNs can accurately recognize quantum states associated with a one-dimensional symmetry-protected topological phase, with performance surpassing existing approaches. We further demonstrate that QCNNs can be used to devise a quantum error correction scheme optimized for a given, unknown error model that substantially outperforms known quantum codes of comparable complexity. The potential experimental realizations and generalizations of QCNNs are also discussed. A quantum circuit-based algorithm inspired by convolutional neural networks is shown to successfully perform quantum phase recognition and devise quantum error correcting codes when applied to arbitrary input quantum states.",
+      "citations": 1524
+    }
+  ]
+}

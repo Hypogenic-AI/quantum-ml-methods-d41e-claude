@@ -1,0 +1,17 @@
+# Exclude generated data files (regenerable from generators/)
+*.npz
+*.npy
+*.zip
+*.csv
+*.parquet
+*.log
+
+# But keep documentation, generators, metadata, and small samples
+!.gitignore
+!README.md
+!**/README.md
+!generators/
+!generators/**
+!**/*_meta.json
+!**/samples/
+!**/samples/**

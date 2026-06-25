@@ -1,0 +1,1067 @@
+You are an academic paper writer. Generate a complete NEURIPS style paper
+based on the experiment results provided.
+
+════════════════════════════════════════════════════════════════════════════════
+                         IMPORTANT: BEFORE YOU START
+════════════════════════════════════════════════════════════════════════════════
+
+Before writing any content, you MUST complete these steps:
+
+1. READ THE SKILL: Review the paper-writer skill at .claude/skills/paper-writer/SKILL.md
+2. READ THE STYLE GUIDE: Study templates/paper_writing/lab_style_guide.md carefully
+3. REVIEW EXAMPLES: Browse paper_examples/ for formatting and language patterns:
+   - Look at sections/1.introduction.tex for language style
+   - Look at tables/*.tex for table formatting
+   - Look at commands/*.tex for macro usage
+4. VERIFY COMMAND TEMPLATES: Command templates (math.tex, general.tex, macros.tex) are pre-copied to paper_draft/commands/
+
+CRITICAL: Reference example papers for FORMATTING and LANGUAGE STYLE only.
+Do NOT copy content, phrasing, or narrative structure from the example papers.
+The examples are in a different research domain - focus only on presentation style.
+
+════════════════════════════════════════════════════════════════════════════════
+                            EXPERIMENT REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+# Quantum Methods on ML — Research Report
+
+**Research question (one sentence).** Are there tasks where classical ML methods
+struggle while quantum methods — *simulated at 20 qubits or more* — excel?
+
+**Key finding (one sentence).** Yes, in two distinct senses: on a quantum-tailored
+(engineered) 20-qubit task a projected-quantum-kernel SVM reaches **0.87** test
+accuracy while the best of six tuned classical models reaches **0.63** (paired
+t-test p ≈ 4×10⁻⁸, Cohen's d = 5.4), and on the discrete-logarithm task every
+off-the-shelf classical model sits at chance (~0.50) for 12/17/21-bit problems
+while the quantum interval-state kernel separates the task near-perfectly
+(0.997 → 1.000) — both with important, explicitly documented caveats.
+
+---
+
+## 1. Executive Summary
+
+We tested, with real simulation at ≥20 qubits, whether quantum machine-learning
+methods can succeed on tasks where classical ML fails. Drawing on a 15-paper
+literature review, we identified that the honest, *simulable* version of this
+hypothesis lives on **quantum-tailored tasks** (the only ≥20-qubit regime where a
+win is demonstrable) and on **off-the-shelf classical failure** on
+number-theoretic tasks (where a *provable* but non-simulable separation exists).
+
+We ran two experiments. **Experiment A** reproduces the projected-quantum-kernel
+construction of Huang et al. (2021): inputs are encoded into a 20-qubit state,
+labels are engineered along the direction of maximal *geometric difference*
+between the quantum and classical kernels, and we compare a quantum-kernel SVM
+against a full classical baseline suite (tuned RBF-SVM, linear SVM, random forest,
+gradient boosting, MLP, logistic regression) over 10 repeated stratified splits.
+The projected quantum kernel beats the best classical model by **Δ ≈ 0.23
+accuracy at every qubit count tested (8, 10, 20)** with a highly significant
+paired test. A within-quantum control shows the *naive fidelity* quantum kernel
+collapses to chance at 20 qubits — exactly the high-dimensional concentration
+failure the theory predicts — confirming the win comes from the **right** quantum
+kernel, not "quantumness" per se.
+
+**Experiment B** uses the discrete-logarithm task of Liu, Arunachalam & Temme
+(2021). Six off-the-shelf classical models trained on bit features stay at chance
+(0.49–0.52) for 12-, 17-, and 21-bit problems, while the quantum interval-state
+kernel SVM achieves 0.997–1.000. We are explicit that at these bit sizes the
+discrete log is *not* asymptotically hard, so this demonstrates that *standard
+classical ML* fails (the hypothesis's wording), not a fault-tolerant-scale
+separation; and that the quantum kernel here is computed from a simulable log
+table (the step a fault-tolerant device performs with Shor's algorithm).
+
+**Bottom line.** The hypothesis is **confirmed in the simulable regime, with
+honest scope**: a 20+-qubit simulated quantum kernel demonstrably generalizes on
+tasks where the best classical models cannot. The advantage is on *engineered or
+quantum-structured* tasks; a *naturally labeled* simulable advantage remains an
+open problem in the field (and was not claimed here).
+
+---
+
+## 2. Research Question & Motivation
+
+**Hypothesis.** *There exist tasks where classical ML methods struggle, but
+quantum methods — run with simulation and using 20 qubits or more — may excel.*
+
+**Why it matters.** Quantum ML is widely promoted as out-performing classical ML,
+but the field's central question — *when does a quantum model actually beat the
+best classical model?* — is unsettled and often overstated. Pinning down which
+tasks admit a separation, and at what scale it is demonstrable, guides honest
+expectations and points research at the regimes where quantum methods help.
+
+**Gap addressed (from `literature_review.md`).** Published demonstrations are
+either small-scale (≤12 qubits, e.g. Kübler 2021, Jerbi 2023), on hardware with
+no defeated classical baseline (Peters 2021 ≤17 qubits, Glick 2021 27 qubits), or
+purely theoretical (Liu 2021, Schuld 2021). A single, reproducible **≥20-qubit
+simulation** that pits the quantum kernel against a *full* classical suite,
+reports the `g` diagnostic, quantifies scaling and significance, and states the
+engineered-task caveat, was not collected in one place. This report provides it.
+
+---
+
+## 3. Data Construction
+
+Both tasks are **generator-based** (published constructions, regenerated from
+code in `datasets/generators/`). All tasks are class-balanced ~50/50 (verified),
+so **test accuracy** is a meaningful metric and chance = 0.50.
+
+### Dataset A — Engineered projected-quantum-kernel task (Huang et al. 2021)
+- **Inputs:** `N=250` random feature vectors in `[-π, π]^n`, `n ∈ {8,10,20}`
+  (stand-in for PCA-reduced real data, exactly as in the source paper's recipe).
+- **Quantum encoding:** hardware-efficient map — per-feature `RY`/`RZ` angle
+  encoding + `CZ` entangling layers, `reps=2` — simulated with PennyLane
+  `lightning.qubit`. Per-qubit Bloch vectors `b_k=(⟨X_k⟩,⟨Y_k⟩,⟨Z_k⟩)` give the
+  **projected kernel** `K_Q(x,x')=exp(−γ Σ_k‖b_k(x)−b_k(x')‖²)`, `γ=0.1`.
+- **Labels (engineered):** `y = sign(√K_Q · v)` where `v` is the top eigenvector
+  of `√K_Q (K_C+λI)⁻¹ √K_Q`, median-thresholded for 50/50 balance. This makes
+  the task separable by the quantum kernel with margin but **not** by the best
+  classical (RBF) kernel — the maximal-`geometric-difference` direction.
+- **Honest note:** labels use the full kernel matrix (an *existence-of-task*
+  construction). This is disclosed; we still perform proper train/test SVM fits.
+- **Seeds:** 3 independent dataset generations (seeds 0,1,2) per qubit count.
+
+### Dataset B — Discrete-logarithm task (Liu, Arunachalam & Temme 2021)
+- **Setup:** safe prime `p`, generator `g`, secret `s`; label
+  `y(x)=+1 ⇔ (log_g(x) − s) mod (p−1) < (p−1)/2` (a half-interval in log-space).
+- **Sizes:** `n_bits ∈ {12, 17, 21}` (`p ≈ 4079 / 65543 / 1048703`),
+  `N ≈ 988 / 1962 / 1940` balanced samples. The 21-bit problem needs ≥20 qubits.
+- **Learner input:** the integer's **bit-vector** only (never `s` or the log
+  table). In raw input space the labels are indistinguishable from random.
+- **Quantum feature map:** Liu interval states — `|φ(x)⟩` = uniform superposition
+  over the length-`(p−1)/2` arc of logs `[L(x), L(x)+k)`. The fidelity kernel
+  `K(x,x')=|⟨φ(x)|φ(x')⟩|² = (arc-overlap fraction)²` is PSD by construction
+  (min eigenvalue ≥ 0 verified). **Honest note:** the arc overlap is computed
+  here from the simulable discrete-log table; on a fault-tolerant device the log
+  is obtained *inside* the feature map by Shor's period finding, without a table.
+
+**Example samples** (`datasets/discrete_log/samples/`): e.g. `{"x": 1733, "y": 1}`,
+`{"x": 221, "y": -1}` — the label is invisible from the integer/bits without the log.
+
+---
+
+## 4. Methodology
+
+**Approach & rationale.** Every supervised quantum model is a kernel method
+(Schuld 2021), so we simulate the quantum feature maps, build kernel matrices,
+and train `sklearn` SVMs on the precomputed kernels. Classical baselines receive
+the **same input features**. We report the geometric difference `g(K_C‖K_Q)`
+*before* training as the advantage diagnostic (Huang 2021).
+
+**Baselines (cover kernel and non-kernel classical ML, per Huang 2021).**
+RBF-SVM (CV-tuned `C∈{0.1,1,10,100}`, `γ∈{scale,0.01,0.1,1}`), linear SVM,
+random forest (300 trees), gradient boosting, MLP (128-64), logistic regression,
+and a majority-class dummy. Exp A additionally uses the classical RBF kernel as a
+precomputed-kernel SVM.
+
+**Quantum models.** Projected quantum kernel (preferred), naive fidelity quantum
+kernel (control), both via PennyLane `lightning.qubit`; interval-state fidelity
+kernel for Exp B.
+
+**Protocol & reproducibility.** Seeds fixed (`numpy`/`python` = 42; dataset seeds
+0/1/2). 10 repeated stratified 70/30 splits; **all models share the same splits**
+so quantum-vs-classical comparisons are *paired*. Metrics: test accuracy
+(mean ± std), train accuracy (for generalization gap), `g`, paired t-test +
+Cohen's d. Hardware: CPU `lightning.qubit` simulation (4× RTX A6000 present but
+the simulator/SVMs are CPU-bound); n=20 dataset build incl. statevectors
+≈ 45–190 s. Full environment in `results/environment.json`
+(Python 3.12.8, NumPy 2.5.0, scikit-learn 1.9.0, SciPy 1.18.0, PennyLane 0.45.0).
+
+---
+
+## 5. Results
+
+### Experiment A — engineered task (headline, n = 20 qubits, seed 0)
+
+Test accuracy, mean ± std over 10 stratified splits (`results/exp_a.json`):
+
+| Model | Test acc | Train acc | Notes |
+|---|---|---|---|
+| **Quantum: Projected kernel** | **0.865 ± 0.043** | 1.000 | generalizes |
+| Classical: Gradient Boosting | 0.629 ± 0.035 | 1.000 | best classical |
+| Classical: Random Forest | 0.607 ± 0.046 | 1.000 | |
+| Classical: Logistic Reg. | 0.496 ± 0.046 | 0.639 | chance |
+| Quantum: **Fidelity** kernel | 0.493 ± 0.000 | 1.000 | **concentrates → chance** |
+| Classical: Linear-SVM | 0.489 ± 0.051 | 0.650 | chance |
+| Classical: RBF-SVM (tuned) | 0.489 ± 0.029 | 0.798 | chance |
+| Classical: RBF kernel (precomp.) | 0.479 ± 0.055 | 0.789 | chance |
+| Classical: MLP | 0.436 ± 0.045 | 1.000 | overfits below chance |
+
+**Paired t-test, projected quantum vs best classical (gradient boosting):**
+`t = 16.95, p = 3.9×10⁻⁸, Cohen's d = 5.36, mean gap = +0.236`.
+
+![Engineered task n=20 bar chart](figures/fig1_engineered_n20_bars.png)
+
+### Experiment A — scaling across qubit count (3 seeds each)
+
+| n qubits | Projected quantum | Best classical | Δ (gap) | geom. diff `g` | Fidelity kernel |
+|---|---|---|---|---|---|
+| 8  | 0.919 ± 0.029 | 0.699 ± 0.053 | **+0.220** | 22.6 | — |
+| 10 | 0.915 ± 0.013 | 0.687 ± 0.046 | **+0.228** | 13.9 | — |
+| **20** | **0.854 ± 0.009** | 0.623 ± 0.014 | **+0.231** | 6.2 | **0.493** |
+
+The advantage is **stable (~0.22–0.23) across qubit counts** and persists at 20
+qubits. `g` shrinks with `n` (Hilbert space dilutes the projected distances) but
+stays ≫ 1, so the advantage remains available. The fidelity kernel is at chance.
+
+![Accuracy vs qubit count](figures/fig2_accuracy_vs_qubits.png)
+![Generalization gap n=20](figures/fig4_generalization_gap.png)
+
+### Experiment B — discrete-log task (off-the-shelf classical failure)
+
+Test accuracy, mean ± std over 10 splits (`results/exp_b.json`):
+
+| Problem | Quantum interval kernel | Best off-the-shelf classical | All classical range |
+|---|---|---|---|
+| n=12 bit (p=4079) | **0.997 ± 0.003** | 0.516 (logreg) | 0.490–0.516 |
+| n=17 bit (p=65543) | **0.999 ± 0.001** | 0.504 (MLP) | 0.491–0.504 |
+| n=21 bit (p=1048703) | **1.000 ± 0.001** | 0.521 (linear SVM) | 0.497–0.521 |
+
+Random forest and MLP reach **train accuracy 1.000 but test ≈ 0.50**: they
+*memorize* the training labels yet cannot generalize, because the labels are
+information-theoretically random in the bit-input space without computing the
+discrete log. Geometric difference `g ≈ 120–181` (enormous) flags the gap.
+
+![Discrete-log scaling](figures/fig3_discrete_log.png)
+
+---
+
+## 6. Analysis & Discussion
+
+**H1 (engineered, simulable) — CONFIRMED.** At 20 qubits the projected quantum
+kernel beats the best classical model by 0.236 accuracy, p = 3.9×10⁻⁸,
+d = 5.36 — far past the pre-registered Δ>0.2, p<0.05 thresholds. The result holds
+across 3 dataset seeds and 10 splits each.
+
+**H1a (scaling) — PARTIALLY CONFIRMED / refined.** We predicted the gap would
+*widen* with `n`. It is instead **stable** (~0.22–0.23) at n=8/10/20, while `g`
+*shrinks* (22.6→6.2). Honest reading: at fixed `N=250` and fixed bandwidth, the
+20-qubit projected kernel concentrates somewhat (quantum accuracy drifts 0.92→0.85),
+but classical accuracy falls in step, so the *gap* is preserved. The advantage is
+robust to scale rather than growing — a more conservative and honest conclusion.
+
+**H1b (control) — CONFIRMED, and important.** The naive *fidelity* kernel sits at
+chance at 20 qubits (train 1.0, test 0.49) — the exponential-Hilbert-space
+concentration Huang/Kübler predict. This is the key guard against the
+"quantum-therefore-better" fallacy: only the **projected** kernel (a problem-matched
+inductive bias) wins; a generic quantum kernel overfits exactly like the MLP.
+
+**H2 (off-the-shelf classical failure) — CONFIRMED.** All six classical models
+are at chance on the discrete-log task at 12/17/21 bits, while the quantum
+interval kernel separates it near-perfectly. The classical failure is not a
+tuning artifact: tree models attain perfect *train* accuracy and still generalize
+at chance, the signature of a label that is random in the given representation.
+
+**Comparison to prior work.** Our 20-qubit projected-kernel gap (≈0.23) is in
+line with Huang et al.'s ">20% at up to 30 qubits"; our RBF-SVM-only gap would be
+larger (0.87 vs 0.49 ≈ 0.38), but we deliberately report the gap against the
+*best non-kernel* classical model (gradient boosting, 0.63), which Huang stresses
+is the honest baseline. This is a notable refinement over a naive "0.89 vs 0.45"
+RBF-only comparison: tree ensembles recover *some* structure, so the true,
+defensible gap is ~0.23, not ~0.44.
+
+**Surprises.** (1) Gradient boosting / random forest reach ~0.61–0.63 on the
+engineered task (above chance) — the engineered labels are not perfectly opaque to
+axis-aligned tree splits, though still far below quantum. (2) The MLP performs
+*below* chance on the engineered task (0.44) by overfitting noise.
+
+---
+
+## 7. Limitations
+
+1. **Engineered labels (Exp A).** The advantage task is adversarially relabeled
+   along the quantum-kernel direction; it is *not* a naturally occurring dataset.
+   This is permitted by the hypothesis's "there exist tasks" wording and matches
+   the literature, but no claim of *natural* advantage is made. A naturally
+   labeled simulable advantage remains an open problem (`literature_review.md` §6).
+2. **Discrete-log is not asymptotically hard at 21 bits (Exp B).** A dedicated
+   classical adversary could solve 21-bit DLP; we show *off-the-shelf* ML fails,
+   not a fault-tolerant separation. The quantum kernel is also computed from a
+   simulable log table (the step Shor performs on hardware).
+3. **Noiseless, infinite-shot simulation.** We use exact statevectors. On
+   hardware the favorable projected-kernel eigenvalues are `O(2⁻ᵈ)`, implying
+   potentially exponential measurement shots (Kübler 2021) — the simulated
+   advantage may not survive finite shots / noise.
+4. **Fixed `N` and bandwidth.** `N=250` at 20 qubits; larger `N` and a swept
+   bandwidth could change the quantitative gap. `γ=0.1` was taken from the
+   validated separation regime, not re-optimized per `n`.
+5. **No classical surrogate of the quantum kernel.** Huang notes the strictest
+   baseline is a classical *approximation* of the quantum model (e.g. neural
+   tangent kernel); we used standard classical ML, which is the user's framing
+   ("classic ML methods") but not the most adversarial possible baseline.
+
+---
+
+## 8. Conclusions & Next Steps
+
+**Answer to the research question.** Yes — there are tasks where classical ML
+struggles and a 20+-qubit *simulated* quantum method excels. We demonstrated two:
+an engineered projected-kernel task (quantum 0.87 vs best classical 0.63 at 20
+qubits, p≈4×10⁻⁸) and the discrete-log task (off-the-shelf classical at chance vs
+quantum ~1.0 at 21 bits). The honest scope is *engineered / quantum-structured*
+tasks at noiseless simulation; the win comes from a problem-matched quantum
+*inductive bias* (the projected kernel), not from quantumness alone — a generic
+fidelity kernel fails identically to a classical overfitter.
+
+**Next steps.** (i) Repeat Exp A under finite-shot kernel estimation to test
+whether the advantage survives `O(2⁻ᵈ)` eigenvalue concentration. (ii) Sweep `N`
+and bandwidth to map the generalization curve vs sample size. (iii) Add a
+classical-surrogate baseline (neural tangent kernel) as the strictest comparison.
+(iv) Replace random inputs with PCA-reduced Fashion-MNIST to reproduce Huang/Jerbi
+on real-image features. (v) Explore quantum-*data* tasks (learning properties of
+many-body states), where advantage is least contested.
+
+---
+
+## References (used in this work)
+- Liu, Arunachalam, Temme (2021), *A rigorous and robust quantum speed-up in
+  supervised ML*, Nature Physics — `papers/liu2021_rigorous_quantum_speedup.pdf`.
+- Huang et al. (2021), *Power of data in QML*, Nat. Commun. — `papers/huang2021_power_of_data.pdf`.
+- Havlíček et al. (2019), *Supervised learning with quantum-enhanced feature spaces*, Nature.
+- Kübler, Buchholz, Schölkopf (2021), *The inductive bias of quantum kernels*, NeurIPS.
+- Schuld (2021), *Supervised QML models are kernel methods*, arXiv:2101.11020.
+- Jerbi et al. (2023), *QML beyond kernel methods*, Nat. Commun.
+- Full 15-paper synthesis: `literature_review.md`; resource catalog: `resources.md`.
+
+**Tools:** PennyLane 0.45.0 (`lightning.qubit`), scikit-learn 1.9.0, NumPy 2.5.0,
+SciPy 1.18.0. **Code:** `src/` (`exp_a_engineered.py`, `exp_b_discrete_log.py`,
+`quantum_kernels.py`, `common.py`, `make_figures.py`). **Results:**
+`results/exp_a.json`, `results/exp_b.json`. **Figures:** `figures/`.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                            RESEARCH PLAN
+════════════════════════════════════════════════════════════════════════════════
+
+# Planning — Quantum Methods on ML
+
+## Motivation & Novelty Assessment
+
+### Why This Research Matters
+Quantum machine learning (QML) is widely promoted as a path to learning tasks
+that classical ML cannot handle, but the field's central question — *when, if
+ever, does a quantum model beat the best classical model on a learning task?* —
+is unsettled and frequently overstated. Clarifying **exactly which tasks** admit
+a quantum-over-classical separation, and **at what scale that separation is
+actually demonstrable**, protects practitioners from hype and points research at
+the regimes where quantum methods can genuinely help.
+
+### Gap in Existing Work
+From `literature_review.md` (15 deep-read papers), the landscape is two-sided:
+- **Provable separations** (Liu 2021 discrete-log; Jerbi 2023 shadows) exist but
+  embed Shor's algorithm and need *fault-tolerant, hundreds-of-qubit* hardware —
+  **not simulable** at 20–30 qubits (at that size the number-theoretic problem is
+  trivially classically solvable).
+- **Simulable empirical separations** (Huang 2021; Jerbi 2023 beyond-kernel) are
+  real and reproducible at 20–30 qubits, but only on **engineered/relabeled**
+  data, not naturally occurring tasks.
+- **Cautionary results** (Kübler 2021, Schuld 2021, Tang 2019) show expressivity
+  alone destroys generalization and many advantages "dequantize."
+
+The gap: most published demonstrations are either small-scale (≤12 qubits), on
+hardware (≤17–27 qubits, no defeated classical baseline), or purely theoretical.
+A **clean, reproducible, ≥20-qubit simulation** that (a) puts the quantum kernel
+against a *full* classical baseline suite, (b) reports the `g` diagnostic, (c)
+quantifies scaling and statistical significance, and (d) states the engineered-
+task caveat honestly, is not collected in one place.
+
+### Our Novel Contribution
+A self-contained, reproducible **20-qubit simulation study** that demonstrates
+*both sides* of the hypothesis with honest scoping:
+1. **Engineered task (Huang 2021):** a projected quantum kernel separates a
+   20-qubit task that the best tuned classical models cannot — with the geometric
+   difference `g` reported *before* training, repeated-split error bars, a paired
+   significance test, a within-quantum control (fidelity vs projected kernel),
+   and an accuracy-vs-qubit-count scaling curve.
+2. **Discrete-log task (Liu 2021):** off-the-shelf classical ML sits at chance
+   across n=12/16/20 bits, while the quantum feature-map kernel (interval states,
+   here computed from the simulable log table — what Shor builds on hardware)
+   separates the task near-perfectly. We state the asymptotic-hardness caveat.
+
+### Experiment Justification
+- **Exp A (engineered projected kernel, n=8/10/20):** directly tests "quantum
+  excels where classical struggles" in the *simulable* regime the hypothesis
+  names. Needed because it is the only place a ≥20-qubit win is demonstrable.
+- **Exp A-control (fidelity vs projected kernel):** tests Huang's claim that the
+  naive fidelity kernel concentrates/fails in high-dim Hilbert space — guards
+  against attributing the win to "quantumness" rather than the right kernel.
+- **Exp A-baselines (RBF/linear SVM, RF, gradient boosting, MLP):** Huang stresses
+  beating *non-kernel* classical models, not just RBF. Needed for an honest claim.
+- **Exp B (discrete log, n=12/16/20):** shows the *off-the-shelf classical
+  failure* the user asked about on a task with a rigorous backing, and exhibits
+  the quantum-easy side concretely. Scaling across n shows the trend.
+
+---
+
+## Research Question
+Are there tasks where classical ML methods struggle while quantum methods —
+simulated at **20 qubits or more** — excel? Demonstrate on real/realistic
+datasets with simulation.
+
+## Hypothesis Decomposition
+- **H1 (engineered, simulable):** On a quantum-tailored 20-qubit task, a projected
+  quantum-kernel SVM achieves substantially higher test accuracy than the best
+  tuned classical model. *Measurable:* Δacc > 0.2, paired test p < 0.05.
+- **H1a:** The advantage tracks the geometric difference `g` and **widens with
+  qubit count** n ∈ {8,10,20}.
+- **H1b (control):** The *projected* quantum kernel wins, but the naive *fidelity*
+  quantum kernel does not (concentration in high-dim Hilbert space).
+- **H2 (off-the-shelf classical failure):** On the discrete-log task, standard
+  classical models (SVM/RF/GB/MLP/logreg) stay at chance (~0.50) for n=12/16/20,
+  while the quantum interval-state kernel separates the task (acc ≫ 0.5).
+- **H2-caveat:** At 20 bits DLP is *not* asymptotically hard; this shows
+  off-the-shelf classical ML fails, not a fault-tolerant-scale separation.
+
+## Proposed Methodology
+
+### Approach
+Quantum kernels reduce to classical kernel SVMs on a quantum-computed kernel
+matrix (Schuld 2021), so we simulate the quantum feature maps in PennyLane
+`lightning.qubit` (≥20 qubits verified), build kernel matrices, and train
+`sklearn` SVMs on precomputed kernels. Classical baselines see the **same input
+features**. We report the `g` diagnostic before training.
+
+### Experimental Steps
+1. **Exp A:** regenerate engineered projected-kernel datasets at n=8,10,20 (and a
+   fresh seed set for error bars). Compute `g(K_C‖K_Q)`. Train projected-quantum-
+   kernel SVM + fidelity-kernel SVM + classical suite over repeated stratified
+   splits. Report mean±std, paired t-test (quantum vs best classical),
+   generalization gap, accuracy-vs-n curve.
+2. **Exp B:** load discrete-log datasets n=12,16,20. Train off-the-shelf classical
+   suite (bit features). Build the quantum interval-state fidelity kernel from the
+   log table; train precomputed-kernel SVM. Report accuracy vs chance across n.
+
+### Baselines
+RBF-SVM (CV-tuned C, γ), linear SVM, random forest, gradient boosting, MLP, and
+(Exp B) logistic regression + majority-class dummy. These cover kernel and
+non-kernel classical ML per Huang 2021 / lit-review §3.
+
+### Evaluation Metrics
+Test accuracy (primary), geometric difference `g`, generalization gap
+(train−test), accuracy vs qubit count, paired t-test p-value + Cohen's d.
+Accuracy is appropriate: all tasks are class-balanced ~50/50 (verified in meta).
+
+### Statistical Analysis Plan
+Repeated stratified train/test splits (≥10 seeds) per model; report mean ± std.
+Compare quantum vs best classical with a paired t-test (same splits), α = 0.05,
+plus Cohen's d effect size. Bonferroni note for multiple model comparisons.
+
+## Expected Outcomes
+- Exp A: projected quantum kernel ≈ 0.85–0.93, best classical ≈ 0.45–0.60, gap
+  significant and widening with n; fidelity kernel near chance at n=20.
+- Exp B: all classical ≈ 0.50 across n; quantum interval kernel ≫ 0.5.
+- Refutation would be: classical matches quantum on Exp A, or quantum kernel also
+  fails — would mean the engineered construction / `g` diagnostic did not hold.
+
+## Timeline and Milestones
+Planning ✓ → env/data setup (10m) → implement pipelines (40m) → run Exp A+B (40m)
+→ analysis + figures (30m) → REPORT.md/README.md (25m). ~30% buffer for debugging.
+
+## Potential Challenges
+- **Memory at 20 qubits:** fidelity kernel needs 2^20 statevectors. Mitigation:
+  store statevectors in batches / fall back to n≤14 for the fidelity control if
+  RAM-bound; projected kernel only needs 3n expvals (cheap).
+- **Kernel concentration:** projected-kernel bandwidth γ must sit in the
+  separation regime (γ≈0.1, validated). Report median-distance scaling.
+- **Honesty on engineered labels:** labels use the full kernel (existence-of-task
+  construction). We disclose this and still do proper train/test SVM fitting.
+- **DLP quantum side uses log table:** disclose that on hardware Shor builds this
+  without precomputing logs; at simulable n it is precomputable.
+
+## Success Criteria
+H1 and H2 confirmed with the stated thresholds and a significant paired test on
+Exp A; all caveats documented; everything reproducible from `src/` + seeds.
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          LITERATURE REVIEW
+════════════════════════════════════════════════════════════════════════════════
+
+# Literature Review: Quantum Methods on Machine Learning
+
+**Hypothesis under study.** *There exist tasks where classical machine learning
+methods struggle, but quantum methods — run with simulation and using 20 qubits
+or more — may excel.*
+
+This review synthesizes 15 deep-read papers (all PDFs in `papers/`, full
+per-paper notes at the end of this document) plus a broader 219-paper search
+corpus (`paper_search_results/all_papers.json`). It is written to directly
+inform the experimental design that follows in this workspace.
+
+---
+
+## 1. Research Area Overview
+
+Quantum machine learning (QML) on classical data is dominated by two model
+families, both of which reduce to **kernel methods** (Schuld 2021):
+
+1. **Quantum kernel methods** — encode each input `x` into an `n`-qubit state
+   `|phi(x)>` via a *feature map*, estimate a kernel
+   `K(x,x') = |<phi(x)|phi(x')>|^2` (fidelity kernel) or a **projected** kernel
+   built from reduced density matrices (Huang 2021), and train a classical SVM
+   on the kernel matrix. Foundational: Havlíček 2019, Liu–Arunachalam–Temme 2021.
+2. **Variational / data re-uploading models** — a parameterized quantum circuit
+   trained by a classical optimizer (Havlíček 2019; Jerbi 2023). Their
+   expressivity is exactly a truncated **Fourier series** set by the data
+   encoding (Schuld 2021, *data encoding*).
+
+The central scientific question of the field — and of this project — is
+**when, if ever, does a quantum model beat the best classical model on a learning
+task?** The literature gives a sharp, two-sided answer:
+
+- **Provable separations exist but are not simulable.** The only *rigorous*
+  classical-hard / quantum-easy learning tasks (discrete log, Liu 2021; covariant
+  coset data, Glick 2021; discrete cube root, Jerbi 2023 *shadows*) rely on
+  cryptographic hardness (DLP/RSA) and embed **Shor's algorithm** in the feature
+  map. They require *fault-tolerant, hundreds-of-qubits* hardware. At any
+  classically simulable scale (≤~30 qubits) the underlying number-theoretic
+  problem is trivially solvable, so **these separations cannot be exhibited by a
+  20–30 qubit simulation.**
+- **Empirical separations at the 20–30 qubit simulable scale exist only on
+  *engineered* data.** Huang 2021 ("Power of data") and Jerbi 2023 ("beyond
+  kernel") show that if you **relabel** a dataset so the labels align with a
+  quantum kernel/model, a quantum model beats every tested classical model by
+  >20% at up to 30 simulated qubits. This is real and reproducible, but the task
+  is adversarially constructed, not naturally occurring.
+- **Strong cautionary / negative results.** Data "dequantizes" naive advantage
+  (Huang 2021); expressive quantum kernels destroy generalization unless they
+  encode a problem-specific, classically-inexpressible inductive bias (Kübler
+  2021); many flagship speedups are killed by classical "quantum-inspired"
+  algorithms (Tang 2019); and quantum kernels can be estimated classically to
+  additive error for shallow/product maps (Havlíček 2019; Schuld 2021).
+
+**Implication for this project.** The hypothesis is *defensible and
+demonstrable in the simulable regime* — but only with the right framing. The
+honest, reproducible demonstration is: **on a deliberately quantum-tailored
+(engineered) task, a 20+ qubit simulated quantum kernel/model generalizes while
+standard classical ML fails.** A *naturally occurring* task where simulable
+quantum beats classical remains an open problem the literature has **not**
+solved.
+
+---
+
+## 2. Common Methodologies
+
+| Method | Papers | Notes |
+|---|---|---|
+| Quantum **fidelity** kernel + classical SVM (QKE) | Havlíček 2019, Liu 2021, Peters 2021, Glick 2021 | `K=|<phi(x)|phi(x')>|^2`; shallow maps are dequantizable |
+| **Projected** quantum kernel (RDM-based) | Huang 2021, Peters 2021 | `exp(-γ Σ_k ‖ρ_k(x)-ρ_k(x')‖²)`; resists data-dequantization, clearest empirical advantage |
+| Variational quantum classifier (VQC) | Havlíček 2019, Abbas 2021 | PQC + classical optimizer; barren-plateau risk |
+| **Data re-uploading** / explicit linear models | Jerbi 2023 (beyond kernel), Schuld 2021 (encoding) | provably more resource-efficient than kernels; Fourier-series view |
+| Capacity diagnostics (effective dimension, Fisher) | Abbas 2021 | trainability/capacity argument, not a task-level win |
+| Generative PQC / tensor networks | Du 2020, Gao 2022 | expressivity separations under PH non-collapse; often dequantize to MPS |
+| **Label engineering** to maximize advantage | Huang 2021, Jerbi 2023, Kübler 2021 | relabel data along the quantum-kernel direction (geometric difference `g`) |
+
+## 3. Standard Baselines
+
+- **Classical kernels**: RBF/Gaussian SVM (the default to beat), linear, polynomial.
+- **Kernel-free classical**: random forests, gradient boosting, MLPs/neural nets
+  (Huang 2021 stresses comparing against *non-kernel* classical models too).
+- **Classical surrogates of the quantum kernel**: neural-tangent-kernel and
+  classical approximations — the *correct* baseline per Huang 2021 (advantage
+  claims must beat classical *approximations of the quantum model*, not just
+  generic classical ML).
+- **Dequantized / quantum-inspired classical algorithms** (Tang 2019) for any
+  linear-algebra-style task.
+
+## 4. Evaluation Metrics
+
+- **Test accuracy / test MSE** vs the best tuned classical baseline (primary).
+- **Geometric difference** `g(K_C ‖ K_Q)` (Huang 2021): a *pre-training*
+  diagnostic that upper-bounds achievable advantage; large `g` is necessary
+  (not sufficient) for a quantum win. **Compute this before expensive training.**
+- **Model complexity** `s_C`, `s_Q` and the bound `s_C ≤ g² s_Q`.
+- **Generalization gap**, sample complexity scaling with `N`, qubit-count scaling.
+- **Trainability**: gradient variance (barren plateaus), kernel concentration,
+  number of measurement shots required (Kübler 2021 warns favorable kernel
+  eigenvalues are `O(2^-d)` → exponential shots on hardware).
+
+## 5. Datasets in the Literature
+
+- **Synthetic discrete-log (DLP)** over `Z_p*` — Liu 2021, reviewed by Glick 2021,
+  Schuld 2021. The canonical *provable* task. *Reproduced here:*
+  `datasets/generators/discrete_log_dataset.py`.
+- **Engineered / relabeled real data** — Huang 2021 (Fashion-MNIST → PCA → relabel
+  via quantum kernel), Jerbi 2023 (Fashion-MNIST PCA, relabeled by an explicit
+  quantum model). The canonical *simulable empirical* task. *Reproduced here:*
+  `datasets/generators/engineered_kernel_dataset.py`.
+- **Real high-dimensional NISQ demos** — PLAsTiCC supernova (Peters 2021, 67-dim),
+  finance/fraud (search corpus). Used for feasibility, *not* advantage.
+- **Generative benchmarks** — Bars-and-Stripes (Du 2020); UCI sequences
+  biofam/Promoter/SPECT (Gao 2022).
+- **Small classical benchmarks** — Iris, make_blobs, two-moons (Abbas 2021,
+  Lloyd 2020) — used illustratively; classical ML does *not* struggle on these.
+
+## 6. Gaps and Opportunities
+
+1. **No natural simulable advantage.** Every demonstrated ≤30-qubit win uses
+   engineered/relabeled labels. Finding a *naturally labeled* task where simulable
+   quantum beats classical is the field's open problem (explicit in Peters 2021,
+   Kübler 2021).
+2. **Quantum-data tasks** (learning properties of quantum states / many-body
+   systems) are where advantage is least contested — but that steps outside
+   "classical data" and the hypothesis's framing.
+3. **Trainability vs. advantage tension**: maps expressive enough to be
+   classically hard tend to suffer barren plateaus / kernel concentration / need
+   exponentially many shots (Kübler 2021, Jerbi 2023).
+4. **Honest baselines**: many claimed advantages evaporate against (a) non-kernel
+   classical models, (b) classical surrogates of the quantum kernel, or (c)
+   dequantized algorithms (Tang 2019). Any experiment must include these.
+
+## 7. Recommendations for Our Experiment
+
+Given the hypothesis explicitly allows **engineered tasks** ("there exist tasks")
+and **simulation at 20+ qubits**, the most defensible, reproducible program is:
+
+- **Primary task — engineered projected-kernel advantage (Huang 2021).** Use
+  `engineered_kernel_dataset.py` at **n = 20 qubits**. *Validated in this
+  workspace:* projected quantum-kernel SVM = **0.89** vs classical RBF-SVM =
+  **0.45** test accuracy on the n=20 engineered set. This is the headline
+  demonstration and lives exactly in the 20-qubit simulable regime.
+- **Secondary task — discrete-log vs off-the-shelf classical (Liu 2021).** Use
+  `discrete_log_dataset.py` at **n = 20**. *Validated:* RBF-SVM and Random Forest
+  both score **~0.50** (random). **Caveat to report honestly:** at 20 bits a
+  *dedicated* classical adversary could solve DLP; this shows *standard classical
+  ML* fails, not asymptotic hardness. Frame it as "off-the-shelf classical
+  struggles," and scale `n` to show the trend.
+- **Baselines to include**: RBF-SVM (tuned `C`,`γ`), linear SVM, random forest,
+  gradient boosting, small MLP — and report the **geometric difference `g`**
+  before training as the advantage diagnostic.
+- **Quantum models**: projected quantum kernel (preferred), fidelity quantum
+  kernel, and optionally a data re-uploading VQC (Jerbi 2023). Simulate with
+  **PennyLane `lightning.qubit`** (verified to initialize 22+ qubits here) or
+  Qiskit `Statevector`/Aer.
+- **Metrics**: test accuracy, `g`, generalization gap vs `N`, accuracy vs qubit
+  count `n` (show the gap *widens* with `n`), and shots-to-estimate-kernel.
+- **Methodological guardrails**: (i) feed classical baselines the *same* features;
+  (ii) include non-kernel classical models; (iii) report that the engineered task
+  is adversarially constructed; (iv) check for kernel concentration / shot cost.
+
+---
+
+## 8. Per-Paper Notes (deep reads)
+
+The following subsections are detailed notes from reading each PDF in full
+(core papers) or in part (skimmed). Ordered by relevance to the hypothesis.
+
+#### liu2021_rigorous_quantum_speedup
+
+**A rigorous and robust quantum speed-up in supervised machine learning** (Liu, Arunachalam, Temme; arXiv 2020 / Nature Physics 2021).
+
+This paper provides the theoretical bedrock for the claim that there exist supervised-learning tasks where classical methods provably fail while quantum methods succeed, using only *classical* access to data. The authors engineer a binary-classification concept class C = {f_s} over Z_p* defined via the discrete logarithm: f_s(x) = +1 iff log_g(x) lies in the half-interval [s, s+(p-3)/2]. After taking the discrete log the problem is a trivial 1-D clustering task (Fig. 1a), but in the original data space the labels are indistinguishable from random to any efficient classical learner (Fig. 1b).
+
+**Main results.** Under the widely-believed classical hardness of the discrete log problem (DLP), they prove (Thm 1/8) that *no* efficient classical algorithm can exceed 1/2 + 1/poly(n) test accuracy — i.e., it cannot beat random guessing. Conversely, they give a quantum support vector machine with Quantum Kernel Estimation (SVM-QKE) that provably attains >= 0.99 test accuracy in polynomial time with success probability >= 2/3 (Thm 2/22). The quantum feature map sends x to an n-qubit "interval state" |phi(x)> = (1/sqrt(2^k)) sum_i |x·g^i> (n = ceil(log2 p)), preparable in BQP with O~(n^3) gates using Shor's algorithm; the kernel K(x_i,x_j) = |<phi(x_i)|phi(x_j)>|^2 is read off as the 0^n measurement frequency of U†(x_i)U(x_j)|0^n>, and a classical L2 soft-margin SVM finds a large-margin separator. A separating halfspace state exists with margin Delta = O(n^{-t}), yielding a generalization bound of test error O~(1/(m·Delta^2) + Delta), optimized to O~(m^{-1/3}). Crucially, the result is *robust*: with finite-shot kernel noise (mean 0, variance 1/R), strong convexity plus a strengthened fat-shattering generalization bound preserve the guarantee.
+
+**Robustness to dequantization.** Unlike earlier amplitude-encoding speed-ups (which Tang-style quantum-inspired classical algorithms dequantized), this construction uses only classical data access, and Lemma 12 shows that even estimating a single kernel entry to 0.01 additive error is itself DLP-hard — so the speed-up cannot be classically simulated.
+
+**Critical assessment for the present hypothesis.** This is the strongest possible kind of "classical struggles, quantum wins" evidence: the classical lower bound is a *proof* (conditional on DLP hardness) covering all efficient classical learners, and the quantum upper bound is also proved end-to-end including noise. However, two caveats are decisive for a 20-30-qubit *simulable* demonstration. First, the separation is asymptotic and exists *only* in the regime where DLP is classically intractable, which requires p of hundreds of bits and therefore n = ceil(log2 p) qubits in the hundreds-to-thousands plus fault-tolerant Shor execution. At any classically simulable scale (<=30 qubits) the discrete log is trivially solvable, so there is no advantage to exhibit. Second, the task is admittedly artificial ("not practically motivated") and the feature map essentially embeds Shor's algorithm; the underlying DLP assumption, while standard, is unproven. There is no code, no simulation, and no empirical experiment. **Verdict:** indispensable as the conceptual and methodological anchor (QKE, provable separation, noise robustness), but it cannot itself serve as a simulable 20-30 qubit demonstration of advantage.
+
+#### huang2021_power_of_data
+
+**Huang, Broughton, Mohseni, Babbush, Boixo, Neven, and McClean (2021), "Power of data in quantum machine learning."**
+
+This Google/Caltech paper is the foundational reference for reasoning about *when* a quantum ML model can outperform a classical one given training data, and it is unusually balanced: it shows both that data often *erases* naive quantum advantage and how to *engineer* a genuine separation.
+
+**Core idea.** For a supervised task whose labels are generated by a quantum function f(x) = Tr(O_U rho(x)), the authors prove a concentration-based prediction-error bound E|h(x)-f(x)| <= c*sqrt(s_K(N)/N), where the model complexity s_K and an asymmetric *geometric difference* g(K1||K2) = ||sqrt(K2) K1^{-1} sqrt(K2)||_inf^{1/2} (computed by SVD of N x N kernel matrices) determine the achievable gap via s_C <= g_CQ^2 s_Q. Small g guarantees a classical model matches the quantum model *for any labels*; large g certifies the *existence* of a dataset with a quantum prediction advantage, which can be constructed explicitly by a generalized eigenvalue problem saturating s_C = g^2 s_Q. A complexity-theoretic argument (BPP ⊆ BPP/samp ⊆ P/poly) makes rigorous the claim that data can let classical algorithms solve problems outside BPP.
+
+**Projected quantum kernel.** The standard fidelity kernel Tr(rho(xi)rho(xj)) fails in the exponentially large Hilbert space: all states become nearly orthogonal (effective dimension d ~ N, g ~ 1), so classical ML matches or beats it. The authors instead *project* states back to a low-dimensional classical representation (1-RDMs / classical shadows), e.g. k_PQ = exp(-gamma * sum_k ||rho_k(xi) - rho_k(xj)||_F^2). This enlarges g while remaining hard to evaluate without a quantum computer.
+
+**Evidence.** Using TensorFlow-Quantum on PCA-reduced fashion-MNIST with three embeddings (E1 separable, E2 IQP-style, E3 Heisenberg-Trotter), they run what was then the largest gate-based QML simulation (~1.1 petaflop/s peak, ~2 exaflop total). On natural quantum-labeled data, no meaningful advantage appears (g small); on *engineered* datasets that saturate g, the projected quantum kernel beats **every** tested classical model — Gaussian/linear SVM, AdaBoost, random forest, neural nets, gradient boosting — by **>20% accuracy at up to 30 qubits**, with the gap tracking g and remaining stable across kernel-free classical methods. They prove a matching lower bound N >= Omega(Tr(O^2)/eps^2) for the quantum kernel, and exhibit a trivial linear function requiring N >= (1-eps)2^n samples for the quantum kernel versus O(n) classically — motivating the projected variant.
+
+**Relevance to the hypothesis (high).** This is the clearest existing demonstration of a *simulable* (≤30 qubit) empirical separation where classical ML struggles and a quantum method wins, plus a diagnostic (g) for finding such tasks. **Caveats are essential:** the simulable win is on *adversarially engineered* labels (not a natural task), g is minimized only over a finite classical-model suite, and the advantage diminishes as N grows. The only *rigorous* separation is the discrete-logarithm projected-kernel result (sample complexity O(log(1/eps)/eps^2), independent of n, via VC-dimension 3), which relies on Shor's algorithm and lives in the fault-tolerant regime rather than the 30-qubit simulable one. The paper explicitly cautions that true QML advantage claims must benchmark against classical *approximations* of quantum models, not just classical ML.
+
+#### havlicek2019_quantum_feature_spaces
+
+**Havlicek et al. (2019), "Supervised learning with quantum enhanced feature spaces"** (Nature 567:209-212; arXiv:1804.11326). This is a foundational paper for quantum kernel methods. The authors propose representing the feature space of a classification problem directly by a quantum state, mapping classical data x non-linearly into an n-qubit Hilbert space (dimension 4^n) via a feature map U_Phi(x) = U_Phi H^n U_Phi H^n, where U_Phi is a diagonal phase circuit built from single-qubit Z rotations and two-qubit ZZ (Ising) interactions (weight |S|<=2). They introduce two classifiers: (1) a **quantum variational classifier**, which applies a trainable short-depth circuit W(theta) (optimized with SPSA) to construct a separating hyperplane in quantum state space, and (2) a **quantum kernel estimator**, which uses the quantum device only to estimate the fidelity kernel K(x,z)=|<Phi(x)|Phi(z)>|^2 (via the all-zeros transition amplitude of U_Phi(z)^dag U_Phi(x)) and then solves the standard SVM dual on a classical computer.
+
+**Experimental setup and results.** Both methods are run on two qubits of a 5-qubit superconducting transmon processor, with first-order zero-noise (Richardson) extrapolation for error mitigation. The data is *artificially engineered* on (0,2pi]^2 to be perfectly separable by the chosen feature map (labels from a random V in SU(4) and the parity Z1Z2, with a separation gap Delta=0.3), with 20 points per label. The variational classifier's accuracy rises with circuit depth, reaching ~100% for depths l>1 and surviving to l=4 (8 CNOTs) despite decoherence. The kernel estimator achieves 100% success on Sets I and II and 94.75% on Set III (the latter degraded by lower readout fidelity ~94% and a larger negative-eigenvalue kernel weight of 2.41). Training used 2000 shots; classification 10000; kernel entries 50000. Device metrics: CNOT error 0.0373, single-qubit errors ~1e-3, readout fidelity ~95%.
+
+**Relevance to the hypothesis (high, with strong caveats).** The paper directly motivates the idea that quantum methods may excel where classical kernels struggle, and it carefully identifies the conditions: product-state and shallow (single-basis-change/IQP) feature maps are classically simulable and yield **no** advantage—indeed the authors give an explicit *dequantization* of the single-layer kernel (estimable to additive error eps via R~eps^-2 uniform samples). A potential advantage is claimed only for their two-basis-change map, whose kernel they **conjecture** (not prove) to be hard to estimate classically to additive polynomial error, by analogy to the hidden-shift/bent-function problem (an oracle query-complexity separation). Critically, the experiment demonstrates *hardware feasibility*, not a quantum advantage: no classical baseline is shown to fail on the (engineered, perfectly-separable) data, the advantage remains conjectural, and the demonstration uses only **2 qubits**—far below the >=20-qubit, classically-simulable regime of interest, and itself trivially simulable. The paper is thus best read as the conceptual blueprint (and the origin of the Qiskit ZZFeatureMap/QSVM) for the hypothesis, rather than as evidence that the hypothesis holds.
+
+#### peters2021_projected_kernel_hardware
+
+**Peters et al. (2021), "Machine learning of high dimensional data on a noisy quantum processor"** (FERMILAB-PUB-20-624-QIS; arXiv:2101.09581).
+
+*Note on naming:* despite the local slug, this paper implements a **standard fidelity quantum kernel** k(x_i,x_j)=|<phi(x_i)|phi(x_j)>|^2, not a *projected* quantum kernel.
+
+**Contribution.** The authors run a non-variational quantum-kernel SVM on Google's Sycamore superconducting processor to classify **real 67-dimensional supernova data** (PLAsTiCC type II vs type Ia, classes 42 vs 90) with **no dimensionality reduction** and **without vanishing kernel elements** - significantly higher input dimensionality than prior quantum-kernel hardware experiments.
+
+**Method.** A hardware-efficient "Type 2" encoding circuit (Hadamard plus three single-qubit Z/Y/Z rotations per qubit, interleaved with native sqrt-iSWAP entanglers along a length-n path) maps 3n features per layer, encoding d-dimensional data in O(d/n) hardware depth and crucially **decoupling qubit count from data dimension**. Kernel elements are estimated from the all-zeros bitstring probability of U_dagger(x_j)U(x_i); the m x m matrix is passed to a classical L2-penalized SVM with cross-validated encoding scale c1 and penalty C. The ansatz is engineered for **large kernel magnitudes (median |K_ij| >= 0.1)**, avoiding the exponential O(2^-n) concentration that plagues the alternative "Type 1" (Havlicek/Farhi-Neven-style) circuit with PCA compression. Readout error is mitigated with a Hamming-weight-truncated response-matrix pseudo-inverse, and qubits are chosen by an automated calibration-aware graph-traversal selector.
+
+**Setup & results.** Hardware runs used n in {10, 14, 17} qubits (Sycamore had 23 active, max 19 assignable), m=210 / v=70 train/test split, 5000 shots/circuit (~1.83x10^8 experiments per qubit count). Hardware **test accuracy ~0.63-0.70** is competitive with **noiseless simulation (~0.71-0.73 test)** and with a **classical RBF-SVM baseline (~0.78 validation on the learning curve)**, even at **circuit fidelity ~30%**. Robustness is attributed to the **scale-invariance of the SVM decision function** (K -> rK; hardware trends to r~0.29) - kernels are suppressed 50-70% by noise yet classification survives. Ablations show R=5000 shots cost only ~1-2% accuracy vs the infinite-shot limit (though ~50,000 shots are needed to fully match noiseless cv), and >90% of training points become support vectors under noise.
+
+**Critical assessment for the hypothesis.** This paper does **not** demonstrate a task where classical methods fail and quantum wins, and it does not claim to. Quantum accuracy is at best **comparable to**, never exceeding, the classical RBF baseline; both classifiers fail to reach 100% accuracy on the task (the only sense in which classical "struggles"). The authors **explicitly disclaim quantum advantage**: the Type 2 ansatz is "arbitrarily shallow in number of qubits," and the small-angle / c2->0 limits make it classically (or trivially) simulable. Experiments use at most **17 qubits**, below the hypothesis's 20+ threshold, and run on hardware rather than large-scale simulation. Any advantage is **conjectured**: the open problem they pose is to find a "natural" dataset with classically hard-to-represent correlations (e.g., quantum many-body or quantum-sensor data), and they defer the actual proposed/numerically-validated advantage to the cited companion work (Huang et al., "Power of data," ref [4], validated on up to 30 qubits in TensorFlow Quantum). 
+
+**Relevance: medium.** A landmark feasibility/baseline result for quantum-kernel SVMs on real high-dimensional data, valuable for circuit-design and noise-robustness lessons and as a pointer to the 30-qubit engineered-advantage line of work, but it neither uses >=20 qubits nor shows a classical-vs-quantum separation itself.
+
+#### glick2021_covariant_kernels
+
+**Glick, Gujarati, Córcoles, Kim, Kandala, Gambetta & Temme (IBM Quantum), "Covariant quantum kernels for data with group structure" (arXiv:2105.03406, 2021; Nature Physics 2024).**
+
+*Contribution.* This work introduces **covariant quantum kernels**, a family of quantum kernels tailored to data living in (a subset of) a group, X ⊆ G. A datum x is embedded via a unitary group representation Dx acting on a fiducial state |ψ⟩ = V|0^n⟩, yielding the feature state Φ(x) = Dx|ψ⟩⟨ψ|Dx† and the left-invariant fidelity kernel K(x,x̃) = |⟨ψ|Dx†Dx̃|ψ⟩|², estimated on hardware by quantum kernel estimation (the |0^n⟩→|0^n⟩ transition probability of V†Dx†Dx̃V). A central insight is that the *fiducial state* is the key degree of freedom: a poor choice (e.g. |0^n⟩) collapses the kernel to the useless identity matrix K = δ_{x,x̃}, while a subgroup-invariant state yields perfect separation. When no prior structure is known, |ψ⟩ is learned via a variational circuit Vλ optimized through **weighted kernel alignment** (an SPSA-driven min-max over the SVM dual objective).
+
+*Method & experiment.* The authors define a benchmark, **"labeling cosets with error" (LCE)**: data are drawn from two left-cosets C± = c±·S of a group and perturbed by small noise (ε = 0.01), and the learner must classify coset membership. They realize this with G = SU(2)^⊗27 and a graph-stabilizer subgroup matched to the device coupling graph, running on the 27-qubit heavy-hexagon processor *ibmq_kolkata* — to their knowledge the largest circuit width used for a quantum kernel at the time. Kernel alignment uses 10 points/label for training and 50 points/label for testing, 21 SPSA steps, 8,192 shots/circuit, with and without error mitigation.
+
+*Results.* Both mitigated and unmitigated runs reach **100% test accuracy after SPSA step 13**, with the variational parameter λ converging to its ideal value π/2; error mitigation accelerates convergence and lowers the alignment cost. The experiment is primarily a high-fidelity hardware/method validation rather than a benchmark of accuracy against classical learners.
+
+*Critical assessment of classical-vs-quantum separation.* The only **proven** advantage cited is the discrete-logarithm construction of Liu et al. over Z_p* (reviewed in Appendix B.1), shown to be a special case of the covariant kernel: conditional on DLOG hardness, no classical learner exceeds ½ + 1/poly(n) while the quantum kernel achieves near-perfect accuracy. Crucially, this is an **asymptotic, hardness-assumption-based, super-polynomial-scaling** separation — it is *not* the 27-qubit experiment, and it is inherently *not* classically simulable. The actual hardware demonstration (LCE) is an **engineered, zero-error benchmark** that the authors themselves acknowledge is **classically simulable**: the circuit is "sufficiently shallow so that classical simulation methods can be applied," exploiting the explicit 2D coupling structure (an advantage that "disappears for deeper circuits or other coupling topologies"). No classical ML baseline (e.g. RBF-SVM or a classical group kernel) is run on LCE; the classical-difficulty argument is only that advanced classical group kernels are expensive and usually Fourier-truncated.
+
+*Relevance to the hypothesis.* **High conceptual relevance, low empirical support for the simulable-advantage claim.** The paper makes a strong case that **group-/coset-structured data is a principled candidate domain** for quantum kernel advantage and ties it to a rigorous hardness-based separation. However, it does **not** exhibit a task where classical methods empirically fail and a *simulable* (≤30-qubit) quantum method wins: its 27-qubit instance is explicitly simulable and lacks a defeated classical baseline, while its provable separation lives in the non-simulable asymptotic regime under an unproven hardness assumption. It is best used as a methodological foundation (covariant kernels + kernel alignment + structured data), not as evidence of practical quantum advantage at small qubit counts.
+
+#### jerbi2023_beyond_kernel
+
+**Quantum Machine Learning Beyond Kernel Methods** (Jerbi, Fiderer, Poulsen Nautrup, Kübler, Briegel, Dunjko, 2023).
+
+**Contribution.** This paper provides a unifying framework that expresses all standard parametrized-quantum-circuit models — explicit (variational) models, implicit (quantum kernel) models, and data re-uploading models — as *linear models* f(x)=Tr[rho(x)O] in a quantum feature space. Its central technical result is an *exact* mapping from any data re-uploading model with D encoding gates to an equivalent explicit linear model, using O(D log(D/delta')) additional qubits via (nested) gate-teleportation gadgets, together with a matching Omega(D) lower bound (Corollary 1 / Theorem G.7) proving the mapping is essentially optimal.
+
+**Resource separations.** Using dimension-counting arguments (Hsu's theorem) on the concept class of k-sparse parity functions g_A(x)=prod_{i in A} x_i over {-1,1}^d, the authors prove (Theorem 2 / G.6) that to reach expected MSE epsilon<1/2: (i) any linear quantum model needs n >= d/4 + (1/2)log2(1-2epsilon) = Omega(d) qubits; (ii) any *implicit/kernel* model additionally needs M >= 2^{d/2}(1-2epsilon) = Omega(2^d) data samples; whereas (iii) a *single-qubit* data re-uploading model (depth 2d+1) achieves perfect expected loss with probability 1-delta using only M = 32 log(2d/delta) = O(log d) samples. This yields exponential separations in both qubits (explicit/re-uploading over implicit) and data (re-uploading over kernel methods).
+
+**Reinterpreting the representer theorem.** A key conceptual message is that the representer theorem only guarantees lower *regularized training* loss for kernel models; the authors show this expressivity causes severe *overfitting* and poor generalization. Their bit-string and gate-teleportation constructions yield kernels that collapse to (near-)Kronecker-delta functions, so the corresponding implicit model is classically simulable yet fails to generalize — directly dequantifying the apparent kernel advantage.
+
+**Numerical evidence.** On a "quantum-tailored" regression task (fashion-MNIST PCA-reduced to n dims, 2<=n<=12, re-labeled by a quantum explicit model with the Havlicek et al. encoding plus a hardware-efficient ansatz; M=1000 train, 100 test, 10 labelings), simulated in TensorFlow Quantum, implicit models drive training loss to ~0 at all sizes but generalize poorly. From n=7 qubits onward a clear *test-loss* separation emerges: tuned classical baselines (NN, linear/RBF kernels, random forest, gradient boosting, AdaBoost) become competitive with the quantum kernel models, but explicit variational quantum models clearly outperform both — showing that quantum advantage must not be assessed against kernel methods alone.
+
+**Critical assessment for the hypothesis.** The paper is highly relevant but its evidence is nuanced. (1) The *rigorous* separations are between quantum model classes, and the parity task is explicitly classically easy (learnable by a depth-2 neural net), so it is **not** a proven quantum-over-classical advantage. (2) The genuine quantum-vs-classical signal is the **empirical** fashion-MNIST gap on a fully simulable instance (<=12 qubits; no >=20-qubit or hardware experiments), but it is on a *deliberately quantum-relabeled* task whose encoding is only *conjectured* (not proven) classically intractable, the advantage is in test MSE rather than a complexity-theoretic hardness result, and no dequantization of the explicit-model advantage is given (nor is one ruled out). (3) The authors flag trainability caveats — barren plateaus for explicit models and exponential kernel concentration for implicit models — both of which can demand exponentially many measurements. Net: strong support for "kernel methods are not the right yardstick and variational/data-reuploading models can win," but the demonstrated wins are empirical and task-engineered, and the proven separations sit within the quantum-model family rather than establishing classical intractability. Code: https://github.com/sjerbi/QML-beyond-kernel.
+
+#### schuld2021_models_are_kernels
+
+**Schuld, M. (2021). "Supervised quantum machine learning models are kernel methods." arXiv:2101.11020.**
+
+This technical manuscript provides the theoretical backbone for reasoning about quantum-versus-classical separations in supervised QML. Schuld shows that essentially every supervised quantum model - a data-encoding circuit producing the state rho(x) = |phi(x)><phi(x)| followed by a measurement M, with prediction f(x) = tr[rho(x)M] - is exactly a *linear model* in the feature space of density matrices equipped with the Hilbert-Schmidt inner product. The induced "quantum kernel" is kappa(x,x') = tr[rho(x')rho(x)] = |<phi(x')|phi(x)>|^2. A central structural result is that the space of quantum models coincides with the reproducing kernel Hilbert space (RKHS) of this kernel. Consequently, via the representer theorem, the optimal measurement under regularised empirical risk minimisation is a kernel expansion in the training data, M_opt = sum_m alpha_m rho(x^m), with only M (number of training points) degrees of freedom rather than the O(2^(2n)) of a general n-qubit observable. Training reduces to an M-dimensional **convex** program - a support vector machine with a quantum kernel - which is guaranteed to reach better-or-equal minima than variational circuit training and sidesteps barren plateaus, at the cost of O(M^2) pairwise-distance computations.
+
+**Methodology and evidence.** The contribution is purely theoretical, supported by a sequence of theorems (linear-model equivalence, RKHS equivalence, representer theorem, convexity) and a Fourier-series characterisation of quantum kernels for Pauli / time-evolution encodings. Illustrations are toy single- or few-qubit embeddings (e.g., Pauli-X rotation giving a cos^2((x-x')/2) kernel) plotted with PennyLane. There are no accuracy benchmarks, no datasets beyond synthetic 1D-2D toy inputs, and no hardware or large-scale simulation experiments; no runs at >=20 qubits.
+
+**Relevance to the hypothesis (high, but cautionary).** The paper directly addresses "tasks where classical struggles but quantum excels" by *constraining* where such an advantage could come from: since any quantum model equals a classical kernel method plus a quantum kernel, "the separation between classical and quantum machine learning lies only in the ability of quantum computers to implement classically hard kernels." Crucially, this paper does **not** demonstrate such a task. Schuld is explicit that the only known classically-hard kernel (citing Liu-Arunachalam-Temme and Huang et al.) rests on a *conjectured* classically-hard computation, and that "it is still unclear whether any useful applications turn out to be enabled solely by quantum computers" and "the question of quantum kernels that are actually useful for every-day problems is still wide open." Many of the encodings surveyed are explicitly dequantizable: amplitude encoding yields |x^dagger x'|^2 (a linear kernel), rotation encoding yields a classical cosine kernel, and coherent-state encoding yields the classical Gaussian kernel - none of which offer any advantage. The separate O(M)-time quantum *training* speedup requires fault-tolerant hardware and strong data-loading (QRAM) oracle assumptions and is a runtime, not a learning-capability, claim. For the present hypothesis this implies a sobering caveat: a genuine quantum-wins separation requires a kernel that is hard to simulate classically, which generally lies outside the exact <=30-qubit simulation regime. Thus this paper supplies essential framing and rigor for scoping quantum-advantage claims, but offers no positive evidence of a simulable (<=30 qubit) task where classical methods fail and quantum methods win.
+
+#### kubler2021_inductive_bias_quantum_kernels
+
+**Kübler, Buchholz & Schölkopf (2021), "The Inductive Bias of Quantum Kernels" (NeurIPS 2021).**
+
+This paper provides a spectral-theoretic account of *when* quantum kernel methods can beat classical ones, framed through the classical lens of inductive bias rather than raw expressivity. Working with kernel ridge regression over the quantum kernel k(x,x') = Tr[ρ(x)ρ(x')], the authors decompose the integral operator into Mercer eigenvalues γ_i and eigenfunctions φ_i and tie learnability to kernel-target alignment and task-model alignment.
+
+Their central negative result (**Theorem 1**) is that a quantum kernel built from a sufficiently expressive embedding cannot generalize: if the per-coordinate mean-embedding purity Tr[ρ_μi²] ≤ δ < 1 as the number of qubits d grows and the sample size is only polynomial in d, then the largest eigenvalue is bounded by γ_max ≤ √(Tr[ρ_μ²]) and shrinks exponentially, so *no* target function can be learned (risk ≥ (1-ε)‖f‖²). An exponentially large feature space therefore implies a vanishing inductive bias — the same generalization failure classical kernels would suffer without bandwidth control.
+
+To recover an advantage they study *projected/biased* kernels q^V_m on m qubits (partial trace over the rest). For a Haar-random unitary V, **Theorem 2** shows the reduced kernel concentrates to 2^-m + O(2^-d/2), with one large eigenvalue (≈1/2 for m=1, a constant eigenfunction) and three exponentially small eigenvalues O(2^-d) whose eigenfunctions are *conjectured* to be classically hard to compute. A classical model cannot bias toward those functions, whereas the quantum model can — the proposed route to advantage.
+
+**Experiments (simulation only, d = 1–7 qubits, full state vector).** On an engineered synthetic task where labels come from measuring σ_z on the first qubit (f*(x)=Tr[ρ̃^V_1(x)σ_z], N=200, noise Var=10⁻⁴), the correctly-biased kernel q attains near-optimal test MSE (~10⁻⁴) flat across all d, with its first ~4 spectral components fully capturing f* (task-model alignment → 1; kernel-target alignment concentrated ~0.6 at d=7). In contrast, the full quantum kernel k and the classical RBF kernel k_rbf overfit (test MSE rising toward Var[f]≈1 as d increases), and a wrongly-biased kernel q_w underfits. This is the paper's concrete "classical struggles, quantum wins" demonstration.
+
+**Critical assessment for the hypothesis.** The advantage is real but constructed and conditional, not a generic classical-hardness result. (i) The classical hardness of the favorable eigenfunctions is *conjectured* (IQP-type), not proven. (ii) The required bias must be known a priori — one must already know the data came from a single-qubit observable — which is unrealistic for real classical datasets. (iii) The favorable eigenvalues are O(2⁻ᵈ), so Theorem 2a implies kernel estimation needs exponentially many measurements (a barren-plateau analogue); the advantage seen in exact simulation likely does not survive shot-based evaluation on hardware. (iv) The only classically-encodable bias here (the constant function via data centering) is already available to classical models. The empirical demonstration is confined to ≤7 simulable qubits — there is no ≥20-qubit study. The authors' own conclusion is deliberately sobering: a quantum advantage on classical datasets appears hard to come by, and the more plausible setting is data generated by a quantum process. Code: https://github.com/jmkuebler/quantumbias.
+
+**Relevance: High** — a foundational "conditions and caveats" paper that sharpens what a 20+-qubit simulated advantage would actually require, and warns that expressivity alone (and even exact-simulation success) does not establish a usable quantum advantage.
+
+#### abbas2021_power_qnn
+
+**Abbas, Sutter, Zoufal, Lucchi, Figalli & Woerner (2021) — "The power of quantum neural networks."**
+
+This influential paper asks whether quantum neural networks (QNNs) are genuinely *more powerful* than comparable classical neural networks, and answers via information geometry rather than VC-style arguments. The authors adopt the **effective dimension** d_{γ,n} — a data-dependent, Fisher-information-based capacity measure — and contribute a **novel generalisation bound** (Thm 3.2, extended to degenerate/non-full-rank Fisher matrices via a discretisation argument in Thm B.5). They additionally connect the **Fisher eigenvalue spectrum to the barren-plateau phenomenon**: a model in a barren plateau has Fisher eigenvalues concentrating at zero, so a spectrum that stays spread out signals trainability.
+
+**Models.** The QNN uses the second-order feature map of Havlíček et al. (Hadamard + RZ + RZZ, depth 2), *conjectured hard to simulate classically for depth ≥ 2*, followed by an RY/CNOT variational form and parity post-processing. It is benchmarked against (i) matched fully-connected classical feedforward nets (all topologies, several activations) and (ii) an "easy quantum model" ablation that swaps in a classically simulable angle-encoding feature map. Models are matched on parameter count d (≤100), input size s_in ∈ {4,6,8,10}, and output size s_out = 2.
+
+**Key findings.** For d=40, s_in=4, the QNN attains the **highest normalised effective dimension across all finite data sizes**, with a near-uniform Fisher spectrum that stays roughly constant as qubits grow; the classical model's spectrum is highly degenerate (eigenvalues ~10⁻¹⁴ with a few large outliers), and the easy quantum model is intermediate and degrades with qubit count. On Iris (d=8, ADAM, 100 iters, avg of 100 trials) the QNN reaches the lowest training loss **23.14%** vs **37.90%** (classical) and **43.05%** (easy quantum), with the highest Fisher-Rao norm (**117.84** vs 46.45 classical, ~250% higher). The advantage persists — indeed improves — when trained on real hardware using **4 qubits on the 27-qubit ibmq_montreal device**.
+
+**Critical assessment for the hypothesis (classical-hard / quantum-wins).** The demonstrated advantage is one of **capacity and trainability**, not a task where classical ML provably fails: on Iris all three models train and the QNN merely converges faster/lower. Crucially, the entire advantage rests on the feature map being **hard to simulate classically — a conjecture, not a proof** — and the simulable "easy quantum model" forfeits the advantage, underscoring that encoding choice, not quantumness per se, drives the result. Higher effective dimension is also a double-edged proxy (more capacity can harm generalisation), and the central theorem is a uniform-convergence upper bound rather than a learning separation. Finally, **all experiments use only 4–10 simulated qubits (and 4 on hardware)**, so the paper offers no evidence in the 20+ qubit regime central to this review and includes no comparison to quantum/classical kernels or dequantization. **Relevance: high** as a foundational motivation that well-designed QNNs *can* out-express and out-train matched classical nets, but the claimed advantage is empirical, small-scale, and conjectural rather than a proven classically-intractable task.
+
+#### schuld2021_data_encoding_fourier
+
+**Schuld, Sweke, and Meyer (2021), "The effect of data encoding on the expressive power of variational quantum machine learning models."** This foundational theory paper establishes the now-canonical result that a variational quantum model f(x)=⟨0|U(x,θ)^† M U(x,θ)|0⟩, built from layers of data-encoding blocks S(x)=e^{−ixH} interleaved with arbitrary trainable unitaries W, can be written *exactly* as a partial Fourier series f(x)=Σ_{ω∈Ω} c_ω e^{iωx}. Crucially, the accessible frequency spectrum Ω={Λ_k−Λ_j} is determined *solely* by the eigenvalues of the data-encoding Hamiltonian, while the Fourier coefficients c_ω are controlled by the rest of the circuit and the observable.
+
+**Key technical results.** (1) A single Pauli-rotation encoding (L=1) can only realize f(x)=A sin(2γx+B)+C — a degree-1 Fourier series — *irrespective of the number of qubits, the trainable unitaries, or the measurement*. (2) Repeating the encoding r times, either in parallel (L=1 tensor product) or sequentially (L=r layers), extends the model to a degree-r truncated Fourier series, with Ω_par=Ω_seq={−r,…,0,…,r}. (3) The spectrum size is bounded by K ≤ d^{2L}/2 − 1 (tightening to K=L for repeated single-qubit encodings), and arbitrary control of the K+1 coefficients requires at least M ≥ 2K+1 trainable parameters. (4) An asymptotic *universality theorem*: for any g∈L²([0,2π]^N) and ε>0, a multivariate L=1 model with a "universal Hamiltonian family" can achieve ‖f_{m'}−g‖₂ ≤ ε as the number of subsystems m→∞ — but only under the strong assumption that trainable blocks realize arbitrary global unitaries (potentially exponential depth).
+
+**Empirical illustration.** All experiments are PennyLane simulations on synthetic Fourier targets at very small scale (1 qubit in Fig. 3; r∈{1,3,5} qubits in Fig. 4). They confirm the theory: a degree-1 model fits a degree-1 target but fails after an x→2x rescaling (frequency mismatch) and cannot fit a degree-2 target; r=5 repetitions fit a degree-5 target almost perfectly. There are no real-world datasets, no classical ML baselines, and no experiments approaching 20 qubits.
+
+**Relevance to the hypothesis.** This paper is a high-value *foundational reference* for reasoning about what simulable variational models can express, but it provides **no evidence of a classical-hard / quantum-easy separation**. On the contrary, its core finding is that the learnable function class is exactly a classical Fourier series — a classically tractable, effectively dequantized object at the demonstrated scales. The universality result only *matches* the classical universal-approximation property of Fourier series, is asymptotic (Hilbert-space dimension → ∞), and is conditional on possibly-exponential-depth trainable blocks (the constant/log/poly-depth case is left open). The authors explicitly caution that comparisons to classical ML must use the *same* pre-processed features, implicitly warning against spurious advantage claims. In short: essential for understanding expressivity and frequency matching when designing 20+ qubit tasks, but it does not itself demonstrate quantum advantage.
+
+#### du2020_expressive_power_pqc
+
+**Du, Hsieh, Liu & Tao (2018/2020), "The Expressive Power of Parameterized Quantum Circuits."**
+
+This paper provides a foundational theoretical comparison of the expressive power of parameterized quantum circuits (PQCs) against classical generative neural networks for generative modeling. The authors map two PQC families — multilayer PQCs (MPQCs, with arbitrary CNOT connectivity) and tensor-network PQCs (TPQCs, with local connectivity) — onto tensor-network states (matrix product states and string-bond states), and use entanglement entropy (area- vs. volume-law scaling) as a proxy for representational capacity. Their central result (Theorem 3) establishes a strict ordering, **MPQC > DBM > long-range RBM > TPQC > short-range RBM**, given O(poly(N)) parameters. The headline separation (Theorems 6–7) is complexity-theoretic: any IQP circuit on N qubits with poly(N) commuting gates can be exactly compiled into an MPQC of O(N) blocks (each with <= 7N single-qubit gates and N-1 CNOTs), so by the Bremner–Jozsa–Shepherd hardness of classically sampling IQP, **MPQCs generate distributions that no classical neural network can sample efficiently and accurately unless the polynomial hierarchy collapses.** The paper additionally introduces ancillary-driven MPQCs and a Bayesian Quantum Circuit (BQC) — a post-selection construction (equivalent in power to post-IQP) that can explicitly learn prior, likelihood, and posterior distributions, which the authors highlight as the first PQC able to learn prior distributions from data for semi-supervised settings.
+
+Empirically, the work is small-scale and runs only in simulation on Rigetti's pyQuil Quantum Virtual Machine (no hardware). On the Bars-and-Stripes (BAS) generative benchmark, BQC reaches 99.96% accuracy on 2x2 images (7 qubits: 4 data + 3 ancilla, 48 params) and 98.65% on 3x3 images (13 qubits: 9 data + 4 ancilla, 112 params), versus QCBM (98.46% / 65.36%) and DDQCL (83.82% / —). A toy 8-qubit (7 data + 1 ancilla) prior-learning task recovers target class priors accurately when using an unbiased gradient estimator (e.g., learning 0.701 vs. target 0.70 at infinite shots, variance 6.12e-10), while a naive optimizer fails.
+
+**Relevance to the hypothesis (medium–high).** The paper supplies one of the cleanest *theoretical* separations between quantum and classical generative models, making it a strong motivational reference. However, it offers no direct support for the specific claim that *simulable, 20+-qubit* quantum methods empirically outperform classical ML: (i) the separation is asymptotic and complexity-theoretic (sampling expressivity, not learning/generalization), and is conditional on PH non-collapse; (ii) the provably-hard IQP instances are not demonstrated in the <=30-qubit simulable regime, and the instances actually run (7–13 qubits) are trivially classically simulable; (iii) all empirical comparisons pit BQC against *other quantum circuits* (QCBM, DDQCL), not against trained classical generative models, so the 99.96% vs. 98.46% gap is not classical-vs-quantum evidence; and (iv) the entanglement-entropy argument is a coarse representational proxy with no efficient-trainability guarantee. In short, a proven in-principle expressivity advantage, but not an empirical demonstration of a simulable quantum win over classical baselines.
+
+#### gao2022_quantum_generative
+
+**Gao, Anschuetz, Wang, Cirac, Lukin (2022) — "Enhancing Generative Models via Quantum Correlations"** (arXiv:2101.08354; Phys. Rev. X).
+
+*Contribution.* This paper isolates the physical origin of quantum advantage in generative modeling by introducing a *minimal* quantum extension of classical Bayesian networks. Starting from Bayesian Quantum Circuits (BQCs), which exactly reproduce a Bayesian network's distribution under computational-basis measurement, they define **Basis-enhanced BQCs (BBQCs)**, which change only the local measurement basis. BBQCs remain special tensor networks (MPS/MPO), so the quantum "ingredient" is added with minimal overhead and the source of any advantage can be pinpointed.
+
+*Theory.* They prove two **unconditional** expressivity separations under a finite forward/reverse KL-divergence error model: (1) **Nonlocality (Theorem 1):** a basis-enhanced 2-gram model (a cluster state measured in X/Y embedding a GHZ state) cannot be approximated by any classical *k*-gram model with k = o(n), giving a 2-vs-O(n) separation. (2) **Contextuality (Theorem 2):** a basis-enhanced HMM with state space D requires D^Ω(log D) classical hidden units, proven via the Mermin–Peres magic square and the impossibility of common hidden variables across a contextual triple of stabilizer states. They also restate a **conditional** complexity result (Theorem 3): for 2D Bayesian networks (square-lattice cluster states), no polynomial-size classical Bayesian network can reproduce the distribution to multiplicative error unless the polynomial hierarchy collapses (#P ⊆ Σ₂ᵖ/poly).
+
+*Experiments.* Because the 1D models are classically simulable, both classical HMMs and basis-enhanced 2-gram models are trained directly (via a unitary/Riemannian gradient-descent variant) on three real datasets: **biofam** (n=16, M=8; local-structure control), **Promoter Gene Sequences** (n=57, M=4), and **SPECT Heart** (n=23, M=2), sweeping bond dimension h = 2–12. The basis-enhanced model achieves lower train and test KL on Promoter and SPECT (improvements up to roughly 2.5 and 1 bits, respectively, at h=12) and ties on biofam as expected. A likelihood-ratio test, which accounts for the quantum model's extra parameters, rejects the "collapses-to-classical-HMM" null at **>5σ** on both non-local datasets, and the gap persists in average (not just best-of-ten) performance.
+
+*Critical assessment for the hypothesis.* This is a strong, rare example of an **unconditional, mechanistically-explained** expressivity gap between classical and quantum-correlation-enhanced generative models, validated on real data. However, several caveats temper its support for the specific hypothesis of "simulable (≤30-qubit) quantum beats classical": (i) every empirical result and both unconditional theorems use **1D tensor networks (MPS/MPO) that are efficiently classically simulable** — the authors themselves frame these as *quantum-inspired classical* algorithms, so a classical computer runs both the "quantum" and classical sides; this is effectively a dequantized advantage. (ii) The only construction that genuinely needs a quantum computer (2D cluster states) is **conditional** (polynomial-hierarchy, multiplicative-error) and is **not simulated or benchmarked**. (iii) No ≥20-qubit simulator or hardware experiment is reported; qubit counts are implicit (each variable ≈ 2 qubits) and the models are evaluated as bond-dimension-≤12 MPS rather than statevector. (iv) The finite-KL error model is idealized and the measured empirical gap, while significant, is modest (1–2.5 bits). **Relevance: medium** — valuable as theoretical grounding for *why* quantum correlations help and as a cautionary datapoint that many generative "quantum advantages" reduce to classical tensor networks; less directly a demonstration of large-qubit simulated quantum dominance.
+
+#### lloyd2020_quantum_embeddings
+
+**Lloyd, Schuld, Ijaz, Izaac & Killoran (2020), "Quantum embeddings for machine learning" (arXiv:2001.03622).**
+
+This work reframes variational quantum classification as a *quantum metric-learning* problem. Standard variational quantum classifiers fix a data-encoding feature map and train a measurement (a variational circuit followed by a Pauli-Z readout). Lloyd et al. argue this is backwards: since the post-embedding unitary is merely a linear change of measurement basis, almost all of the nonlinear discriminating power lives in the *embedding*. They therefore propose training the feature map itself to **maximally separate the class density matrices rho and sigma in Hilbert space**, after which the optimal classifying measurement is known in closed form—the Helstrom (minimum-error) projection for the trace/l1 distance, and a simple fidelity/overlap measurement for the Hilbert-Schmidt/l2 distance. This eliminates the expensive trainable measurement, a meaningful saving for near-term hardware. Concretely, the linear-loss empirical risk equals -D_hs for the fidelity classifier and -2 D_tr for the Helstrom classifier, so maximizing the respective Hilbert-space distance directly minimizes risk; the training cost C = 1 - (1/2)D_hs is estimable via SWAP or inversion tests. The l2/Hilbert-Schmidt route is favored because it needs far shallower circuits and naturally yields low-rank, tight clusters that aid generalization and reduce sample complexity.
+
+**Method and experiments.** Embeddings use a QAOA-inspired ansatz (input-encoding Rx rotations, trainable ZZ Ising entanglers, Ry "local fields", optional latent qubits), trained in PennyLane with classical gradient descent. Demonstrations are illustrative and tiny: a 2-qubit, 4-layer map on the 2-D "moons" dataset (500 RMSProp steps, final cost 0.28 for l1 / 0.55 for l2); a single-qubit map on a synthetic non-linearly-separable 1-D set (200 steps) that becomes linearly separable on the Bloch sphere; and a hybrid ResNet-to-2-D-to-quantum pipeline on "ants vs bees" images that, after 1500 Adagrad steps, "perfectly" separates the classes in quantum feature space. No accuracy figures, dataset sizes, or classical baselines are reported, and all experiments are at 1-2 qubits and analytically simulated.
+
+**Assessment for the hypothesis.** The paper offers a principled, resource-efficient framework that is attractive for simulation studies, but it provides **no evidence of a task where classical ML fails and quantum wins**. The authors explicitly decline to claim advantage, calling "the existence of a useful quantum advantage... an open question." The advantage argument is purely complexity-theoretic—deep QAOA/IQP-style embeddings are conjectured classically intractable "unless BQP=P"—and concerns the hardness of *simulating the embedding*, not a demonstrated learning or generalization gain. That intractability claim moreover targets ~50+ qubit, depth-O(n) circuits, outside the 20-30 qubit simulable regime of interest and far beyond the 1-2 qubit experiments actually run. Its value here is as conceptual scaffolding (known-optimal measurements, distance-maximizing embeddings, maximum-mean-discrepancy connection) rather than as empirical support. **Relevance: medium.**
+
+#### jerbi2023_shadows_qml
+
+**Jerbi, Gyurik, Marshall, Molteni & Dunjko (2023/2024), "Shadows of quantum machine learning."**
+
+This theoretical paper addresses a deployment obstacle in QML: even after training, most quantum models still need a quantum computer at inference time. The authors introduce **shadow models** — models trained (and "shadowed") on a quantum computer but evaluated entirely classically on new data. The key device is to express every standard QML model as a quantum linear model `f_θ(x)=Tr[ρ(x)O(θ)]` and then define a **flipped model** `f_θ(x)=Tr[ρ(θ)O(x)]`, swapping the parametrized state and the data-encoding observable. Because `ρ(θ)` is now a genuine quantum state, classical-shadow tomography produces a classical description (advice `ω(θ)`, independent of future inputs) that a polynomial-time classical algorithm uses at deployment. They prove (Lemma 4) that flipped models are *shadow-universal*: every shadowfiable model is captured by a shadowed flipped model, and they characterize the class as `BPP/qgenpoly` (classical poly-time with quantum-generated poly advice).
+
+**Main claims.** (i) *Quantum advantage (Theorem 1):* on a discrete-cube-root learning task over `Z_N` (an RSA-style trapdoor function), a shadow model — using Shor's algorithm during the quantum shadowing phase to recover the trapdoor key, then a single computational-basis measurement — achieves arbitrarily good accuracy, while **any fully classical learner cannot beat random guessing**, under the discrete-cube-root (DCR) hardness assumption. (ii) *Beyond Fourier:* the alternative "classical surrogate" approach of Schreiber et al. and Landman et al. can require `Ω(2^n)` queries (database-search lower bound) on a task that flipped-shadowing solves with one measurement, showing shadow models strictly generalize Fourier surrogates. (iii) *Not all models are shadowfiable (Theorem 5):* under `BQP ⊄ P/poly`, models computing the discrete logarithm are not shadowfiable, placing shadow models strictly between classical (`BPP`) and fully quantum (`BQP`) models. They also give operational generalization bounds (training size `M ~ Õ(n·‖O‖_∞² / (ε·η²))`, linear in qubit count `n`, quadratic in spectral norm) and shadow-cost bounds (`Õ(3^k B² ε^{-2})` measurements for `k`-local Paulis).
+
+**Assessment for the hypothesis ("classical struggles, quantum wins via ≥20-qubit simulation").** The paper *does* exhibit a task where classical methods provably fail and a quantum-enabled model wins — but with major caveats relative to our specific framing. The separation is **conjectural-hardness-based** (DCR/RSA, akin to Liu–Arunachalam–Temme 2021), **not empirical**: the paper contains **no datasets, no simulations, no hardware, and no qubit counts** beyond a generic parameter `n`, and explicitly states no data were generated. The quantum resource that defeats the classical learner is **Shor's algorithm on computational-basis states**, not a many-qubit *variational simulation*, so the result neither requires nor demonstrates the 20+-qubit simulable regime central to our hypothesis. The authors themselves call the trapdoor task "somewhat contrived" and flag physically-relevant instantiations (e.g., predicting ground-state properties) as future work. **Relevance: medium** — valuable as a rigorous conceptual anchor for the existence of classical-deployment quantum advantage and for the `BPP < BPP/qgenpoly < BQP` taxonomy, but it offers no simulable, numerical, or large-qubit evidence and should be cited for framing rather than as empirical support. *Code/data: none.*
+
+#### tang2019_dequantization_recommendation
+
+**A quantum-inspired classical algorithm for recommendation systems** (Ewin Tang, 2019).
+
+This is the foundational "dequantization" result and serves as important counter-evidence to the hypothesis that there exist practically relevant tasks where classical ML struggles but quantum ML excels. Tang targets the Kerenidis-Prakash (KP17b) quantum recommendation system, which at publication was exponentially faster than the best known classical algorithms and was regarded (e.g., in Preskill's survey) as one of the strongest candidates for a provable exponential QML speedup. Tang gives a *classical* algorithm performing the same task — drawing an l2-norm sample from a designated row of a low-rank approximation of the input matrix — in time independent of the matrix dimensions m and n, only *polynomially* slower than the quantum algorithm.
+
+**Method.** The key insight is that the dynamic data structure KP use to satisfy quantum *state-preparation* assumptions equally supports classical *l2-norm sampling* assumptions (with only O(log mn) overhead). l2-norm sampling distributions play the role of quantum superpositions. The algorithm runs ModFKV (a variant of Frieze-Kannan-Vempala 1998) to produce a constant-sized description of a low-rank approximation D = A V-hat V-hat^T, then uses inner-product estimation and rejection sampling to emit a sample eps-close in total-variation distance to the quantum output distribution.
+
+**Results.** Theorem 1 gives runtime O(poly(k) polylog(m,n)), independent of m,n (explicitly O~(||A||_F^24 σ^-24 ε^-12 η^-6 · log(mn) · ||A_i||^2/||D_i||^2)); the only essential gap versus the quantum algorithm is poly(1/ε) vs log(1/ε) error dependence. Theorem 2 shows the resulting recommendation quality matches KP17b up to constant factors. The conclusion is that the quantum recommendation algorithm does **not** give an exponential speedup.
+
+**Evaluation type.** Purely theoretical: proofs only, no experiments, no datasets, no code, and **no qubits** (nothing is simulated or run on hardware). The fairness of the comparison hinges on matching the quantum state-preparation assumption with a classical l2-norm-sampling assumption — a framework Tang proposes for all such comparisons.
+
+**Caveats / relevance.** The classical algorithm has large exponents and constants, restrictive model assumptions (it must know a constant fraction of the full preference matrix, with data pre-loaded into a sampling data structure), and is acknowledged to be impractical to deploy directly. Nonetheless, for the literature review this paper is high-relevance negative evidence: it rigorously demonstrates that a flagship "quantum-advantage" ML task is efficiently classically solvable, and establishes the l2-norm-sampling baseline that any candidate quantum-advantage claim on low-rank linear-algebra / recommendation tasks must now surpass.
+
+
+
+════════════════════════════════════════════════════════════════════════════════
+                          PAPER REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+Generate a complete academic paper with the following structure:
+
+1. TITLE
+   - Clear, specific, informative
+   - Should convey main finding or contribution
+
+2. AUTHOR
+   - Use this exact author line in the \author{} block: Chenhao Tan and NeuriCo
+
+3. ABSTRACT (150-250 words)
+   - Problem statement
+   - Approach
+   - Key results
+   - Significance
+
+4. INTRODUCTION
+   - Research problem and motivation
+   - Gap in existing work
+   - Our contribution (be specific)
+   - Paper organization
+
+5. RELATED WORK
+   - Organized by theme/approach
+   - Position our work relative to prior work
+   - Cite papers from literature review
+
+6. METHODOLOGY
+   - Clear description of approach
+   - Experimental setup
+   - Datasets used
+   - Evaluation metrics
+   - Baselines
+
+7. RESULTS
+   - Present results with tables and figures
+   - Statistical analysis
+   - Comparison to baselines
+   - Ablation studies (if applicable)
+
+8. DISCUSSION
+   - Interpretation of results
+   - Limitations
+   - Broader implications
+
+9. CONCLUSION
+   - Summary of contributions
+   - Key findings
+   - Future work
+
+10. REFERENCES
+   - BibTeX format
+   - All cited papers
+
+════════════════════════════════════════════════════════════════════════════════
+                          OUTPUT FORMAT
+════════════════════════════════════════════════════════════════════════════════
+
+Create a MODULAR LaTeX project with the following directory structure:
+
+paper_draft/
+├── main.tex              # Main file that imports all sections
+├── references.bib        # BibTeX references
+├── sections/
+│   ├── abstract.tex      # Abstract content
+│   ├── introduction.tex  # Introduction section
+│   ├── related_work.tex  # Related work section
+│   ├── methodology.tex   # Methodology section
+│   ├── results.tex       # Results section
+│   ├── discussion.tex    # Discussion section
+│   └── conclusion.tex    # Conclusion section
+├── figures/              # Directory for any generated figures
+├── tables/               # Directory for complex standalone tables
+└── appendix/             # Directory for appendix sections (if needed)
+
+INSTRUCTIONS:
+1. First, create the directory structure above (mkdir -p paper_draft/sections paper_draft/figures paper_draft/tables paper_draft/appendix)
+2. Write main.tex using the EXACT preamble for NEURIPS:
+
+   \documentclass{article}
+   \usepackage[final]{neurips_2025}  % NEURIPS style (neurips_2025.sty is in paper_draft/)
+   \usepackage[hidelinks]{hyperref}  % REQUIRED: clickable links
+   \usepackage{booktabs}  % REQUIRED: professional tables
+   \usepackage{graphicx}
+   \usepackage{amsmath,amssymb}
+
+   % Import command files
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+   % Use this bibliography style:
+   \bibliographystyle{plainnat}
+
+   \author{Chenhao Tan and NeuriCo}
+
+   - Use \input{sections/...} to include each section
+   - Use \bibliography{references} for references
+3. Write each section file with COMPLETE content (no placeholders)
+4. Each section file should include its \section{} command
+5. Write references.bib with all citations in BibTeX format
+6. After writing all files, compile the paper:
+   cd paper_draft && pdflatex -interaction=nonstopmode main.tex && bibtex main && pdflatex -interaction=nonstopmode main.tex && pdflatex -interaction=nonstopmode main.tex
+
+This modular structure allows humans to easily:
+- Edit individual sections without navigating a large file
+- Track changes per section
+- Reuse sections across different paper versions
+
+════════════════════════════════════════════════════════════════════════════════
+                          QUALITY REQUIREMENTS
+════════════════════════════════════════════════════════════════════════════════
+
+- Academic tone throughout
+- All claims must be supported by data from the experiment report
+- Proper citations using \cite{} commands
+- Clear figures and tables with proper captions
+- NO placeholder text - every section must have real content
+- The paper MUST compile without errors
+- If compilation fails, debug and fix the LaTeX errors
+
+════════════════════════════════════════════════════════════════════════════════
+                          LAB WRITING STYLE
+════════════════════════════════════════════════════════════════════════════════
+
+Follow these lab-specific conventions to match our paper style:
+
+1. LANGUAGE STYLE:
+   - Use active voice: "We propose", "We examine", "We focus on"
+   - Be direct and confident: "Our main question is...", "We hypothesize that..."
+   - State things clearly and simply - prefer plain language over jargon
+   - Use bold questions as paragraph organizers: {\bf what is X?}
+   - Include specific quantitative claims: "8.97% over baseline"
+   - Avoid fancy wording: "utilize" → "use", "facilitate" → "help"
+
+2. INTRODUCTION STRUCTURE:
+   - Engaging hook (get to the point quickly)
+   - Problem importance
+   - Gap identification
+   - Your approach with method figure reference
+   - Quantitative preview of results
+   - Contribution bullets (3-4 items, action verbs)
+
+3. CONTRIBUTION LISTS:
+   \begin{itemize}[leftmargin=*,itemsep=0pt,topsep=0pt]
+       \item We propose...
+       \item We conduct...
+       \item We complement...
+   \end{itemize}
+
+4. MODULAR COMMANDS STRUCTURE:
+   Command templates are pre-copied to paper_draft/commands/:
+   - math.tex: Math notation macros
+   - general.tex: Formatting macros
+   - macros.tex: Project-specific term definitions (customize this for your paper)
+
+   In main.tex, include:
+   \input{commands/math}
+   \input{commands/general}
+   \input{commands/macros}
+
+5. REFERENCE CONVENTIONS:
+   Use reference macros from math.tex:
+   - \figref{fig:name} for "figure 1" (lowercase, in-sentence)
+   - \Figref{fig:name} for "Figure 1" (capitalized, start of sentence)
+   - \secref{sec:name} for "section 2"
+
+6. TEXT FORMATTING:
+   - Use \para{Header text} for bold paragraph headers
+   - Define method/dataset names with \textsc and \xspace:
+     \newcommand{\methodname}{\textsc{MethodName}\xspace}
+
+7. TABLE FORMATTING:
+   - Use booktabs package (no vertical lines)
+   - Use \resizebox{\textwidth}{!}{...} for wide tables
+   - Use @{} to remove padding at table edges
+   - Use \cmidrule(lr){x-y} for sub-headers
+   - Use \textsc{} for dataset/method names in headers
+   - Bold best results with {\bf ...}
+
+8. FIGURE FORMATTING:
+   - Use 0.32\textwidth for 3-column subfigures
+   - Use 0.95\linewidth for full-width figures
+   - Use \input{figures/legend} for shared legends
+   - Write self-contained captions explaining key observations
+
+9. RESULTS PRESENTATION:
+   - Define \increase and \decrease for colored arrows (green up, red down)
+   - Bold best results in tables
+   - Report confidence intervals when available
+
+10. ALGORITHM STYLING:
+    - Use algpseudocode with [noend]
+    - Use \triangleright for comments
+
+11. HYPERLINKS (REQUIRED):
+    - Always use \usepackage[hidelinks]{hyperref} or with colored links
+    - All citations, section refs, figure refs, table refs must be clickable
+    - This is essential for reader navigation
+
+════════════════════════════════════════════════════════════════════════════════
+                          WORKFLOW: REVIEW AND REFLECT
+════════════════════════════════════════════════════════════════════════════════
+
+Before calling finish, you MUST complete these review steps:
+
+1. REVIEW RESOURCES (at the start):
+   - Read .claude/skills/paper-writer/SKILL.md for detailed guidance
+   - Study templates/paper_writing/lab_style_guide.md for style conventions
+   - Browse paper_examples/ for formatting and language patterns
+
+2. SELF-REFLECTION (before finishing):
+   After writing all sections, review your work against these criteria:
+
+   LANGUAGE CHECK:
+   - [ ] Is the writing clear and jargon-free?
+   - [ ] Are claims specific with quantitative support?
+   - [ ] Is active voice used throughout?
+
+   FORMATTING CHECK:
+   - [ ] Does main.tex include \input{commands/math}, \input{commands/general}, \input{commands/macros}?
+   - [ ] Is hyperref package included for clickable references?
+   - [ ] Do tables use booktabs (no vertical lines)?
+   - [ ] Are best results bolded in tables?
+   - [ ] Are figures/tables properly captioned?
+
+   STRUCTURE CHECK:
+   - [ ] Does introduction follow: hook → importance → gap → approach → preview → contributions?
+   - [ ] Are contribution bullets specific with action verbs?
+   - [ ] Does the paper compile without errors?
+
+3. FIX ISSUES:
+   - Address any issues found in the self-reflection
+   - Re-compile and verify the PDF looks correct
+
+Only after completing this review should you consider the paper finished.

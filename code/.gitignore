@@ -1,0 +1,6 @@
+# Cloned upstream repos are large and reproducible via the clone commands in
+# README.md — exclude from git, keep only the documentation.
+pennylane/
+qiskit-machine-learning/
+!README.md
+!.gitignore

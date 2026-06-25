@@ -1,0 +1,25 @@
+\begin{table}[t]
+    \centering
+    \caption{\textbf{Experiment~A, engineered task at $n=20$ qubits (seed $0$).}
+    Test and train accuracy (mean $\pm$ std over $10$ stratified splits). Chance
+    is $0.50$. The projected quantum kernel generalizes; the fidelity quantum
+    kernel concentrates to chance despite perfect train accuracy, exactly like the
+    over-parameterized classical models. Best test result in \textbf{bold}.}
+    \label{tab:exp_a_headline}
+    \begin{tabular}{@{}lccl@{}}
+        \toprule
+        \textbf{Model} & \textbf{Test acc.} & \textbf{Train acc.} & \textbf{Note} \\
+        \midrule
+        \textbf{Quantum: Projected kernel} & \textbf{0.865} {\scriptsize $\pm$ 0.043} & 1.000 & generalizes \\
+        \midrule
+        Classical: Gradient Boosting & 0.629 {\scriptsize $\pm$ 0.035} & 1.000 & best classical \\
+        Classical: Random Forest & 0.607 {\scriptsize $\pm$ 0.046} & 1.000 & \\
+        Classical: Logistic Reg. & 0.496 {\scriptsize $\pm$ 0.046} & 0.639 & chance \\
+        Quantum: \emph{Fidelity} kernel & 0.493 {\scriptsize $\pm$ 0.000} & 1.000 & concentrates $\to$ chance \\
+        Classical: Linear-SVM & 0.489 {\scriptsize $\pm$ 0.051} & 0.650 & chance \\
+        Classical: RBF-SVM (tuned) & 0.489 {\scriptsize $\pm$ 0.029} & 0.798 & chance \\
+        Classical: RBF kernel (precomp.) & 0.479 {\scriptsize $\pm$ 0.055} & 0.789 & chance \\
+        Classical: MLP & 0.436 {\scriptsize $\pm$ 0.045} & 1.000 & overfits below chance \\
+        \bottomrule
+    \end{tabular}
+\end{table}

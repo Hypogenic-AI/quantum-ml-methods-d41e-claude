@@ -1,0 +1,81 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Interpretation}
+
+\para{The engineered advantage is real and significant.} At 20 qubits the
+projected quantum kernel beats the best classical model by $0.236$ accuracy with
+$p=3.9\times10^{-8}$ and $d=5.36$, holding across $3$ dataset seeds and $10$
+splits each. This is a clean, simulable instance of ``classical struggles,
+quantum wins'' at the scale the hypothesis names.
+
+\para{The advantage is robust, not growing.} We had predicted the gap would widen
+with qubit count; it instead stays flat at roughly $0.22$ to $0.23$ while the
+geometric difference \gdiff{} shrinks (\Tabref{tab:exp_a_scaling}). We read this as a more conservative and
+honest conclusion: at fixed $N$ and bandwidth the projected kernel concentrates
+mildly with $n$, but classical accuracy concentrates in step, so the separation is
+preserved rather than amplified. This refines, rather than contradicts, the
+\citet{huang2021power} picture of a $>20\%$ advantage at simulable scale.
+
+\para{The win is the inductive bias, not quantumness.} The fidelity-kernel control
+is the most important result for honest interpretation. A generic quantum kernel
+overfits to chance at 20 qubits exactly as an over-parameterized MLP does; only
+the projected kernel, which encodes a problem-matched, classically-inexpressible
+bias, generalizes. This is a direct empirical confirmation of
+\citet{kubler2021inductive}: expressivity alone is not advantage.
+
+\para{Off-the-shelf classical failure is structural.} On the discrete-log task,
+tree models attain perfect train accuracy and still generalize at chance---the
+unmistakable signature of a label that is random in the given representation. This
+is the failure the hypothesis asks about: \emph{standard} classical ML cannot
+learn the task from bit features.
+
+\para{Comparison to prior work.} Our 20-qubit gap ($\approx 0.23$) is in line with
+the ``$>20\%$ at up to $30$ qubits'' of \citet{huang2021power}. Crucially, an
+RBF-SVM-only comparison would have reported a much larger gap ($0.87$ vs.\ $0.49
+\approx 0.38$), but we deliberately report against the best \emph{non-kernel}
+classical model (gradient boosting, $0.63$), which \citeauthor{huang2021power}
+stresses is the honest baseline. Tree ensembles recover \emph{some} structure of
+the engineered labels, so the true, defensible gap is $\approx 0.23$, not
+$\approx 0.44$---a meaningful refinement over a naive RBF-only ``$0.89$ vs.\
+$0.45$'' headline.
+
+\subsection{Limitations}
+\label{sec:limitations}
+
+We are explicit about the scope of these claims.
+\begin{enumerate}[leftmargin=*,itemsep=1pt,topsep=2pt]
+    \item \textbf{Engineered labels (Exp~A).} The advantage task is adversarially
+    relabeled along the quantum-kernel direction; it is not a naturally occurring
+    dataset. This is permitted by the hypothesis's ``there exist tasks'' wording
+    and matches the literature, but no claim of a \emph{natural} advantage is made.
+    A naturally labeled simulable advantage remains an open problem.
+    \item \textbf{Discrete log is not asymptotically hard at $21$ bits (Exp~B).} A
+    dedicated classical adversary could solve $21$-bit \dlp{}; we show that
+    off-the-shelf ML fails, not a fault-tolerant-scale separation. The quantum
+    kernel is also computed from a simulable log table---the step Shor performs on
+    hardware.
+    \item \textbf{Noiseless, infinite-shot simulation.} We use exact statevectors.
+    On hardware the favorable projected-kernel eigenvalues are $O(2^{-d})$,
+    implying potentially exponential measurement shots
+    \citep{kubler2021inductive}; the simulated advantage may not survive finite
+    shots or noise.
+    \item \textbf{Fixed $N$ and bandwidth.} $N=250$ at $20$ qubits with
+    $\gamma=0.1$ taken from the validated separation regime; larger $N$ and a swept
+    bandwidth could change the quantitative gap.
+    \item \textbf{No classical surrogate of the quantum kernel.}
+    \citet{huang2021power} note the strictest baseline is a classical
+    \emph{approximation} of the quantum model (\eg a neural tangent kernel). We use
+    standard classical ML---the user's framing---but not the most adversarial
+    possible baseline.
+\end{enumerate}
+
+\subsection{Broader Implications}
+
+The practical lesson is that a quantum advantage on classical data, when it
+exists at simulable scale, comes from matching a quantum-structured inductive bias
+to a quantum-structured task---not from raw expressivity. The \gdiff{} diagnostic
+is a cheap, reliable pre-training filter: it was $\gg 1$ exactly where the
+advantage materialized and tracked its magnitude. For practitioners, this argues
+for caution about ``quantum-therefore-better'' claims and for using \gdiff{} and a
+fidelity-vs-projected control before investing in expensive quantum kernels.

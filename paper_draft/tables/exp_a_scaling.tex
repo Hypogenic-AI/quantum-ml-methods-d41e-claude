@@ -1,0 +1,19 @@
+\begin{table}[t]
+    \centering
+    \caption{\textbf{Experiment~A, scaling across qubit count} (mean $\pm$ std over
+    $3$ dataset seeds, $10$ splits each). The projected-quantum advantage $\Delta$
+    is stable at $\approx 0.22$--$0.23$ from $8$ to $20$ qubits. The geometric
+    difference \gdiff{} shrinks as the Hilbert space dilutes the projected
+    distances but stays $\gg 1$. The fidelity kernel reaches chance by $n=20$.
+    Best per-row in \textbf{bold}.}
+    \label{tab:exp_a_scaling}
+    \begin{tabular}{@{}cccccc@{}}
+        \toprule
+        $n$ \textbf{qubits} & \textbf{Projected quantum} & \textbf{Best classical} & \textbf{$\Delta$ (gap)} & \textbf{\gdiff} & \textbf{Fidelity kernel} \\
+        \midrule
+        $8$  & \textbf{0.919} {\scriptsize $\pm$ 0.029} & 0.699 {\scriptsize $\pm$ 0.053} & $+0.220$ & 22.6 & --- \\
+        $10$ & \textbf{0.915} {\scriptsize $\pm$ 0.013} & 0.687 {\scriptsize $\pm$ 0.046} & $+0.228$ & 13.9 & --- \\
+        $\mathbf{20}$ & \textbf{0.854} {\scriptsize $\pm$ 0.009} & 0.623 {\scriptsize $\pm$ 0.014} & $+0.231$ & 6.2 & 0.493 \\
+        \bottomrule
+    \end{tabular}
+\end{table}

@@ -1,0 +1,11 @@
+Resource finding phase completed successfully.
+Timestamp: 2026-06-25T17:23:24+00:00
+Papers downloaded: 15 (deep-read, annotated; 219-paper search corpus)
+Datasets prepared: 2 generator families (discrete-log n=12/16/20; engineered projected-kernel n=8/10/20)
+Repositories cloned: 2 (PennyLane, qiskit-machine-learning)
+Frameworks installed: pennylane 0.45, qiskit 2.4.2, qiskit-machine-learning 0.9.0, scikit-learn 1.9.0
+
+Validated key result (simulable, 20 qubits):
+  - Engineered projected quantum kernel SVM: test acc 0.893 vs classical RBF-SVM 0.453
+  - Discrete-log task: off-the-shelf classical ML ~0.50 (chance)
+All resource checks pass (python verify_resources.py).

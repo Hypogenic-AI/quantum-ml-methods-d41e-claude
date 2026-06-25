@@ -1,0 +1,92 @@
+\section{Methodology}
+\label{sec:method}
+
+\para{Approach and rationale.} Every supervised quantum model is a kernel method
+\citep{schuld2021models}: a data-encoding circuit produces a state $\rho(\vx)$ and
+a prediction $f(\vx)=\Tr[\rho(\vx)M]$ that is linear in the feature space of
+density matrices. We therefore simulate the quantum feature maps, build kernel
+matrices, and train \texttt{scikit-learn} support vector machines on the
+precomputed kernels. Classical baselines receive the \emph{same} input features,
+so every quantum-vs-classical comparison is apples-to-apples. Following
+\citet{huang2021power}, we report the geometric difference
+\begin{equation}
+\gdiff(\mK_C \,\|\, \mK_Q) = \big\| \sqrt{\mK_Q}\, \mK_C^{-1}\, \sqrt{\mK_Q} \big\|_\infty^{1/2}
+\label{eq:gdiff}
+\end{equation}
+\emph{before} training: a large \gdiff{} is necessary (not sufficient) for a
+quantum advantage, so it is a cheap pre-training filter.
+
+\subsection{Tasks and Data}
+\label{sec:data}
+
+Both tasks are \emph{generator-based} (published constructions, regenerated from
+code) and class-balanced $\approx 50/50$, so test accuracy is a meaningful metric
+and chance is $0.50$.
+
+\para{Experiment~A: \engtask{} projected-quantum-kernel task
+\citep{huang2021power}.} We draw $N=250$ random feature vectors in $[-\pi,\pi]^n$
+for $n\in\{8,10,20\}$, a stand-in for PCA-reduced real data exactly as in the
+source recipe. Each input is encoded with a hardware-efficient feature map
+(per-feature $R_Y$/$R_Z$ angle encoding plus $CZ$ entangling layers, $\texttt{reps}=2$),
+simulated with PennyLane \texttt{lightning.qubit}. The per-qubit Bloch vectors
+$\vb_k=(\langle X_k\rangle,\langle Y_k\rangle,\langle Z_k\rangle)$ define the
+\emph{projected} kernel
+\begin{equation}
+K_Q(\vx,\vx') = \exp\!\Big(-\gamma \textstyle\sum_k \|\vb_k(\vx)-\vb_k(\vx')\|^2\Big),
+\quad \gamma=0.1 .
+\label{eq:projkernel}
+\end{equation}
+Labels are engineered along the maximal-\gdiff{} direction:
+$y=\sign(\sqrt{K_Q}\,\vv)$ where $\vv$ is the top eigenvector of
+$\sqrt{K_Q}\,(K_C+\lambda I)^{-1}\sqrt{K_Q}$, median-thresholded for a $50/50$
+balance. This makes the task separable by the quantum kernel but not by the best
+classical (RBF) kernel. \para{Honest note.} The labels use the full kernel matrix:
+this is an \emph{existence-of-task} construction, which we disclose, and we still
+perform proper train/test SVM fits. We generate $3$ independent datasets
+(seeds $0,1,2$) per qubit count.
+
+\para{Experiment~B: \dlogtask{} task \citep{liu2021rigorous}.} For a safe prime
+$p$, generator $g$, and secret $s$, the label is
+$y(x)=+1 \Leftrightarrow (\log_g x - s)\bmod(p-1) < (p-1)/2$, a half-interval in
+log-space. We use $n_\text{bits}\in\{12,17,21\}$ ($p\approx 4079/65543/1048703$,
+$N\approx 988/1962/1940$ balanced samples); the $21$-bit problem needs $\ge 20$
+qubits. The learner sees only the integer's \emph{bit-vector} (never $s$ or the
+log table), so in raw input space the labels are indistinguishable from random.
+The quantum feature map uses Liu interval states
+$|\phi(x)\rangle$---a uniform superposition over the length-$(p-1)/2$ arc of logs
+starting at $L(x)$---giving the fidelity kernel
+$K(x,x')=|\langle\phi(x)|\phi(x')\rangle|^2$, equal to the squared arc-overlap
+fraction and PSD by construction (minimum eigenvalue $\ge 0$ verified).
+\para{Honest note.} The arc overlap is computed here from the simulable
+discrete-log table; on a fault-tolerant device the log is obtained \emph{inside}
+the feature map by Shor's period finding, without a table.
+
+\subsection{Models and Baselines}
+\label{sec:models}
+
+\para{Quantum models.} The projected quantum kernel \pqk{} (preferred,
+\eqref{eq:projkernel}); the naive fidelity quantum kernel \fqk{}
+$K(\vx,\vx')=|\langle\phi(\vx)|\phi(\vx')\rangle|^2$ as a within-quantum control;
+and the interval-state fidelity kernel \isk{} for Experiment~B. All are simulated
+with PennyLane \texttt{lightning.qubit} and trained as precomputed-kernel SVMs.
+
+\para{Classical baselines.} Following \citet{huang2021power}, we cover both kernel
+and non-kernel classical ML: a cross-validated RBF-SVM
+($C\in\{0.1,1,10,100\}$, $\gamma\in\{\text{scale},0.01,0.1,1\}$), a linear SVM, a
+random forest ($300$ trees), gradient boosting, an MLP ($128$-$64$), logistic
+regression, and a majority-class dummy. Experiment~A additionally uses the
+classical RBF kernel as a precomputed-kernel SVM. All baselines receive the same
+features as the quantum models.
+
+\subsection{Protocol, Metrics, and Reproducibility}
+\label{sec:protocol}
+
+We fix seeds (\texttt{numpy}/\texttt{python} $=42$; dataset seeds $0$/$1$/$2$) and
+use $10$ repeated stratified $70/30$ splits; \emph{all models share the same
+splits}, so quantum-vs-classical comparisons are \emph{paired}. We report test
+accuracy (mean $\pm$ std), train accuracy (for the generalization gap), the
+geometric difference \gdiff{}, and a paired $t$-test with Cohen's $d$ comparing
+\pqk{} against the best classical model. Hardware is CPU \texttt{lightning.qubit}
+simulation; the $n=20$ dataset build including statevectors takes $\approx
+45$--$190$\,s. The full environment is Python $3.12.8$, NumPy $2.5.0$,
+scikit-learn $1.9.0$, SciPy $1.18.0$, and PennyLane $0.45.0$.

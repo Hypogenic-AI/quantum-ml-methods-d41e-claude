@@ -1,0 +1,23 @@
+Quantum machine learning (\qml) is widely promoted as a route to learning tasks
+that classical machine learning cannot handle, yet the field's central
+question---\emph{when does a quantum model actually beat the best classical
+model?}---remains unsettled and frequently overstated. The honest answer is
+two-sided: rigorous classical-hard/quantum-easy separations exist but require
+fault-tolerant hardware and are not simulable at 20--30 qubits, while the only
+demonstrable separations at simulable scale live on engineered tasks. We provide
+a single, reproducible study that pins down both sides at \emph{20 qubits or
+more} under exact statevector simulation. On an engineered task built along the
+direction of maximal geometric difference between a quantum and a classical
+kernel, a projected-quantum-kernel SVM reaches $0.865$ test accuracy at 20 qubits
+while the best of six tuned classical models reaches $0.629$ (paired
+$t$-test $p=3.9\times10^{-8}$, Cohen's $d=5.4$); the advantage is stable at
+$\approx0.22$--$0.23$ across $8$, $10$, and $20$ qubits. A within-quantum control
+shows the naive fidelity kernel collapses to chance ($0.493$) at 20 qubits,
+confirming the win comes from the \emph{right} quantum inductive bias rather than
+quantumness alone. On the discrete-logarithm task, six off-the-shelf classical
+models stay at chance ($0.49$--$0.52$) for $12$/$17$/$21$-bit problems while the
+quantum interval-state kernel separates the task near-perfectly
+($0.997$--$1.000$). We document every caveat---engineered labels, asymptotic
+hardness, and noiseless infinite-shot simulation---so the claim is confirmed with
+honest scope: a 20+-qubit simulated quantum kernel generalizes on tasks where the
+best classical models cannot.

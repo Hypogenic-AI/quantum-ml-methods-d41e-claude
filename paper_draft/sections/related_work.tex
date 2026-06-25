@@ -1,0 +1,59 @@
+\section{Related Work}
+\label{sec:related}
+
+We organize prior work by the kind of evidence it provides for a
+quantum-over-classical separation, and position our study against each group.
+
+\para{Provable but non-simulable separations.}
+\citet{liu2021rigorous} construct a binary classification task over $\mathbb{Z}_p^*$
+whose labels are a half-interval in discrete-log space. Under the classical
+hardness of the discrete log, no efficient classical learner exceeds
+$\tfrac{1}{2}+1/\mathrm{poly}(n)$, while a quantum SVM with interval-state
+feature maps provably reaches $\ge 0.99$ accuracy. \citet{jerbi2023shadows}
+give an analogous RSA-style ``discrete cube root'' separation for classically
+deployable shadow models, and \citet{glick2021covariant} show the discrete-log
+task is a special case of covariant kernels. These results are the conceptual
+bedrock, but they require fault-tolerant Shor execution on hundreds of qubits;
+at simulable scale the number-theoretic problem is trivially solvable. Our
+Experiment~B reproduces the \citeauthor{liu2021rigorous} task at $12$/$17$/$21$
+bits and is explicit that it demonstrates \emph{off-the-shelf} classical failure,
+not an asymptotic separation.
+
+\para{Simulable empirical separations on engineered data.}
+\citet{huang2021power} introduce the geometric difference \gdiff{} as a
+pre-training diagnostic that upper-bounds achievable advantage, show that the
+naive fidelity kernel concentrates in the exponentially large Hilbert space, and
+propose the \emph{projected} quantum kernel built from reduced density matrices.
+On engineered datasets that saturate \gdiff{}, the projected kernel beats every
+tested classical model by $>20\%$ at up to $30$ qubits. \citet{jerbi2023beyond}
+reach a similar conclusion for data re-uploading models, emphasizing that kernel
+methods are not the right yardstick. Our Experiment~A reproduces the
+\citeauthor{huang2021power} construction at $8$/$10$/$20$ qubits, and---unlike the
+original, which reports a single advantage figure---we report a full
+accuracy-vs-qubit-count curve, a within-quantum fidelity-vs-projected control, and
+a paired significance test against the best non-kernel classical model.
+
+\para{Hardware feasibility without a defeated baseline.}
+\citet{havlicek2019supervised} introduce quantum kernel estimation and the
+variational classifier on $2$ qubits; \citet{peters2021machine} run a fidelity
+kernel on $10$--$17$ qubits of real hardware over $67$-dimensional supernova data;
+and \citet{glick2021covariant} reach $27$ qubits with covariant kernels. These
+demonstrate that quantum kernels are realizable, but quantum accuracy never
+exceeds the classical baseline (and is often only compared to other quantum
+models). We instead run noiseless $\ge 20$-qubit simulation specifically to
+exhibit a separation, while disclosing that hardware shot noise may erode it.
+
+\para{Cautionary and negative results.}
+\citet{schuld2021models} prove every supervised quantum model is a kernel method,
+so any separation must come from a classically hard kernel.
+\citet{kubler2021inductive} show that sufficiently expressive quantum kernels have
+exponentially small eigenvalues and cannot generalize unless they encode a
+problem-specific bias---and that the favorable eigenvalues demand exponentially
+many shots. \citet{schuld2021effect} characterize variational models as truncated
+Fourier series, and \citet{tang2019quantum} dequantizes a flagship quantum ML
+speedup. \citet{abbas2021power} argue for capacity advantages via effective
+dimension, and \citet{du2020expressive,gao2022enhancing} give generative
+expressivity separations that largely reduce to classically simulable tensor
+networks. These results motivate our control experiment and our insistence on a
+full classical suite: our fidelity-kernel collapse at 20 qubits is a direct
+empirical instance of the concentration \citeauthor{kubler2021inductive} predict.

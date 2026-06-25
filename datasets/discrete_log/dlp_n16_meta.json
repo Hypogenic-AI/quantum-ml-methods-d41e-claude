@@ -1,0 +1,10 @@
+{
+  "p": 65543,
+  "g": 5,
+  "secret_s": 31013,
+  "n_bits": 17,
+  "n_qubits_required": 17,
+  "n_samples": 1962,
+  "class_balance": 0.5,
+  "reference": "Liu, Arunachalam, Temme 2021 (arXiv:2010.02174)"
+}

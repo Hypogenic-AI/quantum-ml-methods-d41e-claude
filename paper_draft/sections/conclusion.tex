@@ -1,0 +1,29 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We asked whether there are tasks where classical ML struggles while quantum
+methods---simulated at $20$ qubits or more---excel, and we answered it with a
+single reproducible study that demonstrates both sides with honest scope. On an
+engineered projected-kernel task at $20$ qubits, a quantum-kernel SVM reaches
+$0.865$ test accuracy while the best of six tuned classical models reaches $0.629$
+($p=3.9\times10^{-8}$, $d=5.4$), and the advantage is stable at $\approx
+0.22$--$0.23$ across $8$, $10$, and $20$ qubits. On the discrete-log task,
+off-the-shelf classical ML stays at chance across $12$/$17$/$21$-bit problems
+while the quantum interval-state kernel separates the task near-perfectly
+($0.997 \to 1.000$).
+
+\para{Key takeaway.} A $20{+}$-qubit simulated quantum kernel demonstrably
+generalizes on tasks where the best classical models cannot---but the win is the
+\emph{right} quantum inductive bias, not quantumness alone: a generic fidelity
+kernel concentrates to chance exactly like a classical overfitter. The honest
+scope is engineered or quantum-structured tasks under noiseless simulation; a
+naturally labeled simulable advantage remains open.
+
+\para{Future work.} We see five concrete next steps: (i) repeat Experiment~A under
+finite-shot kernel estimation to test whether the advantage survives $O(2^{-d})$
+eigenvalue concentration; (ii) sweep $N$ and bandwidth to map the generalization
+curve versus sample size; (iii) add a classical-surrogate baseline (neural tangent
+kernel) as the strictest comparison; (iv) replace random inputs with PCA-reduced
+Fashion-MNIST to reproduce the advantage on real-image features; and (v) explore
+quantum-\emph{data} tasks, such as learning properties of many-body states, where
+advantage is least contested.

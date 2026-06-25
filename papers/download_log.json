@@ -1,0 +1,90 @@
+[
+  {
+    "slug": "havlicek2019_quantum_feature_spaces",
+    "arxiv": "http://arxiv.org/abs/1804.11326v2",
+    "matched_title": "Supervised learning with quantum enhanced feature spaces",
+    "status": "ok"
+  },
+  {
+    "slug": "liu2021_rigorous_quantum_speedup",
+    "arxiv": "http://arxiv.org/abs/2010.02174v2",
+    "matched_title": "A rigorous and robust quantum speed-up in supervised machine learning",
+    "status": "ok"
+  },
+  {
+    "slug": "huang2021_power_of_data",
+    "arxiv": "http://arxiv.org/abs/2011.01938v2",
+    "matched_title": "Power of data in quantum machine learning",
+    "status": "ok"
+  },
+  {
+    "slug": "abbas2021_power_qnn",
+    "arxiv": "http://arxiv.org/abs/2011.00027v1",
+    "matched_title": "The power of quantum neural networks",
+    "status": "ok"
+  },
+  {
+    "slug": "peters2021_projected_kernel_hardware",
+    "arxiv": "http://arxiv.org/abs/2101.09581v1",
+    "matched_title": "Machine learning of high dimensional data on a noisy quantum processor",
+    "status": "ok"
+  },
+  {
+    "slug": "glick2021_covariant_kernels",
+    "arxiv": "http://arxiv.org/abs/2105.03406v2",
+    "matched_title": "Covariant quantum kernels for data with group structure",
+    "status": "ok"
+  },
+  {
+    "slug": "jerbi2023_shadows_qml",
+    "arxiv": "http://arxiv.org/abs/2306.00061v2",
+    "matched_title": "Shadows of quantum machine learning",
+    "status": "ok"
+  },
+  {
+    "slug": "gao2022_quantum_generative",
+    "arxiv": "http://arxiv.org/abs/2101.08354v1",
+    "matched_title": "Enhancing Generative Models via Quantum Correlations",
+    "status": "ok"
+  },
+  {
+    "slug": "du2020_expressive_power_pqc",
+    "title": "Expressive power of parametrized quantum circuits",
+    "status": "notfound"
+  },
+  {
+    "slug": "jerbi2023_beyond_kernel",
+    "arxiv": "http://arxiv.org/abs/2110.13162v3",
+    "matched_title": "Quantum machine learning beyond kernel methods",
+    "status": "ok"
+  },
+  {
+    "slug": "lloyd2020_quantum_embeddings",
+    "arxiv": "http://arxiv.org/abs/2001.03622v2",
+    "matched_title": "Quantum embeddings for machine learning",
+    "status": "ok"
+  },
+  {
+    "slug": "schuld2021_models_are_kernels",
+    "arxiv": "http://arxiv.org/abs/2101.11020v2",
+    "matched_title": "Supervised quantum machine learning models are kernel methods",
+    "status": "ok"
+  },
+  {
+    "slug": "tang2019_dequantization_recommendation",
+    "arxiv": "http://arxiv.org/abs/1807.04271v3",
+    "matched_title": "A quantum-inspired classical algorithm for recommendation systems",
+    "status": "ok"
+  },
+  {
+    "slug": "schuld2021_data_encoding_fourier",
+    "arxiv": "http://arxiv.org/abs/2008.08605v2",
+    "matched_title": "The effect of data encoding on the expressive power of variational quantum machine learning models",
+    "status": "ok"
+  },
+  {
+    "slug": "beer2020_training_deep_qnn",
+    "title": "Training deep quantum neural networks",
+    "status": "notfound"
+  }
+]

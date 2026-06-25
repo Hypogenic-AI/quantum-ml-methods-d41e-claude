@@ -1,0 +1,20 @@
+\begin{table}[t]
+    \centering
+    \caption{\textbf{Experiment~B, discrete-log task} (test accuracy, mean $\pm$
+    std over $10$ splits). Chance is $0.50$. Every off-the-shelf classical model
+    stays at chance across all bit sizes while the quantum interval-state kernel
+    separates the task near-perfectly. The enormous geometric difference \gdiff{}
+    flags the gap before training. Best per-row in \textbf{bold}.}
+    \label{tab:exp_b}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{}lcccc@{}}
+        \toprule
+        \textbf{Problem} & \textbf{Quantum interval kernel} & \textbf{Best classical} & \textbf{All classical range} & \textbf{\gdiff} \\
+        \midrule
+        $n=12$ bit ($p=4079$) & \textbf{0.997} {\scriptsize $\pm$ 0.003} & 0.516 (logreg) & 0.490--0.516 & 171 \\
+        $n=17$ bit ($p=65543$) & \textbf{0.999} {\scriptsize $\pm$ 0.001} & 0.504 (MLP) & 0.491--0.504 & 181 \\
+        $n=21$ bit ($p=1048703$) & \textbf{1.000} {\scriptsize $\pm$ 0.001} & 0.521 (linear SVM) & 0.497--0.521 & 120 \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}

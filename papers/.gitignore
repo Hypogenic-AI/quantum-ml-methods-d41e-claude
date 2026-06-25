@@ -1,0 +1,3 @@
+# Chunk PDFs are regenerable from the source PDFs via pdf_chunker.py
+pages/
+# keep source PDFs, README, and the download log

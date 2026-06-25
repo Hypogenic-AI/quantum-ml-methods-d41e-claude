@@ -1,0 +1,44 @@
+\section{Reproducibility Details}
+\label{app:repro}
+
+\para{Environment.} All experiments were run with Python $3.12.8$, NumPy $2.5.0$,
+scikit-learn $1.9.0$, SciPy $1.18.0$, and PennyLane $0.45.0$ using the
+\texttt{lightning.qubit} statevector simulator on CPU. Seeds are fixed
+(\texttt{numpy}/\texttt{python} $=42$; dataset seeds $0$/$1$/$2$). All models share
+the same $10$ repeated stratified $70/30$ splits so that quantum-vs-classical
+comparisons are paired.
+
+\para{Per-seed paired statistics (Experiment~A).} \Tabref{tab:app_paired} reports
+the paired $t$-test of the projected quantum kernel against the best classical
+model for every (qubit count, seed) configuration. All $9$ configurations are
+significant at $p<10^{-3}$, with effect sizes $d$ ranging from $1.9$ to $12.1$.
+
+\begin{table}[h]
+    \centering
+    \caption{Per-configuration paired $t$-test of the projected quantum kernel
+    versus the best classical model (gradient boosting in all cases),
+    Experiment~A. $\Delta$ is the mean test-accuracy gap.}
+    \label{tab:app_paired}
+    \begin{tabular}{@{}ccccccc@{}}
+        \toprule
+        $n$ & seed & \gdiff & $\Delta$ & $t$ & $p$ & Cohen's $d$ \\
+        \midrule
+        $8$  & $0$ & 22.6 & $0.219$ & $11.58$ & $1.0\times10^{-6}$ & $3.66$ \\
+        $8$  & $1$ & 22.2 & $0.251$ & $9.57$  & $5.2\times10^{-6}$ & $3.03$ \\
+        $8$  & $2$ & 23.1 & $0.191$ & $11.54$ & $1.1\times10^{-6}$ & $3.65$ \\
+        $10$ & $0$ & 14.5 & $0.283$ & $20.79$ & $6.5\times10^{-9}$ & $6.57$ \\
+        $10$ & $1$ & 13.7 & $0.251$ & $38.38$ & $2.8\times10^{-11}$ & $12.14$ \\
+        $10$ & $2$ & 13.6 & $0.149$ & $6.04$  & $1.9\times10^{-4}$ & $1.91$ \\
+        $20$ & $0$ & 6.35 & $0.236$ & $16.95$ & $3.9\times10^{-8}$ & $5.36$ \\
+        $20$ & $1$ & 6.13 & $0.239$ & $18.43$ & $1.9\times10^{-8}$ & $5.83$ \\
+        $20$ & $2$ & 6.13 & $0.217$ & $10.99$ & $1.6\times10^{-6}$ & $3.47$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\para{Code and artifacts.} The pipelines (\texttt{exp\_a\_engineered.py},
+\texttt{exp\_b\_discrete\_log.py}, \texttt{quantum\_kernels.py},
+\texttt{common.py}, \texttt{make\_figures.py}) regenerate all results and figures
+from fixed seeds. Raw metrics are stored in \texttt{results/exp\_a.json} and
+\texttt{results/exp\_b.json}; the environment manifest is in
+\texttt{results/environment.json}.

@@ -1,0 +1,13 @@
+{
+  "n_qubits": 8,
+  "n_samples": 200,
+  "gamma": 0.1,
+  "reps": 2,
+  "geometric_difference_g": 18.862885801008574,
+  "class_balance": 0.5,
+  "reference": "Huang et al 2021 (arXiv:2011.01938), projected quantum kernel",
+  "sanity_check": {
+    "projected_quantum_test_acc": 0.9333333333333333,
+    "classical_rbf_test_acc": 0.31666666666666665
+  }
+}

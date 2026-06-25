@@ -1,0 +1,330 @@
+{
+  "success": true,
+  "total": 36,
+  "papers": [
+    {
+      "title": "A quantum-inspired classical algorithm for recommendation systems",
+      "year": 2018,
+      "authors": "Ewin Tang",
+      "url": "https://api.semanticscholar.org/CorpusId:44036160",
+      "relevance": 3,
+      "abstract": "We give a classical analogue to Kerenidis and Prakash\u2019s quantum recommendation system, previously believed to be one of the strongest candidates for provably exponential speedups in quantum machine learning. Our main result is an algorithm that, given an m \u00d7 n matrix in a data structure supporting certain \u21132-norm sampling operations, outputs an \u21132-norm sample from a rank-k approximation of that matrix in time O(poly(k)log(mn)), only polynomially slower than the quantum algorithm. As a consequence, Kerenidis and Prakash\u2019s algorithm does not in fact give an exponential speedup over classical algorithms. Further, under strong input assumptions, the classical recommendation system resulting from our algorithm produces recommendations exponentially faster than previous classical systems, which run in time linear in m and n. The main insight of this work is the use of simple routines to manipulate \u21132-norm sampling distributions, which play the role of quantum superpositions in the classical setting. This correspondence indicates a potentially fruitful framework for formally comparing quantum machine learning algorithms to classical machine learning algorithms.",
+      "citations": 465
+    },
+    {
+      "title": "An Improved Classical Singular Value Transformation for Quantum Machine Learning",
+      "year": 2023,
+      "authors": "Ainesh Bakshi, Ewin Tang",
+      "url": "https://api.semanticscholar.org/CorpusId:257279995",
+      "relevance": 3,
+      "abstract": "We study quantum speedups in quantum machine learning (QML) by analyzing the quantum singular value transformation (QSVT) framework. QSVT, introduced by [GSLW, STOC'19, arXiv:1806.01838], unifies all major types of quantum speedup; in particular, a wide variety of QML proposals are applications of QSVT on low-rank classical data. We challenge these proposals by providing a classical algorithm that matches the performance of QSVT in this regime up to a small polynomial overhead. We show that, given a matrix $A \\in \\mathbb{C}^{m\\times n}$, a vector $b \\in \\mathbb{C}^{n}$, a bounded degree-$d$ polynomial $p$, and linear-time pre-processing, we can output a description of a vector $v$ such that $\\|v - p(A) b\\| \\leq \\varepsilon\\|b\\|$ in $\\widetilde{\\mathcal{O}}(d^{11} \\|A\\|_{\\mathrm{F}}^4 / (\\varepsilon^2 \\|A\\|^4 ))$ time. This improves upon the best known classical algorithm [CGLLTW, STOC'20, arXiv:1910.06151], which requires $\\widetilde{\\mathcal{O}}(d^{22} \\|A\\|_{\\mathrm{F}}^6 /(\\varepsilon^6 \\|A\\|^6 ) )$ time, and narrows the gap with QSVT, which, after linear-time pre-processing to load input into a quantum-accessible memory, can estimate the magnitude of an entry $p(A)b$ to $\\varepsilon\\|b\\|$ error in $\\widetilde{\\mathcal{O}}(d\\|A\\|_{\\mathrm{F}}/(\\varepsilon \\|A\\|))$ time. Our key insight is to combine the Clenshaw recurrence, an iterative method for computing matrix polynomials, with sketching techniques to simulate QSVT classically. We introduce several new classical techniques in this work, including (a) a non-oblivious matrix sketch for approximately preserving bi-linear forms, (b) a new stability analysis for the Clenshaw recurrence, and (c) a new technique to bound arithmetic progressions of the coefficients appearing in the Chebyshev series expansion of bounded functions, each of which may be of independent interest.",
+      "citations": 23
+    },
+    {
+      "title": "Differential Privacy of Quantum and Quantum-Inspired-Classical Recommendation Algorithms",
+      "year": 2025,
+      "authors": "Chenjian Li, Mingsheng Ying",
+      "url": "https://api.semanticscholar.org/CorpusId:276235895",
+      "relevance": 3,
+      "abstract": "We study the differential privacy (DP) of the quantum recommendation algorithm of Kerenidis--Prakash and its quantum-inspired classical counterpart. Under standard low-rank and incoherence assumptions on the preference matrix, we show that the randomness already present in the algorithms'measurement/$\\ell_2$-sampling steps can act as a privacy-curating mechanism, yielding $(\\varepsilon,\\delta)$-DP without injecting additional DP noise through the interface. Concretely, for a system with $m$ users and $n$ items and rank parameter $k$, we prove $\\varepsilon=\\mathcal O(\\sqrt{k/n})$ and $\\delta= \\mathcal O\\big(k^2/\\min^2\\{m,n\\}\\big)$; in the typical regime $k=\\mathrm{polylog}(m,n)$ this simplifies to $\\varepsilon=\\tilde{\\mathcal O}(1/\\sqrt n)$ and $\\delta=\\tilde{\\mathcal O}\\big(1/\\min^2\\{m,n\\}\\big)$. Our analysis introduces a perturbation technique for truncated SVD under a single-entry update, which tracks the induced change in the low-rank reconstruction while avoiding unstable singular-vector comparisons. Finally, we validate the scaling on real-world rating datasets and compare against classical DP recommender baselines.",
+      "citations": 0
+    },
+    {
+      "title": "Parametrized Complexity of Quantum Inspired Algorithms",
+      "year": 2021,
+      "authors": "Ebrahim Ardeshir-Larijani",
+      "url": "https://api.semanticscholar.org/CorpusId:245385836",
+      "relevance": 3,
+      "abstract": "Motivated by recent progress in quantum technologies and in particular quantum software, research and industrial communities have been trying to discover new applications of quantum algorithms such as quantum optimization and machine learning. Regardless of which hardware platform these novel algorithms operate on, whether it is adiabatic or gate based, from theoretical point of view, they are performing drastically better than their classical counterparts. One of the remarkable examples is the quantum algorithm for solving linear systems of equations, introduced by Harow et. al. [15]. At its core, this algorithm uses the \u201cquantum phase estimation\u201d procedure, which is used in many",
+      "citations": 3
+    },
+    {
+      "title": "A comprehensive review of quantum machine learning: from NISQ to fault tolerance",
+      "year": 2024,
+      "authors": "Yunfei Wang, Junyu Liu",
+      "url": "https://api.semanticscholar.org/CorpusId:267069708",
+      "relevance": 2,
+      "abstract": "Quantum machine learning, which involves running machine learning algorithms on quantum devices, has garnered significant attention in both academic and business circles. In this paper, we offer a comprehensive and unbiased review of the various concepts that have emerged in the field of quantum machine learning. This includes techniques used in Noisy Intermediate-Scale Quantum (NISQ) technologies and approaches for algorithms compatible with fault-tolerant quantum computing hardware. Our review covers fundamental concepts, algorithms, and the statistical learning theory pertinent to quantum machine learning.",
+      "citations": 111
+    },
+    {
+      "title": "Sampling-based sublinear low-rank matrix arithmetic framework for dequantizing Quantum machine learning",
+      "year": 2019,
+      "authors": "Nai-Hui Chia, Andr\u00e1s Gily\u00e9n, Tongyang Li, Han-Hsuan Lin, Ewin Tang, C. Wang",
+      "url": "https://api.semanticscholar.org/CorpusId:204509632",
+      "relevance": 2,
+      "abstract": "We present an algorithmic framework for quantum-inspired classical algorithms on close-to-low-rank matrices, generalizing the series of results started by Tang\u2019s breakthrough quantum-inspired algorithm for recommendation systems [STOC\u201919]. Motivated by quantum linear algebra algorithms and the quantum singular value transformation (SVT) framework of Gily\u00e9n et al. [STOC\u201919], we develop classical algorithms for SVT that run in time independent of input dimension, under suitable quantum-inspired sampling assumptions. Our results give compelling evidence that in the corresponding QRAM data structure input model, quantum SVT does not yield exponential quantum speedups. Since the quantum SVT framework generalizes essentially all known techniques for quantum linear algebra, our results, combined with sampling lemmas from previous work, suffices to generalize all recent results about dequantizing quantum machine learning algorithms. In particular, our classical SVT framework recovers and often improves the dequantization results on recommendation systems, principal component analysis, supervised clustering, support vector machines, low-rank regression, and semidefinite program solving. We also give additional dequantization results on low-rank Hamiltonian simulation and discriminant analysis. Our improvements come from identifying the key feature of the quantum-inspired input model that is at the core of all prior quantum-inspired results: \u21132-norm sampling can approximate matrix products in time independent of their dimension. We reduce all our main results to this fact, making our exposition concise, self-contained, and intuitive.",
+      "citations": 159
+    },
+    {
+      "title": "Robust Dequantization of the Quantum Singular Value Transformation and Quantum Machine Learning Algorithms",
+      "year": 2023,
+      "authors": "Franccois Le Gall",
+      "url": "https://api.semanticscholar.org/CorpusId:258059642",
+      "relevance": 2,
+      "abstract": "Several quantum algorithms for linear algebra problems, and in particular quantum machine learning problems, have been \u201cdequantized\u201d in the past few years. These dequantization results typically hold when classical algorithms can access the data via length-squared sampling. This assumption, which is standard in the field of randomized linear algebra, means that for a unit-norm vector u\u2208Cn\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$u\\in\\mathbb{C}^{n}$$\\end{document}, we can sample from the distribution pu:{1,\u2026,n}\u2192[0,1]\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$p_u\\colon\\{1,\\ldots,n\\}\\to [0,1]$$\\end{document} defined as pu(i)=|u(i)|2\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$p_u(i)=|u(i)|^2$$\\end{document} for each i\u2208{1,\u2026,n}\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$i\\in\\{1,\\ldots,n\\}$$\\end{document}. Since this distribution corresponds to the distribution obtained by measuring the quantum state |u\\documentclass[12pt]{minimal} \\usepackage{amsmath} \\usepackage{wasysym} \\usepackage{amsfonts} \\usepackage{amssymb} \\usepackage{amsbsy} \\usepackage{mathrsfs} \\usepackage{upgreek} \\setlength{\\oddsidemargin}{-69pt} \\begin{document}$$u$$\\end{document}> in the computational basis, length-squared sampling access gives a reasonable classical analogue to the kind of quantum access considered in many quantum algorithms for linear algebra problems. In this work we investigate how robust these dequantization results are. We introduce the notion of approximate length-squared sampling, where classical algorithms are only able to sample from a distribution close to the ideal distribution in total variation distance. While quantum algorithms are natively robust against small perturbations, current techniques in dequantization are not. Our main technical contribution is showing how many techniques from randomized linear algebra can be adapted to work under this weaker assumption as well. We then use these techniques to show that the recent low-rank dequantization framework by Chia, Gily\u00e9n, Li, Lin, Tang and Wang (JACM 2022) and the dequantization framework for sparse matrices by Gharibian and Le Gall (STOC 2022), which are both based on the Quantum Singular Value Transformation, can be generalized to the case of approximate length-squared sampling access to the input. We also apply these results to obtain a robust dequantization of many quantum machine learning algorithms, including quantum algorithms for recommendation systems, supervised clustering and low-rank matrix inversion.",
+      "citations": 14
+    },
+    {
+      "title": "Towards Optimizing the Expected Performance of Sampling-Based Quantum-Inspired Algorithms",
+      "year": 2025,
+      "authors": "Hyunho Cha, Jungwoo Lee",
+      "url": "https://api.semanticscholar.org/CorpusId:275405616",
+      "relevance": 2,
+      "abstract": "Quantum-inspired classical algorithms has received much attention due to its exponential speedup compared to existing algorithms, under certain data storage assumptions. The improvements are noticeable in fundamental linear algebra tasks. In this work, we analyze two major subroutines in sampling-based quantum-inspired algorithms, specifically, inner product estimation and sampling from a linear combination of vectors, and discuss their possible improvements by generalizing the data structure. The idea is to consider the average behavior of the subroutines under certain assumptions regarding the data elements. This allows us to determine the optimal data structure, and the high-dimensional nature of data makes our assumptions reasonable. Experimental results from recommendation systems also highlight a consistent preference for our proposed data structure. Motivated by this observation, we tighten the upper bound on the number of required measurements for direct fidelity estimation. We expect our findings to suggest optimal implementations for various quantum and quantum-inspired machine learning algorithms that involve extremely high-dimensional operations, which has potential for many applications.",
+      "citations": 4
+    },
+    {
+      "title": "Quantum-Inspired Algorithms from Randomized Numerical Linear Algebra",
+      "year": 2020,
+      "authors": "Nadiia Chepurko, K. Clarkson, L. Horesh, David P. Woodruff",
+      "url": "https://www.semanticscholar.org/paper/3a5af79aadeef874c4afdea3221676db027e4445",
+      "relevance": 2,
+      "abstract": "We create classical (non-quantum) dynamic data structures supporting queries for recommender systems and least-squares regression that are comparable to their quantum analogues. De-quantizing such algorithms has received a flurry of attention in recent years; we obtain sharper bounds for these problems. More significantly, we achieve these improvements by arguing that the previous quantum-inspired algorithms for these problems are doing leverage or ridge-leverage score sampling in disguise. With this recognition, we are able to employ the large body of work in numerical linear algebra to obtain algorithms for these problems that are simpler and faster than existing approaches. \nWe also consider static data structures for the above problems, and obtain close-to-optimal bounds for them. To do this, we introduce a new randomized transform, the Gaussian Randomized Hadamard Transform (GRHT). It was thought in the numerical linear algebra community that to obtain nearly-optimal bounds for various problems such as rank computation, finding a maximal linearly independent subset of columns, regression, low rank approximation, maximum matching on general graphs and linear matroid union, that one would need to resolve the main open question of Nelson and Nguyen (FOCS, 2013) regarding the logarithmic factors in existing oblivious subspace embeddings. We bypass this question, using GRHT, and obtain optimal or nearly-optimal bounds for these problems. For the fundamental problems of rank computation and finding a linearly independent subset of columns, our algorithms improve Cheung, Kwok, and Lau (JACM, 2013) and are optimal to within a constant factor and a $\\log\\log(n)$-factor, respectively. Further, for constant factor regression and low rank approximation we give the first optimal algorithms, for the current matrix multiplication exponent.",
+      "citations": 26
+    },
+    {
+      "title": "Sampling-based Sublinear Low-rank Matrix Arithmetic Framework for Dequantizing Quantum Machine Learning",
+      "year": 2022,
+      "authors": "Nai-Hui Chia, Andr\u00e1s Gily\u00e9n, Tongyang Li, Han-Hsuan Lin, Ewin Tang, C. Wang",
+      "url": "https://www.semanticscholar.org/paper/91753222b7e0f4c00c1ab523ae87aa365a94370f",
+      "relevance": 2,
+      "abstract": "We present an algorithmic framework for quantum-inspired classical algorithms on close-to-low-rank matrices, generalizing the series of results started by Tang\u2019s breakthrough quantum-inspired algorithm for recommendation systems [STOC\u201919]. Motivated by quantum linear algebra algorithms and the quantum singular value transformation (SVT) framework of Gily\u00e9n et al. [STOC\u201919], we develop classical algorithms for SVT that run in time independent of input dimension, under suitable quantum-inspired sampling assumptions. Our results give compelling evidence that in the corresponding QRAM data structure input model, quantum SVT does not yield exponential quantum speedups. Since the quantum SVT framework generalizes essentially all known techniques for quantum linear algebra, our results, combined with sampling lemmas from previous work, suffice to generalize all prior results about dequantizing quantum machine learning algorithms. In particular, our classical SVT framework recovers and often improves the dequantization results on recommendation systems, principal component analysis, supervised clustering, support vector machines, low-rank regression, and semidefinite program solving. We also give additional dequantization results on low-rank Hamiltonian simulation and discriminant analysis. Our improvements come from identifying the key feature of the quantum-inspired input model that is at the core of all prior quantum-inspired results: \u21132-norm sampling can approximate matrix products in time independent of their dimension. We reduce all our main results to this fact, making our exposition concise, self-contained, and intuitive.",
+      "citations": 20
+    },
+    {
+      "title": "Revisiting dequantization and quantum advantage in learning tasks",
+      "year": 2021,
+      "authors": "Jordan S. Cotler, Hsin-Yuan Huang, J. McClean",
+      "url": "https://api.semanticscholar.org/CorpusId:244799603",
+      "relevance": 1,
+      "abstract": "It has been shown that the apparent advantage of some quantum machine learning algorithms may be efficiently replicated using classical algorithms with suitable data access -- a process known as dequantization. Existing works on dequantization compare quantum algorithms which take copies of an n-qubit quantum state $|x\\rangle = \\sum_{i} x_i |i\\rangle$ as input to classical algorithms which have sample and query (SQ) access to the vector $x$. In this note, we prove that classical algorithms with SQ access can accomplish some learning tasks exponentially faster than quantum algorithms with quantum state inputs. Because classical algorithms are a subset of quantum algorithms, this demonstrates that SQ access can sometimes be significantly more powerful than quantum state inputs. Our findings suggest that the absence of exponential quantum advantage in some learning tasks may be due to SQ access being too powerful relative to quantum state inputs. If we compare quantum algorithms with quantum state inputs to classical algorithms with access to measurement data on quantum states, the landscape of quantum advantage can be dramatically different. We remark that when the quantum states are constructed from exponential-size classical data, comparing SQ access and quantum state inputs is appropriate since both require exponential time to prepare.",
+      "citations": 42
+    },
+    {
+      "title": "Quantum Principal Component Analysis Only Achieves an Exponential Speedup Because of Its State Preparation Assumptions.",
+      "year": 2018,
+      "authors": "Ewin Tang",
+      "url": "https://www.semanticscholar.org/paper/b11098db4bce5f6b71c5bc31896fda83cd09ae23",
+      "relevance": 1,
+      "abstract": "A central roadblock to analyzing quantum algorithms on quantum states is the lack of a comparable input model for classical algorithms. Inspired by recent work of the author [E. Tang, STOC 2019.], we introduce such a model, where we assume we can efficiently perform \u2113^{2}-norm samples of input data, a natural analog to quantum algorithms that assume efficient state preparation of classical data. Though this model produces less practical algorithms than the (stronger) standard model of classical computation, it captures versions of many of the features and nuances of quantum linear algebra algorithms. With this model, we describe classical analogs to Lloyd, Mohseni, and Rebentrost's quantum algorithms for principal component analysis [S. Lloyd, M. Mohseni, and P. Rebentrost, Nat. Phys. 10, 631 (2014).NPAHAX1745-247310.1038/nphys3029] and nearest-centroid clustering [S. Lloyd, M. Mohseni, and P. Rebentrost, Quantum algorithms for supervised and unsupervised machine learning]. Since they are only polynomially slower, these algorithms suggest that the exponential speedups of their quantum counterparts are simply an artifact of state preparation assumptions.",
+      "citations": 134
+    },
+    {
+      "title": "Quantum-Inspired Classical Algorithms for Singular Value Transformation",
+      "year": 2019,
+      "authors": "Dhawal Jethwani, F. Gall, S. Singh",
+      "url": "https://www.semanticscholar.org/paper/40d83d4d165d43e31f936496cd316dd31689452d",
+      "relevance": 1,
+      "abstract": "A recent breakthrough by Tang (STOC 2019) showed how to \"dequantize\" the quantum algorithm for recommendation systems by Kerenidis and Prakash (ITCS 2017). The resulting algorithm, classical but \"quantum-inspired\", efficiently computes a low-rank approximation of the users' preference matrix. Subsequent works have shown how to construct efficient quantum-inspired algorithms for approximating the pseudo-inverse of a low-rank matrix as well, which can be used to (approximately) solve low-rank linear systems of equations. In the present paper, we pursue this line of research and develop quantum-inspired algorithms for a large class of matrix transformations that are defined via the singular value decomposition of the matrix. In particular, we obtain classical algorithms with complexity polynomially related (in most parameters) to the complexity of the best quantum algorithms for singular value transformation recently developed by Chakraborty, Gilyen and Jeffery (ICALP 2019) and Gilyen, Su, Low and Wiebe (STOC19).",
+      "citations": 29
+    },
+    {
+      "title": "Dequantization and Hardness of Spectral Sum Estimation",
+      "year": 2025,
+      "authors": "Roman Edenhofer, Atsuya Hasegawa, Franccois Le Gall",
+      "url": "https://api.semanticscholar.org/CorpusId:281506043",
+      "relevance": 1,
+      "abstract": "We give new dequantization and hardness results for estimating spectral sums of matrices, such as the log-determinant. Recent quantum algorithms have demonstrated that the logarithm of the determinant of sparse, well-conditioned, positive matrices can be approximated to $\\varepsilon$-relative accuracy in time polylogarithmic in the dimension $N$, specifically in time $\\mathrm{poly}(\\mathrm{log}(N), s, \\kappa, 1/\\varepsilon)$, where $s$ is the sparsity and $\\kappa$ the condition number of the input matrix. We provide a simple dequantization of these techniques that preserves the polylogarithmic dependence on the dimension. Our classical algorithm runs in time $\\mathrm{polylog}(N)\\cdot s^{O(\\sqrt{\\kappa}\\log \\kappa/\\varepsilon)}$ which constitutes an exponential improvement over previous classical algorithms in certain parameter regimes. We complement our classical upper bound with $\\mathsf{DQC1}$-completeness results for estimating specific spectral sums such as the trace of the inverse and the trace of matrix powers for log-local Hamiltonians, with parameter scalings analogous to those of known quantum algorithms. Assuming $\\mathsf{BPP}\\subsetneq\\mathsf{DQC1}$, this rules out classical algorithms with the same scalings. It also resolves a main open problem of Cade and Montanaro (TQC 2018) concerning the complexity of Schatten-$p$ norm estimation. We further analyze a block-encoding input model, where instead of a classical description of a sparse matrix, we are given a block-encoding of it. We show $\\mathsf{DQC}1$-completeness in a very general way in this model for estimating $\\mathrm{tr}[f(A)]$ whenever $f$ and $f^{-1}$ are sufficiently smooth. We conclude our work with $\\mathsf{BQP}$-hardness and $\\mathsf{PP}$-completeness results for high-accuracy log-determinant estimation.",
+      "citations": 1
+    },
+    {
+      "title": "Advances in Machine Learning: Where Can Quantum Techniques Help?",
+      "year": 2025,
+      "authors": "Samarth Kashyap, R. Ramakrishnan, Kumari Jyoti, Apoorva D. Patel",
+      "url": "https://api.semanticscholar.org/CorpusId:280291859",
+      "relevance": 1,
+      "abstract": "Quantum Machine Learning (QML) represents a promising frontier at the intersection of quantum computing and artificial intelligence, aiming to leverage quantum computational advantages to enhance data-driven tasks. This review explores the potential of QML to address the computational bottlenecks of classical machine learning, particularly in processing complex datasets. We introduce the theoretical foundations of QML, including quantum data encoding, quantum learning theory and optimization techniques, while categorizing QML approaches based on data type and computational architecture. It is well-established that quantum computational advantages are problem-dependent, and so potentially useful directions for QML need to be systematically identified. Key developments, such as Quantum Principal Component Analysis, quantum-enhanced sensing and applications in material science, are critically evaluated for their theoretical speed-ups and practical limitations. The challenges posed by Noisy Intermediate-Scale Quantum (NISQ) devices, including hardware noise, scalability constraints and data encoding overheads, are discussed in detail. We also outline future directions, emphasizing the need for quantum-native algorithms, improved error correction, and realistic benchmarks to bridge the gap between theoretical promise and practical deployment. This comprehensive analysis underscores that while QML has significant potential for specific applications such as quantum chemistry and sensing, its broader utility in real-world scenarios remains contingent on overcoming technological and methodological hurdles.",
+      "citations": 1
+    },
+    {
+      "title": "Quantum-inspired algorithm for truncated total least squares solution",
+      "year": 2022,
+      "authors": "Qian Zuo, Yimin Wei, Hua Xiang",
+      "url": "https://api.semanticscholar.org/CorpusId:248496139",
+      "relevance": 1,
+      "abstract": "Total least squares (TLS) methods have been widely used in data fitting. Compared with the least squares method, for TLS problem we takes into account not only the observation errors, but also the errors in the measurement matrix. This is more realistic in practical applications. For the large-scale discrete ill-posed problem $Ax \\approx b$, we introduce the quantum-inspired techniques to approximate the truncated total least squares (TTLS) solution. We analyze the accuracy of the quantum-inspired truncated total least squares algorithm and perform numerical experiments to demonstrate the efficiency of our method.",
+      "citations": 5
+    },
+    {
+      "title": "A Quantum-inspired Algorithm for General Minimum Conical Hull Problems",
+      "year": 2019,
+      "authors": "Yuxuan Du, Min-Hsiu Hsieh, Tongliang Liu, D. Tao",
+      "url": "https://www.semanticscholar.org/paper/cdf603435052e3e3814a16752243fe4859c45c2e",
+      "relevance": 1,
+      "abstract": "A wide range of fundamental machine learning tasks that are addressed by the maximum a posteriori estimation can be reduced to a general minimum conical hull problem. The best-known solution to tackle general minimum conical hull problems is the divide-and-conquer anchoring learning scheme (DCA), whose runtime complexity is polynomial in size. However, big data is pushing these polynomial algorithms to their performance limits. In this paper, we propose a sublinear classical algorithm to tackle general minimum conical hull problems when the input has stored in a sample-based low-overhead data structure. The algorithm's runtime complexity is polynomial in the rank and polylogarithmic in size. The proposed algorithm achieves the exponential speedup over DCA and, therefore, provides advantages for high dimensional problems.",
+      "citations": 14
+    },
+    {
+      "title": "Implementation of Trained Factorization Machine Recommendation System on Quantum Annealer",
+      "year": 2022,
+      "authors": "Chen-Yu Liu, Hsin-yu Wang, Pei-Yen Liao, Ching-Jui Lai, Min-Hsiu Hsieh",
+      "url": "https://api.semanticscholar.org/CorpusId:253098352",
+      "relevance": 1,
+      "abstract": "Factorization Machine (FM) is the most commonly used model to build a recommendation system since it can incorporate side information to improve performance. However, producing item suggestions for a given user with a trained FM is time-consuming. To address this problem, we propose a quadratic unconstrained binary optimization (QUBO) scheme to combine with FM and apply quantum annealing (QA) computation. Compared to classical methods, this hybrid algorithm provides a fast sub-optimal sampling of good user suggestions. We then demonstrate the aforementioned computational behavior on current noisy intermediate-scale quantum (NISQ) hardware by experimenting with a real example on a D-Wave annealer.",
+      "citations": 20
+    },
+    {
+      "title": "A Survey on Quantum Computing for Recommendation Systems",
+      "year": 2022,
+      "authors": "G. Pilato, Filippo Vella",
+      "url": "https://api.semanticscholar.org/CorpusId:255291943",
+      "relevance": 1,
+      "abstract": "Recommendation systems play a key role in everyday life; they are used to suggest items that are selected among many candidates that usually belong to huge datasets. The recommendations require a good performance both in terms of speed and the effectiveness of the provided suggestions. At the same time, one of the most challenging approaches in computer science is quantum computing. This computational paradigm can provide significant acceleration for resource-demanding and time-consuming algorithms. It has become very popular in recent years, thanks to the different tools available to the scientific and technical communities. Since performance has great relevance in recommendation systems, many researchers in the scientific community have recently proposed different improvements that exploit quantum approaches to provide better performance in recommendation systems. This paper gives an overview of the current state of the art in the literature, outlining the different proposed methodologies and techniques and highlighting the challenges that arise from this new approach to the recommendation systems domain.",
+      "citations": 16
+    },
+    {
+      "title": "Quantum Algorithms for Tensor-SVD",
+      "year": 2024,
+      "authors": "Jezer Jojo, Ankit Khandelwal, M. G. Chandra",
+      "url": "https://api.semanticscholar.org/CorpusId:270122975",
+      "relevance": 1,
+      "abstract": "A promising area of applications for quantum computing is in linear algebra problems. In this work, we introduce two new quantum t-SVD (tensor-SVD) algorithms. The first algorithm is largely based on previous work that proposed a quantum t-SVD algorithm for context-aware recommendation systems. The new algorithm however seeks to address and fix certain drawbacks in the original, and is fundamentally different in its approach compared to the existing work. The second algorithm proposed uses a hybrid variational approach largely based on a known variational quantum SVD algorithm.",
+      "citations": 0
+    },
+    {
+      "title": "Dequantizing the Quantum singular value transformation: hardness and applications to Quantum chemistry and the Quantum PCP conjecture",
+      "year": 2021,
+      "authors": "Sevag Gharibian, F. Gall",
+      "url": "https://www.semanticscholar.org/paper/bd1bc48a2d4da3c1f68f12afa9539972d84e1597",
+      "relevance": 1,
+      "abstract": "The Quantum Singular Value Transformation (QSVT) is a recent technique that gives a unified framework to describe most quantum algorithms discovered so far, and may lead to the development of novel quantum algorithms. In this paper we investigate the hardness of classically simulating the QSVT. A recent result by Chia, Gily\u00e9n, Li, Lin, Tang and Wang (STOC 2020) showed that the QSVT can be efficiently \u201cdequantized\u201d for low-rank matrices, and discussed its implication to quantum machine learning. In this work, motivated by establishing the superiority of quantum algorithms for quantum chemistry and making progress on the quantum PCP conjecture, we focus on the other main class of matrices considered in applications of the QSVT, sparse matrices. We first show how to efficiently \u201cdequantize\u201d, with arbitrarily small constant precision, the QSVT associated with a low-degree polynomial. We apply this technique to design classical algorithms that estimate, with constant precision, the singular values of a sparse matrix. We show in particular that a central computational problem considered by quantum algorithms for quantum chemistry (estimating the ground state energy of a local Hamiltonian when given, as an additional input, a state sufficiently close to the ground state) can be solved efficiently with constant precision on a classical computer. As a complementary result, we prove that with inverse-polynomial precision, the same problem becomes BQP-complete. This gives theoretical evidence for the superiority of quantum algorithms for chemistry, and strongly suggests that said superiority stems from the improved precision achievable in the quantum setting. We also discuss how this dequantization technique may help make progress on the central quantum PCP conjecture.",
+      "citations": 78
+    },
+    {
+      "title": "Quantum (Inspired) D2-sampling with Applications",
+      "year": 2024,
+      "authors": "Ragesh Jaiswal, Poojan Shah",
+      "url": "https://api.semanticscholar.org/CorpusId:269983135",
+      "relevance": 1,
+      "abstract": "$D^2$-sampling is a fundamental component of sampling-based clustering algorithms such as $k$-means++. Given a dataset $V \\subset \\mathbb{R}^d$ with $N$ points and a center set $C \\subset \\mathbb{R}^d$, $D^2$-sampling refers to picking a point from $V$ where the sampling probability of a point is proportional to its squared distance from the nearest center in $C$. Starting with empty $C$ and iteratively $D^2$-sampling and updating $C$ in $k$ rounds is precisely $k$-means++ seeding that runs in $O(Nkd)$ time and gives $O(\\log{k})$-approximation in expectation for the $k$-means problem. We give a quantum algorithm for (approximate) $D^2$-sampling in the QRAM model that results in a quantum implementation of $k$-means++ that runs in time $\\tilde{O}(\\zeta^2 k^2)$. Here $\\zeta$ is the aspect ratio (i.e., largest to smallest interpoint distance), and $\\tilde{O}$ hides polylogarithmic factors in $N, d, k$. It can be shown through a robust approximation analysis of $k$-means++ that the quantum version preserves its $O(\\log{k})$ approximation guarantee. Further, we show that our quantum algorithm for $D^2$-sampling can be 'dequantized' using the sample-query access model of Tang (PhD Thesis, Ewin Tang, University of Washington, 2023). This results in a fast quantum-inspired classical implementation of $k$-means++, which we call QI-$k$-means++, with a running time $O(Nd) + \\tilde{O}(\\zeta^2k^2d)$, where the $O(Nd)$ term is for setting up the sample-query access data structure. Experimental investigations show promising results for QI-$k$-means++ on large datasets with bounded aspect ratio. Finally, we use our quantum $D^2$-sampling with the known $ D^2$-sampling-based classical approximation scheme (i.e., $(1+\\varepsilon)$-approximation for any given $\\varepsilon>0$) to obtain the first quantum approximation scheme for the $k$-means problem with polylogarithmic running time dependence on $N$.",
+      "citations": 1
+    },
+    {
+      "title": "Quantum Recommendation Systems",
+      "year": 2016,
+      "authors": "Iordanis Kerenidis, A. Prakash",
+      "url": "https://www.semanticscholar.org/paper/87a0e58a7b64b47e3d95b70c78e3956fc9b690bb",
+      "relevance": 1,
+      "abstract": "A recommendation system uses the past purchases or ratings of $n$ products by a group of $m$ users, in order to provide personalized recommendations to individual users. The information is modeled as an $m \\times n$ preference matrix which is assumed to have a good rank-$k$ approximation, for a small constant $k$. \nIn this work, we present a quantum algorithm for recommendation systems that has running time $O(\\text{poly}(k)\\text{polylog}(mn))$. All known classical algorithms for recommendation systems that work through reconstructing an approximation of the preference matrix run in time polynomial in the matrix dimension. Our algorithm provides good recommendations by sampling efficiently from an approximation of the preference matrix, without reconstructing the entire matrix. For this, we design an efficient quantum procedure to project a given vector onto the row space of a given matrix. This is the first algorithm for recommendation systems that runs in time polylogarithmic in the dimensions of the matrix and provides an example of a quantum machine learning algorithm for a real world application.",
+      "citations": 448
+    },
+    {
+      "title": "Quantum-Inspired Support Vector Machine",
+      "year": 2019,
+      "authors": "Chen Ding, Tianyi Bao, Heliang Huang",
+      "url": "https://www.semanticscholar.org/paper/146466416787f92d94da4c6bf933f3ead35bc87c",
+      "relevance": 1,
+      "abstract": "Support vector machine (SVM) is a particularly powerful and flexible supervised learning model that analyzes data for both classification and regression, whose usual algorithm complexity scales polynomially with the dimension of data space and the number of data points. To tackle the big data challenge, a quantum SVM algorithm was proposed, which is claimed to achieve exponential speedup for least squares SVM (LS-SVM). Here, inspired by the quantum SVM algorithm, we present a quantum-inspired classical algorithm for LS-SVM. In our approach, an improved fast sampling technique, namely indirect sampling, is proposed for sampling the kernel matrix and classifying. We first consider the LS-SVM with a linear kernel, and then discuss the generalization of our method to nonlinear kernels. Theoretical analysis shows our algorithm can make classification with arbitrary success probability in logarithmic runtime of both the dimension of data space and the number of data points for low rank, low condition number, and high dimensional data matrix, matching the runtime of the quantum SVM.",
+      "citations": 152
+    },
+    {
+      "title": "Dequantizability from inputs",
+      "year": 2024,
+      "authors": "Tae-Won Kim, Byung-Soo Choi",
+      "url": "https://api.semanticscholar.org/CorpusId:269983670",
+      "relevance": 1,
+      "abstract": "By comparing constructions of block encoding given by [1-4], we propose a way to extract dequantizability from advancements in dequantization techniques that have been led by Tang, as in [5]. Then we apply this notion to the sparse-access input model that is known to be BQP-complete in general, thereby conceived to be un-dequantizable. Our goal is to break down this belief by examining the sparse-access input model's instances, particularly their input matrices. In conclusion, this paper forms a dequantizability-verifying scheme that can be applied whenever an input is given.",
+      "citations": 0
+    },
+    {
+      "title": "On the quantum computational complexity of classical linear dynamics with geometrically local interactions: Dequantization and universality",
+      "year": 2025,
+      "authors": "Kazuki Sakamoto, Keisuke Fujii",
+      "url": "https://www.semanticscholar.org/paper/311a1fb8e9135b0ca0653c841515b793fc9b5f23",
+      "relevance": 1,
+      "abstract": "The simulation of large-scale classical systems in exponentially small space on quantum computers has gained attention. The prior work demonstrated that a quantum algorithm offers an exponential speedup over any classical algorithm in simulating classical dynamics with long-range interactions. However, many real-world classical systems, such as those arising from partial differential equations, exhibit only local interactions. The question remains whether quantum algorithms can still provide exponential speedup under this condition. In this work, we thoroughly characterize the computational complexity of quantum algorithms for simulating such geometrically local systems. First, we dequantize the quantum algorithm for simulating short-time (polynomial-time) dynamics of such systems. This implies that the problem of simulating this dynamics does not yield any exponential quantum advantage. Second, we show that quantum algorithms for short-time dynamics have the same computational complexity as polynomial-time probabilistic classical computation. Third, we show that the computational complexity of quantum algorithms for long-time (exponential-time) dynamics is captured by exponential-time and polynomial-space quantum computation. This suggests a super-polynomial time advantage when restricting the computation to polynomial-space, or an exponential space advantage otherwise. This work offers new insights into the complexity of classical dynamics governed by partial differential equations, providing a pathway for achieving quantum advantage in practical problems.",
+      "citations": 3
+    },
+    {
+      "title": "A Quantum-inspired Classical Algorithm for Separable Non-negative Matrix Factorization",
+      "year": 2019,
+      "authors": "Zhihuai Chen, Yinan Li, Xiaoming Sun, Pei Yuan, Jialin Zhang",
+      "url": "https://www.semanticscholar.org/paper/34bf183cb70a138e361c1b2c914437a71edf007a",
+      "relevance": 1,
+      "abstract": "Non-negative Matrix Factorization (NMF) asks to decompose a (entry-wise) non-negative matrix into the product of two smaller-sized nonnegative matrices, which has been shown intractable in general. In order to overcome this issue, separability assumption is introduced which assumes all data points are in a conical hull. This assumption makes NMF tractable and widely used in text analysis and image processing, but still impractical for huge-scale datasets. In this paper, inspired by recent development on\u00a0dequantizing techniques, we propose a new classical algorithm for separable NMF problem. Our new algorithm runs in polynomial time in the rank and logarithmic in the size of input matrices, which achieves an exponential speedup in the low-rank setting.",
+      "citations": 12
+    },
+    {
+      "title": "Quantum-inspired algorithm for estimating the permanent of positive semidefinite matrices",
+      "year": 2016,
+      "authors": "L. Chakhmakhchyan, N. Cerf, R. Garc\u00eda-Patr\u00f3n",
+      "url": "https://www.semanticscholar.org/paper/7ab3c33054da56b5f52d509e377c33f8cd2c08d6",
+      "relevance": 1,
+      "abstract": "We construct a quantum-inspired classical algorithm for computing the permanent of Hermitian positive semidefinite matrices, by exploiting a connection between these mathematical structures and the boson sampling model. Specifically, the permanent of a Hermitian positive semidefinite matrix can be expressed in terms of the expected value of a random variable, which stands for a specific photon-counting probability when measuring a linear-optically evolved random multimode coherent state. Our algorithm then approximates the matrix permanent from the corresponding sample mean and is shown to run in polynomial time for various sets of Hermitian positive semidefinite matrices, achieving a precision that improves over known techniques. This work illustrates how quantum optics may benefit algorithms development.",
+      "citations": 26
+    },
+    {
+      "title": "Quantum Machine Learning Algorithm for Knowledge Graphs",
+      "year": 2020,
+      "authors": "Yunpu Ma, Yuyi Wang, Volker Tresp",
+      "url": "https://api.semanticscholar.org/CorpusId:209862772",
+      "relevance": 1,
+      "abstract": "Semantic knowledge graphs are large-scale triple-oriented databases for knowledge representation and reasoning. Implicit knowledge can be inferred by modeling the tensor representations generated from knowledge graphs. However, as the sizes of knowledge graphs continue to grow, classical modeling becomes increasingly computationally resource intensive. This article investigates how to capitalize on quantum resources to accelerate the modeling of knowledge graphs. In particular, we propose the first quantum machine learning algorithm for inference on tensorized data, i.e., on knowledge graphs. Since most tensor problems are NP-hard [18], it is challenging to devise quantum algorithms to support the inference task. We simplify the modeling task by making the plausible assumption that the tensor representation of a knowledge graph can be approximated by its low-rank tensor singular value decomposition, which is verified by our experiments. The proposed sampling-based quantum algorithm achieves speedup with a polylogarithmic runtime in the dimension of knowledge graph tensor.",
+      "citations": 18
+    },
+    {
+      "title": "Lower bounds for quantum-inspired classical algorithms via communication complexity",
+      "year": 2024,
+      "authors": "Nikhil S. Mande, Changpeng Shao",
+      "url": "https://www.semanticscholar.org/paper/bde8e29ae56a784096ae2180dfc0f1bf1335d388",
+      "relevance": 1,
+      "abstract": "Quantum-inspired classical algorithms provide us with a new way to understand the computational power of quantum computers for practically-relevant problems, especially in machine learning. In the past several years, numerous efficient algorithms for various tasks have been found, while an analysis of lower bounds is still missing. Using communication complexity, in this work we propose the first method to study lower bounds for these tasks. We mainly focus on lower bounds for solving linear regressions, supervised clustering, principal component analysis, recommendation systems, and Hamiltonian simulations. For those problems, we prove a quadratic lower bound in terms of the Frobenius norm of the underlying matrix. As quantum algorithms are linear in the Frobenius norm for those problems, our results mean that the quantum-classical separation is at least quadratic. As a generalisation, we extend our method to study lower bounds analysis of quantum query algorithms for matrix-related problems using quantum communication complexity. Some applications are given.",
+      "citations": 3
+    },
+    {
+      "title": "CRUISE on Quantum Computing for Feature Selection in Recommender Systems",
+      "year": 2024,
+      "authors": "Jiayang Niu, Jie Li, Ke Deng, Yongli Ren",
+      "url": "https://api.semanticscholar.org/CorpusId:270924178",
+      "relevance": 1,
+      "abstract": "Using Quantum Computers to solve problems in Recommender Systems that classical computers cannot address is a worthwhile research topic. In this paper, we use Quantum Annealers to address the feature selection problem in recommendation algorithms. This feature selection problem is a Quadratic Unconstrained Binary Optimization(QUBO) problem. By incorporating Counterfactual Analysis, we significantly improve the performance of the item-based KNN recommendation algorithm compared to using pure Mutual Information. Extensive experiments have demonstrated that the use of Counterfactual Analysis holds great promise for addressing such problems.",
+      "citations": 5
+    },
+    {
+      "title": "Recommendation systems with the quantum k\u2013NN and Grover algorithms for data processing",
+      "year": 2018,
+      "authors": "Marek Sawerwain, Marek Wr\u00f3blewski",
+      "url": "https://www.semanticscholar.org/paper/f8ecd61f3ee6a705a71113e5ea2d67cf1670fdfc",
+      "relevance": 1,
+      "abstract": "Abstract In this article, we discuss the implementation of a quantum recommendation system that uses a quantum variant of the k-nearest neighbours algorithm and the Grover algorithm to search for a specific element in an unstructured database. In addition to the presentation of the recommendation system as an algorithm, the article also shows the main steps in construction of a suitable quantum circuit for realisation of a given recommendation system. The computational complexity of individual calculation steps in the recommendation system is also indicated. The verification of the correctness of the proposed system is analysed as well, indicating an algebraic equation describing the probability of success of the recommendation. The article also shows numerical examples presenting the behaviour of the recommendation system for two selected cases.",
+      "citations": 10
+    },
+    {
+      "title": "Application of Quantum k-NN and Grover\u2019s Algorithms for Recommendation Big-Data System",
+      "year": 2018,
+      "authors": "Marek Sawerwain, Marek Wr\u00f3blewski",
+      "url": "https://www.semanticscholar.org/paper/bbff14e220e084cb08a8625333294f9957cb1797",
+      "relevance": 1,
+      "abstract": "",
+      "citations": 6
+    },
+    {
+      "title": "Deep Learning and Optimization Approaches in An Optimized Equivariant Split Attention Quantum Neural Network Based Recommendation System for Stock Market Prediction: A Review",
+      "year": 2025,
+      "authors": "Chatmanee Mardaniyan",
+      "url": "https://www.semanticscholar.org/paper/f15aaf00226c67c78ed6d9f3a133f4acab78f0c2",
+      "relevance": 1,
+      "abstract": "Financial markets are complex, nonlinear, and highly dynamic systems, making accurate stock market prediction a challenging task. Traditional statistical and machine learning models often fail to capture the intricate temporal dependencies and high-dimensional interactions present in financial data. This review explores advanced approaches integrating deep learning, quantum computing, equivariant neural networks, and split attention mechanisms for stock market prediction and recommendation systems. Quantum neural networks leverage principles such as superposition and entanglement to enhance feature representation and computational efficiency, while equivariant architectures improve generalization by preserving structural relationships in data. Split attention mechanisms further enhance model performance by capturing both local and global temporal dependencies. The study also examines optimization strategies, including gradient-based methods and evolutionary algorithms, for efficient training of hybrid quantum-classical models. Additionally, the integration of recommendation systems enables personalized investment decision-making by combining market data with user preferences. Evaluations on benchmark financial datasets demonstrate improved prediction accuracy, scalability, and robustness compared to conventional models. Overall, the proposed framework offers a promising direction for developing intelligent, efficient, and next-generation financial forecasting systems.",
+      "citations": 0
+    },
+    {
+      "title": "Correction: Classical-quantum hybrid recommendation system based on collaborative filtering and demographics",
+      "year": 2025,
+      "authors": "Anindita Raychaudhuri, Arijit Dey",
+      "url": "https://www.semanticscholar.org/paper/7242b538597f418849f30fcaa08a9a2250f7ad9e",
+      "relevance": 1,
+      "abstract": "",
+      "citations": 0
+    },
+    {
+      "title": "Quantum context-aware recommendation systems based on tensor singular value decomposition",
+      "year": 2021,
+      "authors": "Xiaoqiang Wang, Lejia Gu, H. Lee, Guofeng Zhang",
+      "url": "https://www.semanticscholar.org/paper/bf4037c1fe5bf47cbdaf2ba2aa8fd782aa237727",
+      "relevance": 1,
+      "abstract": "",
+      "citations": 10
+    }
+  ]
+}
